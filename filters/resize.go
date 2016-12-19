@@ -6,6 +6,7 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 	"io"
 	"io/ioutil"
+	"math"
 )
 
 const (
@@ -25,66 +26,75 @@ func (h *resize) Name() string {
 	return ResizeName
 }
 
-func (h *resize) Request(ctx filters.FilterContext) {
-	log.Debug("We start doing the resize request")
-}
-
-func resizeImage(out *io.PipeWriter, in io.ReadCloser) {
-	var (
-		err error
-	)
-
-	defer func() {
-
-		if err == nil {
-			err = io.EOF
-		}
-
-		out.CloseWithError(err)
-		in.Close()
-	}()
-
-	options := bimg.Options{
-		Width: 600,
-	}
-
-	responseImage, err := ioutil.ReadAll(in)
-
-	newImage, err := bimg.NewImage(responseImage).Process(options)
-
-	out.Write(newImage)
-}
-
-func (h *resize) Response(ctx filters.FilterContext) {
-	rsp := ctx.Response()
-	in := rsp.Body
-	r, w := io.Pipe()
-	rsp.Body = r
-	go resizeImage(w, in)
-}
-
 func (h *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 	if len(args) != 2 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	var width int
-	switch w := args[0].(type) {
-	case float64:
-		width = int(w)
-	default:
+	f := &resize{}
+
+	if width, ok := args[0].(float64); ok && math.Trunc(width) == width {
+		f.width = int(width)
+	} else {
 		log.Error("Width not correct")
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	var height int
-	switch h := args[0].(type) {
-	case float64:
-		height = int(h)
-	default:
+	if height, ok := args[1].(float64); ok && math.Trunc(height) == height {
+		f.width = int(height)
+	} else {
 		log.Error("Height not correct")
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	return &resize{width: width, height: height}, nil
+	return f, nil
+}
+
+func (h *resize) Request(ctx filters.FilterContext) {}
+
+func resizeImage(out *io.PipeWriter, in io.ReadCloser, opts *bimg.Options) error {
+	var err error
+
+	defer func() {
+		if err == nil {
+			err = io.EOF
+		}
+		out.CloseWithError(err)
+		in.Close()
+	}()
+
+	responseImage, err := ioutil.ReadAll(in)
+
+	if err != nil {
+		return err
+	}
+
+	newImage, err := bimg.NewImage(responseImage).Process(*opts)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = out.Write(newImage)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (h *resize) Response(ctx filters.FilterContext) {
+	rsp := ctx.Response()
+
+	rsp.Header.Del("Content-Length")
+
+	in := rsp.Body
+	r, w := io.Pipe()
+	rsp.Body = r
+
+	options := &bimg.Options{
+		Width:  h.width,
+		Height: h.height}
+
+	go resizeImage(w, in, options)
 }
