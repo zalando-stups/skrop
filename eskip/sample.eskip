@@ -1,1 +1,6 @@
-hello: Path("/hello") -> "https://www.example.org"
+hello: Path("/hello") -> "https://www.example.org";
+
+//Eg: http://localhost:9090/kitten/1200/300
+kittens: Path("/kitten/:width/:height")
+ -> modPath("^/kitten", "/g")
+ -> "https://placekitten.com";
