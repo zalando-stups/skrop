@@ -23,7 +23,7 @@ func (c *crop) Name() string {
 	return CropName
 }
 
-func (c *crop) createOptions() *bimg.Options {
+func (c *crop) CreateOptions() *bimg.Options {
 	log.Debug("Create options for crop ", c)
 
 	return &bimg.Options{

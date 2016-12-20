@@ -23,7 +23,7 @@ func (r *resize) Name() string {
 	return ResizeName
 }
 
-func (r *resize) createOptions() *bimg.Options {
+func (r *resize) CreateOptions() *bimg.Options {
 	log.Debug("Create options for resize ", r)
 
 	return &bimg.Options{
