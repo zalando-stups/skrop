@@ -9,7 +9,7 @@ import (
 )
 
 type ImageFilter interface {
-	createOptions() *bimg.Options
+	CreateOptions() *bimg.Options
 }
 
 func handleResponse(ctx filters.FilterContext, f ImageFilter) {
@@ -21,7 +21,7 @@ func handleResponse(ctx filters.FilterContext, f ImageFilter) {
 	r, w := io.Pipe()
 	rsp.Body = r
 
-	options := f.createOptions()
+	options := f.CreateOptions()
 
 	go transformImage(w, in, options)
 }
