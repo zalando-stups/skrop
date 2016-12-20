@@ -1,6 +1,17 @@
-hello: Path("/hello") -> "https://www.example.org";
+// Eg: http://localhost:9090/cropandresize/1280/1024
+kittensCropAndResize: Path("/cropandresize/:width/:height")
+ -> modPath("^/cropandresize", "/g")
+ -> resize(200, 200)
+ -> crop(500, 500)
+ -> "https://placekitten.com";
 
-//Eg: http://localhost:9090/kitten/1200/300
+// Eg: http://localhost:9090/crop/1280/1024
+kittensCropped: Path("/crop/:width/:height")
+ -> modPath("^/crop", "/g")
+ -> crop(500, 500)
+ -> "https://placekitten.com";
+
+// Eg: http://localhost:9090/kitten/1280/1024
 kittens: Path("/kitten/:width/:height")
  -> modPath("^/kitten", "/g")
  -> resize(800, 600)
