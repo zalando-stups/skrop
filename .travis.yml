@@ -8,7 +8,7 @@ go:
 addons:
   apt:
     packages:
-    - libvips38
+    - libvips
     - libvips-dev
 install:
 - go get github.com/tools/godep
