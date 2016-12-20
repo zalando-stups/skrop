@@ -15,29 +15,29 @@ cache: apt
 before_install:
 - sudo apt-get -qq update
 - >
-  sudo apt-get install -y --no-install-recommends
-    glib2.0-dev
-    libxml2-dev
-    libjpeg-turbo8-dev
-    libexif-dev
-    libtiff5-dev
-    libgsf-1-dev
+  sudo apt-get install -y --no-install-recommends \
+    glib2.0-dev \
+    libxml2-dev \
+    libjpeg-turbo8-dev \
+    libexif-dev \
+    libtiff5-dev \
+    libgsf-1-dev \
     libpng-dev
+- wget http://www.vips.ecs.soton.ac.uk/supported/current/vips-${VIPS_VERSION}.tar.gz
+- tar -zxvf vips-${VIPS_VERSION}.tar.gz
+- cd vips-${VIPS_VERSION}/
 - >
-  wget http://www.vips.ecs.soton.ac.uk/supported/current/vips-${VIPS_VERSION}.tar.gz
-  && tar -zxvf vips-${VIPS_VERSION}.tar.gz
-  && cd vips-${VIPS_VERSION}/
-  && ./configure
-    --prefix=/usr
-    --disable-debug
-    --disable-static
-    --disable-introspection
-    --disable-dependency-tracking
-    --without-python
-    --without-orc
-    --without-fftw
-  && make
-  && sudo make install
+  ./configure \
+  --prefix=/usr \
+  --disable-debug \
+  --disable-static \
+  --disable-introspection \
+  --disable-dependency-tracking \
+  --without-python \
+  --without-orc \
+  --without-fftw \
+- make
+- sudo make install
 
 install:
 - go get github.com/tools/godep
