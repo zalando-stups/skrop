@@ -1,0 +1,13 @@
+sudo: false
+branches:
+  only:
+  - master
+language: go
+go:
+  - 1.7.x
+addons:
+  apt:
+    packages:
+    - libvips-dev
+script:
+- make test
