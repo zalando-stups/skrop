@@ -23,12 +23,12 @@ func (r *resize) Name() string {
 	return ResizeName
 }
 
-func (r *resize) CreateOptions() *bimg.Options {
+func (r *resize) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
 	log.Debug("Create options for resize ", r)
 
 	return &bimg.Options{
 		Width:  r.width,
-		Height: r.height}
+		Height: r.height}, nil
 }
 
 func (r *resize) CreateFilter(args []interface{}) (filters.Filter, error) {

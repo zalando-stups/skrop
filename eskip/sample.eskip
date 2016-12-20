@@ -16,3 +16,8 @@ kittens: Path("/kitten/:width/:height")
  -> modPath("^/kitten", "/g")
  -> resize(800, 600)
  -> "https://placekitten.com";
+
+longerEdgeResize: Path("/longeredgeresize/:width/:height")
+ -> modPath("^/longeredgeresize", "/g")
+ -> longerEdgeResize(400)
+ -> "https://placekitten.com";

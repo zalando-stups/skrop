@@ -22,7 +22,7 @@ var optionsTarget = bimg.Options{
 	Height: heightTarget,
 }
 
-func readSampleImage(t *testing.T) io.ReadCloser {
+func createSampleImageReader(t *testing.T) io.ReadCloser {
 	buffer, err := bimg.Read(sampleImageFile)
 
 	if err != nil {
@@ -57,17 +57,18 @@ func assertCorrectImageSize(r io.Reader, t *testing.T) {
 }
 
 func TestTransformImage(t *testing.T) {
-	imageReader := readSampleImage(t)
+	buffer, _ := bimg.Read(sampleImageFile)
+	image := bimg.NewImage(buffer)
 
 	r, w := io.Pipe()
 
-	go transformImage(w, imageReader, &optionsTarget)
+	go transformImage(w, image, &optionsTarget)
 
 	assertCorrectImageSize(r, t)
 }
 
 func TestHandleResponse(t *testing.T) {
-	imageReader := readSampleImage(t)
+	imageReader := createSampleImageReader(t)
 	response := &http.Response{Body: imageReader}
 	response.Header = make(http.Header)
 	response.Header.Add("Content-Length", "100")
