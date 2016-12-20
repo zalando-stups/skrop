@@ -9,5 +9,8 @@ addons:
   apt:
     packages:
     - libvips-dev
+install:
+- go get github.com/tools/godep
+- godep restore
 script:
 - make test
