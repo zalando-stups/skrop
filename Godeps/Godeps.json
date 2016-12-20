@@ -1,0 +1,154 @@
+{
+	"ImportPath": "github.com/zalando-incubator/skrop",
+	"GoVersion": "go1.7",
+	"GodepVersion": "v75",
+	"Packages": [
+		"./cmd/skrop/"
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/Sirupsen/logrus",
+			"Comment": "v0.11.0-25-g881bee4",
+			"Rev": "881bee4e20a5d11a6a88a5667c6f292072ac1963"
+		},
+		{
+			"ImportPath": "github.com/abbot/go-http-auth",
+			"Comment": "v0.3-14-gcb43723",
+			"Rev": "cb4372376e1e00e9f6ab9ec142e029302c9e7140"
+		},
+		{
+			"ImportPath": "github.com/dimfeld/httppath",
+			"Rev": "c8e499c3ef3c3e272ed8bdcc1ccf39f73c88debc"
+		},
+		{
+			"ImportPath": "github.com/rcrowley/go-metrics",
+			"Rev": "1f30fe9094a513ce4c700b9a54458bbb0c96996c"
+		},
+		{
+			"ImportPath": "github.com/tj/go-debug",
+			"Comment": "v2.0.0",
+			"Rev": "ff4a55a20a86994118644bbddc6a216da193cc13"
+		},
+		{
+			"ImportPath": "github.com/zalando/pathmux",
+			"Rev": "c378598e4ba271ecaeb51fbacbcfb1ac6d107205"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/dataclients/kubernetes",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/eskip",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/eskipfile",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/etcd",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/filters",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/filters/auth",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/filters/builtin",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/filters/diag",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/filters/flowid",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/filters/serve",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/filters/tee",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/innkeeper",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/logging",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/metrics",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/net",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/oauth",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/predicates",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/predicates/cookie",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/predicates/interval",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/predicates/query",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/predicates/source",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/proxy",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/routing",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/bcrypt",
+			"Rev": "abc3c1b02083efdbef727c8631a865ad7d8d8b19"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "abc3c1b02083efdbef727c8631a865ad7d8d8b19"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "45e771701b814666a7eb299e6c7a57d0b1799e91"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "d75a52659825e75fff6158388dddc6a5b04f9ba5"
+		},
+		{
+			"ImportPath": "gopkg.in/h2non/bimg.v1",
+			"Comment": "v1.0.6",
+			"Rev": "abca04aab5bfd7113546677f10a502b7c752f41d"
+		}
+	]
+}
