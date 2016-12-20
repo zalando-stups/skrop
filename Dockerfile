@@ -8,6 +8,11 @@ RUN apk add --update \
       wget \
       glib-dev \
       libxml2-dev \
+      libjpeg-turbo-dev \
+      libexif-dev \
+      tiff-dev \
+      libgsf-dev \
+      libpng-dev \
     && wget http://www.vips.ecs.soton.ac.uk/supported/current/vips-${VIPS_VERSION}.tar.gz \
     && tar -zxvf vips-${VIPS_VERSION}.tar.gz \
     && cd vips-${VIPS_VERSION}/ \
