@@ -8,7 +8,7 @@ kittensCropAndResize: Path("/cropandresize/:width/:height")
 // Eg: http://localhost:9090/crop/1280/1024
 kittensCropped: Path("/crop/:width/:height")
  -> modPath("^/crop", "/g")
- -> crop(500, 500)
+ -> crop(500, 500, "east")
  -> "https://placekitten.com";
 
 // Eg: http://localhost:9090/kitten/1280/1024
