@@ -8,11 +8,37 @@ import (
 
 const (
 	CropName = "crop"
+	North    = "north"
+	South    = "south"
+	East     = "east"
+	West     = "west"
+	Center   = "center"
 )
 
 type crop struct {
-	width  int
-	height int
+	width    int
+	height   int
+	cropType string
+}
+
+var (
+	cropTypeToGravity map[string]bimg.Gravity
+	cropTypes         map[string]bool
+)
+
+func init() {
+	cropTypes = map[string]bool{
+		North:  true,
+		South:  true,
+		East:   true,
+		West:   true,
+		Center: true}
+	cropTypeToGravity = map[string]bimg.Gravity{
+		North:  bimg.GravityNorth,
+		South:  bimg.GravitySouth,
+		East:   bimg.GravityEast,
+		West:   bimg.GravityWest,
+		Center: bimg.GravityCentre}
 }
 
 func NewCrop() filters.Spec {
@@ -29,18 +55,18 @@ func (c *crop) CreateOptions() *bimg.Options {
 	return &bimg.Options{
 		Width:   c.width,
 		Height:  c.height,
-		Crop:    true,
-		Gravity: bimg.GravityCentre}
+		Gravity: cropTypeToGravity[c.cropType],
+		Crop:    true}
 }
 
 func (c *crop) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
-	if len(args) != 2 {
+	if len(args) < 2 || len(args) > 3 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &crop{}
+	f := &crop{cropType: Center}
 
 	f.width, err = parseEskipIntArg(args[0])
 
@@ -52,6 +78,14 @@ func (c *crop) CreateFilter(args []interface{}) (filters.Filter, error) {
 
 	if err != nil {
 		return nil, err
+	}
+
+	if len(args) == 3 {
+		if cropType, ok := args[2].(string); ok && cropTypes[cropType] {
+			f.cropType = cropType
+		} else {
+			return nil, filters.ErrInvalidFilterParameters
+		}
 	}
 
 	return f, nil
