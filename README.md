@@ -1,4 +1,4 @@
-# SKROP
+# SKROP &nbsp; [![Build Status](https://travis-ci.org/zalando-incubator/skrop.svg?branch=master)](https://travis-ci.org/zalando-incubator/skrop)
 
 A skipper based media service using the vips library.
 
