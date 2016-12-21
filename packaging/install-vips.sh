@@ -61,8 +61,8 @@ function install_on_ubuntu {
     --without-python \
     --without-orc \
     --without-fftw \
-  make \
-  sudo make install \
+  && make \
+  && sudo make install \
   && cd ../ \
   && rm -rf vips-${VIPS_VERSION}/ \
   && rm vips-${VIPS_VERSION}.tar.gz
