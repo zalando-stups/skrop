@@ -37,6 +37,9 @@ function install_on_alpine {
 function install_on_ubuntu {
   sudo apt-get -qq update \
   && sudo apt-get install -y --no-install-recommends \
+    ca-certificates \
+    wget \
+    build-essential \
     glib2.0-dev \
     libxml2-dev \
     libjpeg-turbo8-dev \
