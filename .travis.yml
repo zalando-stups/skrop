@@ -1,13 +1,22 @@
-sudo: false
+sudo: required
+dist: trusty
+
 branches:
   only:
   - master
+
 language: go
 go:
   - 1.7.x
-addons:
-  apt:
-    packages:
-    - libvips-dev
+
+env:
+- VIPS_VERSION=8.4.5
+cache: apt
+before_install:
+- ./packaging/install-vips.sh
+
+install:
+- go get github.com/tools/godep
+- godep restore
 script:
 - make test
