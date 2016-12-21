@@ -7,10 +7,10 @@ build: godep
 	go build ./cmd/skrop
 
 docker:
-	./packaging/build.sh $(version)
+	./packaging/build.sh $(version) $(routes_file)
 
 docker-run:
-	docker run --rm -w /app -p 9090:9090 -v $(PWD):/app zalando-incubator/skrop -verbose -routes-file=eskip/sample.eskip
+	docker run --rm -p 9090:9090 zalando-incubator/skrop -verbose
 
 test:
 	go test ./...
