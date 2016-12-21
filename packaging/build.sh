@@ -2,12 +2,12 @@
 
 readonly DOCKER_IMAGE_VERSION=${1-"latest"}
 readonly ROUTES_FILE=${2-"eskip/sample.eskip"}
+readonly DOCKER_IMAGE_NAME=${3-"zalando-incubator/skrop"}
 
-readonly PROJECT_NAME="zalando-incubator/skrop"
-readonly GO_PROJECT_NAME="github.com/$PROJECT_NAME"
+readonly GO_PROJECT_NAME="github.com/zalando-incubator/skrop"
 
 function make_build_image() {
-  docker build -t "$PROJECT_NAME-build" packaging/ \
+  docker build -t "$DOCKER_IMAGE_NAME-build" packaging/ \
   && return 0
 }
 
@@ -17,7 +17,7 @@ function make_binary() {
     -e "GOPATH=/go" \
     -e "GOOS=linux" \
     -w /go/src/${GO_PROJECT_NAME} \
-    "$PROJECT_NAME-build" sh \
+    "$DOCKER_IMAGE_NAME-build" sh \
     -c 'godep restore && go build ./cmd/skrop' \
   && return 0
 }
@@ -25,7 +25,7 @@ function make_binary() {
 function make_production_image() {
   docker build \
   --build-arg ROUTES_FILE=${ROUTES_FILE} \
-  -t ${PROJECT_NAME}:${DOCKER_IMAGE_VERSION} . \
+  -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} . \
   && return 0
 }
 

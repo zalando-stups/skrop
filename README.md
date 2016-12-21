@@ -11,10 +11,10 @@ go run cmd/skrop/main.go -routes-file eskip/sample.eskip -verbose
 ## Packaging
 
 In order to package skrop for production, you're going to need [Docker](https://docs.docker.com).
-To build a Docker image, just run the build script (the `version` and `routes_file` arguments are optional):
+To build a Docker image, just run the build script (the arguments are optional):
 
 ```
-make docker version=1.0.0 routes_file=eskip/sample.eskip
+make docker version=1.0.0 routes_file=eskip/sample.eskip docker_tag=zalando-incubator/skrop
 ```
 
 Now you can start Skrop in a Docker container:
