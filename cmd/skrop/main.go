@@ -104,6 +104,8 @@ func main() {
 		CustomFilters: []filters.Spec{
 			skropFilters.NewResize(),
 			skropFilters.NewCrop(),
+			skropFilters.NewCropByWidth(),
+			skropFilters.NewCropByHeight(),
 			skropFilters.NewLongerEdgeResize()},
 		AccessLogDisabled:   true,
 		ProxyOptions:        proxy.OptionsPreserveOriginal,

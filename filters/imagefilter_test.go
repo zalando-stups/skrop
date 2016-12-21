@@ -12,9 +12,8 @@ import (
 )
 
 const (
-	sampleImageFile = "../images/lisbon-tram.jpg"
-	widthTarget     = 400
-	heightTarget    = 200
+	widthTarget  = 400
+	heightTarget = 200
 )
 
 var optionsTarget = bimg.Options{
@@ -23,7 +22,7 @@ var optionsTarget = bimg.Options{
 }
 
 func createSampleImageReader(t *testing.T) io.ReadCloser {
-	buffer, err := bimg.Read(sampleImageFile)
+	buffer, err := bimg.Read(imagefiltertest.LandscapeImageFile)
 
 	if err != nil {
 		t.Error("Failed to read sample image")
@@ -57,8 +56,7 @@ func assertCorrectImageSize(r io.Reader, t *testing.T) {
 }
 
 func TestTransformImage(t *testing.T) {
-	buffer, _ := bimg.Read(sampleImageFile)
-	image := bimg.NewImage(buffer)
+	image := imagefiltertest.LandscapeImage()
 
 	r, w := io.Pipe()
 
