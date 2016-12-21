@@ -103,7 +103,8 @@ func main() {
 		RoutesFile: routesFile,
 		CustomFilters: []filters.Spec{
 			skropFilters.NewResize(),
-			skropFilters.NewCrop()},
+			skropFilters.NewCrop(),
+			skropFilters.NewLongerEdgeResize()},
 		AccessLogDisabled:   true,
 		ProxyOptions:        proxy.OptionsPreserveOriginal,
 		CertPathTLS:         certPathTLS,

@@ -9,7 +9,7 @@ import (
 )
 
 type ImageFilter interface {
-	CreateOptions() *bimg.Options
+	CreateOptions(image *bimg.Image) (*bimg.Options, error)
 }
 
 func handleResponse(ctx filters.FilterContext, f ImageFilter) {
@@ -21,12 +21,32 @@ func handleResponse(ctx filters.FilterContext, f ImageFilter) {
 	r, w := io.Pipe()
 	rsp.Body = r
 
-	options := f.CreateOptions()
-
-	go transformImage(w, in, options)
+	go handleImageTransform(w, in, f)
 }
 
-func transformImage(out *io.PipeWriter, in io.ReadCloser, opts *bimg.Options) error {
+func handleImageTransform(out *io.PipeWriter, in io.ReadCloser, f ImageFilter) error {
+	defer func() {
+		in.Close()
+	}()
+
+	imageByes, err := ioutil.ReadAll(in)
+
+	if err != nil {
+		return err
+	}
+
+	responseImage := bimg.NewImage(imageByes)
+
+	options, err := f.CreateOptions(responseImage)
+
+	if err != nil {
+		return err
+	}
+
+	return transformImage(out, responseImage, options)
+}
+
+func transformImage(out *io.PipeWriter, image *bimg.Image, opts *bimg.Options) error {
 	var err error
 
 	defer func() {
@@ -34,16 +54,9 @@ func transformImage(out *io.PipeWriter, in io.ReadCloser, opts *bimg.Options) er
 			err = io.EOF
 		}
 		out.CloseWithError(err)
-		in.Close()
 	}()
 
-	responseImage, err := ioutil.ReadAll(in)
-
-	if err != nil {
-		return err
-	}
-
-	newImage, err := bimg.NewImage(responseImage).Process(*opts)
+	newImage, err := image.Process(*opts)
 
 	if err != nil {
 		return err

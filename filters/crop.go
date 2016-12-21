@@ -49,14 +49,14 @@ func (c *crop) Name() string {
 	return CropName
 }
 
-func (c *crop) CreateOptions() *bimg.Options {
+func (c *crop) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
 	log.Debug("Create options for crop ", c)
 
 	return &bimg.Options{
 		Width:   c.width,
 		Height:  c.height,
 		Gravity: cropTypeToGravity[c.cropType],
-		Crop:    true}
+		Crop:    true}, nil
 }
 
 func (c *crop) CreateFilter(args []interface{}) (filters.Filter, error) {
