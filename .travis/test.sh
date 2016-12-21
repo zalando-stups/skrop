@@ -9,4 +9,4 @@ function cover_all {
 }
 
 cover_all
-gocovmerge *.coverage.txt > .coverage.txt
+gocovmerge *.coverage.txt > coverage.txt
