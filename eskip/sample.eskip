@@ -1,23 +1,24 @@
-// Eg: http://localhost:9090/cropandresize/1280/1024
-kittensCropAndResize: Path("/cropandresize/:width/:height")
- -> modPath("^/cropandresize", "/g")
- -> resize(200, 200)
- -> crop(500, 500)
- -> "https://placekitten.com";
+// http://localhost:9090/images/S/image-4k.jpg
+small: Path("/images/S/:image")
+  -> modPath("^/images/S", "/images")
+  -> longerEdgeResize(800)
+  -> "http://localhost:9090";
 
-// Eg: http://localhost:9090/crop/1280/1024
-kittensCropped: Path("/crop/:width/:height")
- -> modPath("^/crop", "/g")
- -> crop(500, 500, "east")
- -> "https://placekitten.com";
+medium: Path("/images/M/:image")
+  -> modPath("^/images/M", "/images")
+  -> longerEdgeResize(1200)
+  -> "http://localhost:9090";
 
-// Eg: http://localhost:9090/kitten/1280/1024
-kittens: Path("/kitten/:width/:height")
- -> modPath("^/kitten", "/g")
- -> resize(800, 600)
- -> "https://placekitten.com";
+large: Path("/images/L/:image")
+  -> modPath("^/images/L", "/images")
+  -> longerEdgeResize(1920)
+  -> "http://localhost:9090";
 
-longerEdgeResize: Path("/longeredgeresize/:width/:height")
- -> modPath("^/longeredgeresize", "/g")
- -> longerEdgeResize(400)
- -> "https://placekitten.com";
+// http://localhost:9090/images/teaser/image-4k.jpg
+teaser: Path("/images/teaser/:image")
+  -> modPath("^/images/teaser", "/images")
+  -> longerEdgeResize(1920)
+  -> crop(1920, 1016)
+  -> "http://localhost:9090";
+
+static: * -> static("/", ".") -> <shunt>;
