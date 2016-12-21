@@ -1,6 +1,6 @@
-# SKROP &nbsp; [![Build Status](https://travis-ci.org/zalando-incubator/skrop.svg?branch=master)](https://travis-ci.org/zalando-incubator/skrop)
+# Skrop &nbsp; [![Build Status](https://travis-ci.org/zalando-incubator/skrop.svg?branch=master)](https://travis-ci.org/zalando-incubator/skrop) [![Go Report Card](https://goreportcard.com/badge/github.com/zalando-incubator/skrop)](https://goreportcard.com/report/github.com/zalando-incubator/skrop) [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/zalando-incubator/skrop/master/LICENSE)
 
-A skipper based media service using the vips library.
+Skrop is a media service based on [Skipper](https://github.com/zalando/skipper) and the [vips](https://github.com/jcupitt/libvips) library.
 
 ## Usage
 
@@ -11,26 +11,14 @@ go run cmd/skrop/main.go -routes-file eskip/sample.eskip -verbose
 ## Packaging
 
 In order to package skrop for production, you're going to need [Docker](https://docs.docker.com).
-To build a Docker image, just run the build script (the version and routes_file arguments are optional):
+To build a Docker image, just run the build script (the `version` and `routes_file` arguments are optional):
 
-Eg:
 ```
 make docker version=1.0.0 routes_file=eskip/sample.eskip
 ```
 
-Now you can start skrop in a Docker container and pass arguments to it:
+Now you can start Skrop in a Docker container:
 
 ```
 make docker-run
 ```
-
-## License
-
-The MIT License (MIT)
-Copyright (c) 2016 Zalando SE
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
