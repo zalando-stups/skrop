@@ -6,39 +6,12 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 )
 
-const (
-	CropName = "crop"
-	North    = "north"
-	South    = "south"
-	East     = "east"
-	West     = "west"
-	Center   = "center"
-)
+const CropName = "crop"
 
 type crop struct {
 	width    int
 	height   int
 	cropType string
-}
-
-var (
-	cropTypeToGravity map[string]bimg.Gravity
-	cropTypes         map[string]bool
-)
-
-func init() {
-	cropTypes = map[string]bool{
-		North:  true,
-		South:  true,
-		East:   true,
-		West:   true,
-		Center: true}
-	cropTypeToGravity = map[string]bimg.Gravity{
-		North:  bimg.GravityNorth,
-		South:  bimg.GravitySouth,
-		East:   bimg.GravityEast,
-		West:   bimg.GravityWest,
-		Center: bimg.GravityCentre}
 }
 
 func NewCrop() filters.Spec {
