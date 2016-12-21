@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 readonly VIPS_VERSION="8.4.5"
+readonly VIPS_SOURCE="http://www.vips.ecs.soton.ac.uk/supported/current"
 
 readonly IS_UBUNTU=$(cat /etc/*-release | grep -o -m 1 ubuntu)
 readonly IS_ALPINE=$(cat /etc/*-release | grep -o -m 1 alpine)
@@ -17,7 +18,7 @@ function install_on_alpine {
     tiff-dev \
     libgsf-dev \
     libpng-dev \
-  && wget http://www.vips.ecs.soton.ac.uk/supported/current/vips-${VIPS_VERSION}.tar.gz \
+  && wget ${VIPS_SOURCE}/vips-${VIPS_VERSION}.tar.gz \
   && tar -zxf vips-${VIPS_VERSION}.tar.gz \
   && cd vips-${VIPS_VERSION}/ \
   && ./configure \
@@ -29,7 +30,7 @@ function install_on_alpine {
     --without-python \
     --without-orc \
     --without-fftw \
-  && make \
+  && make -s \
   && make install \
   && cd ../ \
   && rm -rf vips-${VIPS_VERSION}/ \
@@ -49,7 +50,7 @@ function install_on_ubuntu {
     libtiff5-dev \
     libgsf-1-dev \
     libpng-dev \
-  && wget http://www.vips.ecs.soton.ac.uk/supported/current/vips-${VIPS_VERSION}.tar.gz \
+  && wget ${VIPS_SOURCE}/vips-${VIPS_VERSION}.tar.gz \
   && tar -zxf vips-${VIPS_VERSION}.tar.gz \
   && cd vips-${VIPS_VERSION}/ \
   && ./configure \
@@ -61,7 +62,7 @@ function install_on_ubuntu {
     --without-python \
     --without-orc \
     --without-fftw \
-  && make \
+  && make -s \
   && sudo make install \
   && cd ../ \
   && rm -rf vips-${VIPS_VERSION}/ \
