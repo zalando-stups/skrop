@@ -11,12 +11,18 @@ go:
 
 env:
 - VIPS_VERSION=8.4.5
-cache: apt
+cache:
+  directories:
+  - $GOPATH/src
+  - $GOPATH/pkg
 before_install:
 - ./packaging/install-vips.sh
 
 install:
 - go get github.com/tools/godep
+- go get github.com/wadey/gocovmerge
 - godep restore
 script:
-- make test
+- ./.travis/test.sh
+after_success:
+- bash <(curl -s https://codecov.io/bash)
