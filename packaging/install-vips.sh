@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 readonly VIPS_VERSION="8.4.5"
 
 readonly IS_UBUNTU=$(cat /etc/*-release | grep -o -m 1 ubuntu)
@@ -16,7 +18,7 @@ function install_on_alpine {
     libgsf-dev \
     libpng-dev \
   && wget http://www.vips.ecs.soton.ac.uk/supported/current/vips-${VIPS_VERSION}.tar.gz \
-  && tar -zxvf vips-${VIPS_VERSION}.tar.gz \
+  && tar -zxf vips-${VIPS_VERSION}.tar.gz \
   && cd vips-${VIPS_VERSION}/ \
   && ./configure \
     --prefix=/usr \
@@ -48,7 +50,7 @@ function install_on_ubuntu {
     libgsf-1-dev \
     libpng-dev \
   && wget http://www.vips.ecs.soton.ac.uk/supported/current/vips-${VIPS_VERSION}.tar.gz \
-  && tar -zxvf vips-${VIPS_VERSION}.tar.gz \
+  && tar -zxf vips-${VIPS_VERSION}.tar.gz \
   && cd vips-${VIPS_VERSION}/ \
   && ./configure \
     --prefix=/usr \
@@ -60,7 +62,10 @@ function install_on_ubuntu {
     --without-orc \
     --without-fftw \
   make \
-  sudo make install
+  sudo make install \
+  && cd ../ \
+  && rm -rf vips-${VIPS_VERSION}/ \
+  && rm vips-${VIPS_VERSION}.tar.gz
 }
 
 if [[ ! -z "$IS_UBUNTU" ]]; then
