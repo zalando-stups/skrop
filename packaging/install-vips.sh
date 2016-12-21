@@ -27,6 +27,7 @@ function install_on_alpine {
     --disable-static \
     --disable-introspection \
     --disable-dependency-tracking \
+    --enable-silent-rules \
     --without-python \
     --without-orc \
     --without-fftw \
@@ -59,6 +60,7 @@ function install_on_ubuntu {
     --disable-static \
     --disable-introspection \
     --disable-dependency-tracking \
+    --enable-silent-rules \
     --without-python \
     --without-orc \
     --without-fftw \
