@@ -21,4 +21,14 @@ teaser: Path("/images/teaser/:image")
   -> crop(1920, 1016)
   -> "http://localhost:9090";
 
+cropByWidth: Path("/images/cropbywidth/:image")
+  -> modPath("^/images/cropbywidth", "/images")
+  -> cropByWidth(1200, "east")
+  -> "http://localhost:9090";
+
+cropByHeight: Path("/images/cropbyheight/:image")
+  -> modPath("^/images/cropbyheight", "/images")
+  -> cropByHeight(1000, "south")
+  -> "http://localhost:9090";
+
 static: * -> static("/", ".") -> <shunt>;
