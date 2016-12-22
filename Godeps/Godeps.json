@@ -3,7 +3,7 @@
 	"GoVersion": "go1.7",
 	"GodepVersion": "v75",
 	"Packages": [
-		"./cmd/skrop/"
+		"./..."
 	],
 	"Deps": [
 		{
@@ -17,12 +17,27 @@
 			"Rev": "cb4372376e1e00e9f6ab9ec142e029302c9e7140"
 		},
 		{
+			"ImportPath": "github.com/davecgh/go-spew/spew",
+			"Comment": "v1.1.0",
+			"Rev": "346938d642f2ec3594ed81d874461961cd0faa76"
+		},
+		{
 			"ImportPath": "github.com/dimfeld/httppath",
 			"Rev": "c8e499c3ef3c3e272ed8bdcc1ccf39f73c88debc"
 		},
 		{
+			"ImportPath": "github.com/pmezard/go-difflib/difflib",
+			"Comment": "v1.0.0",
+			"Rev": "792786c7400a136282c1664665ae0a8db921c6c2"
+		},
+		{
 			"ImportPath": "github.com/rcrowley/go-metrics",
 			"Rev": "1f30fe9094a513ce4c700b9a54458bbb0c96996c"
+		},
+		{
+			"ImportPath": "github.com/stretchr/testify/assert",
+			"Comment": "v1.1.4-25-g2402e8e",
+			"Rev": "2402e8e7a02fc811447d11f881aa9746cdc57983"
 		},
 		{
 			"ImportPath": "github.com/tj/go-debug",
@@ -67,6 +82,10 @@
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/filters/diag",
+			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/filters/filtertest",
 			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
 		},
 		{
