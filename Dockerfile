@@ -16,5 +16,4 @@ RUN apk add --update \
 ADD skrop /usr/local/bin/
 ADD $ROUTES_FILE skrop.eskip
 
-ENTRYPOINT ["skrop", "-routes-file", "skrop.eskip"]
-CMD $SKROP_ARGS
+ENTRYPOINT skrop -routes-file skrop.eskip ${SKROP_ARGS}
