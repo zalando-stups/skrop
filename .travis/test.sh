@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 function cover_all {
   for d in $(go list ./... | grep -v vendor); do
     local name="$(echo "$d" | grep -o "[^/]*$")"

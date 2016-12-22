@@ -1,9 +1,10 @@
 package imagefiltertest
 
 import (
+	"testing"
+
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"testing"
 )
 
 const (
