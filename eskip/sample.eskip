@@ -1,4 +1,4 @@
-// http://localhost:9090/images/S/image-4k.jpg
+// http://localhost:9090/images/S/image-2k.jpg
 small: Path("/images/S/:image")
   -> modPath("^/images/S", "/images")
   -> longerEdgeResize(800)
@@ -14,7 +14,7 @@ large: Path("/images/L/:image")
   -> longerEdgeResize(1920)
   -> "http://localhost:9090";
 
-// http://localhost:9090/images/teaser/image-4k.jpg
+// http://localhost:9090/images/teaser/image-2k.jpg
 teaser: Path("/images/teaser/:image")
   -> modPath("^/images/teaser", "/images")
   -> longerEdgeResize(1920)
