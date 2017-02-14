@@ -1,49 +1,50 @@
 package filters
 
 import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
 	"gopkg.in/h2non/bimg.v1"
-	"testing"
 )
 
 func TestNewCropByHeight(t *testing.T) {
-	if NewCropByHeight().Name() != "cropByHeight" {
-		t.Error("New crop by height name incorrect")
-	}
+	name := NewCropByHeight().Name()
+	assert.Equal(t, "cropByHeight", name)
 }
 
 func TestCropByHeight_Name(t *testing.T) {
 	c := cropByHeight{}
-	if c.Name() != "cropByHeight" {
-		t.Error("Crop by height name incorrect")
-	}
+	assert.Equal(t, "cropByHeight", c.Name())
 }
 
 func TestCropByHeight_CreateOptions(t *testing.T) {
 	c := cropByHeight{height: 400, cropType: North}
 	image := imagefiltertest.LandscapeImage()
 	options, _ := c.CreateOptions(image)
-	if (*options != bimg.Options{Width: 1000, Height: 400, Crop: true, Gravity: bimg.GravityNorth}) {
-		t.Error("Create options for crop didn't return a correct value, ", *options)
-	}
+
+	assert.Equal(t, 1000, options.Width)
+	assert.Equal(t, 400, options.Height)
+	assert.Equal(t, true, options.Crop)
+	assert.Equal(t, bimg.GravityNorth, options.Gravity)
 }
 
 func TestCropByHeight_CreateFilter(t *testing.T) {
 	imagefiltertest.TestCreate(t, NewCropByHeight, []imagefiltertest.CreateTestItem{{
-		"no args",
-		nil,
-		true,
+		Msg:  "no args",
+		Args: nil,
+		Err:  true,
 	}, {
-		"one arg",
-		[]interface{}{400.0},
-		false,
+		Msg:  "one arg",
+		Args: []interface{}{400.0},
+		Err:  false,
 	}, {
-		"two args",
-		[]interface{}{400.0, North},
-		false,
+		Msg:  "two args",
+		Args: []interface{}{400.0, North},
+		Err:  false,
 	}, {
-		"more than 2 args",
-		[]interface{}{400.0, 200.0, North},
-		true,
+		Msg:  "more than 2 args",
+		Args: []interface{}{400.0, 200.0, North},
+		Err:  true,
 	}})
 }

@@ -2,13 +2,15 @@ package filters
 
 import (
 	"bytes"
-	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
-	"github.com/zalando/skipper/filters/filtertest"
-	"gopkg.in/h2non/bimg.v1"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"github.com/zalando/skipper/filters/filtertest"
+	"gopkg.in/h2non/bimg.v1"
 )
 
 const (
@@ -23,36 +25,23 @@ var optionsTarget = bimg.Options{
 
 func createSampleImageReader(t *testing.T) io.ReadCloser {
 	buffer, err := bimg.Read(imagefiltertest.LandscapeImageFile)
-
-	if err != nil {
-		t.Error("Failed to read sample image")
-	}
-
+	assert.Nil(t, err, "Failed to read sample image")
 	return ioutil.NopCloser(bytes.NewReader(buffer))
 }
 
 func readResultImage(r io.Reader, t *testing.T) *bimg.Image {
 	result, err := ioutil.ReadAll(r)
-
-	if err != nil {
-		t.Error("Error reading the result image")
-	}
-
+	assert.Nil(t, err, "Error reading the result image")
 	return bimg.NewImage(result)
 }
 
 func assertCorrectImageSize(r io.Reader, t *testing.T) {
 	resultImage := readResultImage(r, t)
-
 	size, _ := resultImage.Size()
 
-	if size.Width != widthTarget {
-		t.Error("The width is not correct")
-	}
+	assert.Equal(t, widthTarget, size.Width, "The width is not correct")
+	assert.Equal(t, heightTarget, size.Height, "The height is not correct")
 
-	if size.Height != heightTarget {
-		t.Error("The height is not correct ", size.Height)
-	}
 }
 
 func TestTransformImage(t *testing.T) {
@@ -80,16 +69,10 @@ func TestHandleResponse(t *testing.T) {
 
 func TestParseEskipIntArgSuccess(t *testing.T) {
 	result, _ := parseEskipIntArg(1.0)
-
-	if result != 1 {
-		t.Error("Result incorrect")
-	}
+	assert.Equal(t, 1, result)
 }
 
 func TestParseEskipIntArgFailure(t *testing.T) {
 	_, err := parseEskipIntArg(1.2)
-
-	if err == nil {
-		t.Error("There should be an error")
-	}
+	assert.NotNil(t, err, "There should be an error")
 }
