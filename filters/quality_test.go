@@ -1,7 +1,7 @@
 package filters
 
 import (
-	"github.bus.zalan.do/hollywood/walk-of-fame/filters/imagefiltertest"
+	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
