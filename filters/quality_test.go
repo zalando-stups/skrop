@@ -1,8 +1,8 @@
 package filters
 
 import (
-	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
 	"github.com/stretchr/testify/assert"
+	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
 	"testing"
 )
 
@@ -39,7 +39,7 @@ func TestNewQuality_CreateFilter(t *testing.T) {
 		Err:  true,
 	}, {
 		Msg:  "more than one args",
-		Args: []interface{}{80.0, 100.0},
+		Args: []interface{}{80.0, 90.0},
 		Err:  true,
 	}})
 }
