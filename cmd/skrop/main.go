@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	skropFilters "github.bus.zalan.do/hollywood/walk-of-fame/filters"
+	skropFilters "github.com/zalando-incubator/skrop/filters"
 	"github.com/zalando/skipper"
 	"github.com/zalando/skipper/filters"
 	"os"
