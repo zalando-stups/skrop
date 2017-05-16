@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	skropFilters "github.com/zalando-incubator/skrop/filters"
+	skropFilters "github.bus.zalan.do/hollywood/walk-of-fame/filters"
 	"github.com/zalando/skipper"
 	"github.com/zalando/skipper/filters"
 	"os"
@@ -106,6 +106,8 @@ func main() {
 			skropFilters.NewCrop(),
 			skropFilters.NewCropByWidth(),
 			skropFilters.NewCropByHeight(),
+			skropFilters.NewResizeByWidth(),
+			skropFilters.NewQuality(),
 			skropFilters.NewLongerEdgeResize()},
 		AccessLogDisabled:   true,
 		ProxyOptions:        proxy.OptionsPreserveOriginal,
