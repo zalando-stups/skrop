@@ -106,6 +106,8 @@ func main() {
 			skropFilters.NewCrop(),
 			skropFilters.NewCropByWidth(),
 			skropFilters.NewCropByHeight(),
+			skropFilters.NewResizeByWidth(),
+			skropFilters.NewQuality(),
 			skropFilters.NewLongerEdgeResize()},
 		AccessLogDisabled:   true,
 		ProxyOptions:        proxy.OptionsPreserveOriginal,
