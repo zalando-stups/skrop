@@ -4,12 +4,9 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"image/color"
 	"io"
 	"io/ioutil"
 	"math"
-	"strings"
-	"strconv"
 )
 
 const (
@@ -109,50 +106,10 @@ func parseEskipIntArg(arg interface{}) (int, error) {
 	}
 }
 
-func parseEskipRGBAArg(arg interface{}) (color.RGBA, error) {
-	str, ok := arg.(string)
-	if !ok {
-		return color.RGBA{}, filters.ErrInvalidFilterParameters
-	}
-	str = strings.TrimPrefix(str, "#")
-	r, g, b, a, err := parseRGBA(str)
-
-	if err != nil {
-		return color.RGBA{}, filters.ErrInvalidFilterParameters
-	}
-	return color.RGBA{R: r, G: g, B: b, A: a}, nil
-}
-
-func parseRGBA(str string) (uint8, uint8, uint8, uint8, error) {
-	if len(str) < 6 {
-		return 0, 0, 0, 0, filters.ErrInvalidFilterParameters
-	}
-
-	var red, green, blue, alpha uint8
-
-	r, err1 := strconv.ParseUint(str[0:2], 16, 8)
-	g, err2 := strconv.ParseUint(str[2:4], 16, 8)
-	b, err3 := strconv.ParseUint(str[4:6], 16, 8)
-
-	if err1 != nil || err2 != nil || err3 != nil {
-		return 0, 0, 0, 0, filters.ErrInvalidFilterParameters
-	}
-
-	red = uint8(r)
-	green = uint8(g)
-	blue = uint8(b)
-
-	if len(str) == 8 {
-		a, err4 := strconv.ParseUint(str[6:8], 16, 8)
-		if err4 != nil {
-			return 0, 0, 0, 0, filters.ErrInvalidFilterParameters
-		}
-
-		alpha = uint8(a)
+func parseEskipUint8Arg(arg interface{}) (uint8, error) {
+	if number, ok := arg.(float64); ok && math.Trunc(number) == number {
+		return uint8(number), nil
 	} else {
-		alpha = 255
+		return 0, filters.ErrInvalidFilterParameters
 	}
-
-	return red, green, blue, alpha, nil
-
 }

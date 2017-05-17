@@ -1,7 +1,7 @@
 package filters
 
 import (
-	"image/color"
+	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 )
@@ -10,7 +10,7 @@ const (
 	AddBackgroundName = "addBackground"
 )
 
-type addBackground color.RGBA
+type addBackground bimg.Color
 
 func NewAddBackground() filters.Spec {
 	return &addBackground{}
@@ -21,20 +21,42 @@ func (r *addBackground) Name() string {
 }
 
 func (r *addBackground) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-	
+	log.Debug("Create options for adding background ", r)
+
+	if image.Type() != "png" {
+		return &bimg.Options{}, nil
+	}
+
+	backgroundColor := bimg.Color{R: r.R, G: r.G, B: r.B}
+
+	return &bimg.Options{
+		Background: backgroundColor}, nil
+
 }
 
 func (r *addBackground) CreateFilter(args []interface{}) (filters.Filter, error) {
-	if len(args) != 1 {
+	if len(args) != 3 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	col, err := parseEskipRGBAArg(args[0])
-	f := addBackground(col)
+	var err error
+	f:= &addBackground{}
 
+	f.R, err = parseEskipUint8Arg(args[0])
 	if err != nil {
 		return nil, err
 	}
+
+	f.G, err = parseEskipUint8Arg(args[1])
+	if err != nil {
+		return nil, err
+	}
+
+	f.B, err = parseEskipUint8Arg(args[2])
+	if err != nil {
+		return nil, err
+	}
+
 
 	return f, nil
 }

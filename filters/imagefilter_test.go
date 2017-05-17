@@ -77,39 +77,12 @@ func TestParseEskipIntArgFailure(t *testing.T) {
 	assert.NotNil(t, err, "There should be an error")
 }
 
-func TestParseEskipRGBAArgHashAndAlpha(t *testing.T) {
-	col, _ := parseEskipRGBAArg("#aabb33ee")
-	assert.Equal(t, uint8(170), col.R)
-	assert.Equal(t, uint8(187), col.G)
-	assert.Equal(t, uint8(51), col.B)
-	assert.Equal(t, uint8(238), col.A)
+func TestParseEskipUint8ArgSuccess(t *testing.T) {
+	result, _ := parseEskipIntArg(1.0)
+	assert.Equal(t, 1, result)
 }
 
-func TestParseEskipRGBAArgHashNoAlpha(t *testing.T) {
-	col, _ := parseEskipRGBAArg("#aabb33")
-	assert.Equal(t, uint8(170), col.R)
-	assert.Equal(t, uint8(187), col.G)
-	assert.Equal(t, uint8(51), col.B)
-	assert.Equal(t, uint8(255), col.A)
-}
-
-func TestParseEskipRGBAArgAlpha(t *testing.T) {
-	col, _ := parseEskipRGBAArg("aabb33ee")
-	assert.Equal(t, uint8(170), col.R)
-	assert.Equal(t, uint8(187), col.G)
-	assert.Equal(t, uint8(51), col.B)
-	assert.Equal(t, uint8(238), col.A)
-}
-
-func TestParseEskipRGBAArgNoAlpha(t *testing.T) {
-	col, _ := parseEskipRGBAArg("aabb33")
-	assert.Equal(t, uint8(170), col.R)
-	assert.Equal(t, uint8(187), col.G)
-	assert.Equal(t, uint8(51), col.B)
-	assert.Equal(t, uint8(255), col.A)
-}
-
-func TestParseEskipRGBAArgFailure(t *testing.T) {
-	_, err := parseEskipRGBAArg("aagb33ff")
+func TestParseEskipUint8ArgFailure(t *testing.T) {
+	_, err := parseEskipIntArg(1.2)
 	assert.NotNil(t, err, "There should be an error")
 }
