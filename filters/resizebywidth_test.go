@@ -17,11 +17,11 @@ func TestResizeByWidth_Name(t *testing.T) {
 }
 
 func TestResizeByWidth_CreateOptions(t *testing.T) {
-	resizeByWidth := resizeByWidth{width: 256}
 	image := imagefiltertest.LandscapeImage()
+	resizeByWidth := resizeByWidth{width: 150}
 	options, _ := resizeByWidth.CreateOptions(image)
 
-	assert.Equal(t, 256, options.Width)
+	assert.Equal(t, 150, options.Width)
 }
 
 func TestResizeByWidth_CreateFilter(t *testing.T) {

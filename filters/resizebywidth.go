@@ -25,19 +25,8 @@ func (r *resizeByWidth) Name() string {
 func (r *resizeByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	log.Debug("Create options for resize by width ", r)
 
-	imgSize, err := image.Size()
-
-	if err != nil {
-		return nil, err
-	}
-
-	// resize only if the original width is bigger than the required width
-	if imgSize.Width > r.width {
-		return &bimg.Options{
-			Width: r.width}, nil
-	} else {
-		return &bimg.Options{}, nil
-	}
+	return &bimg.Options{
+		Width: r.width}, nil
 }
 
 func (r *resizeByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {

@@ -34,8 +34,8 @@ cropByHeight: Path("/images/cropbyheight/:image")
   -> cropByHeight(1000, "south")
   -> "http://localhost:9090";
 
-widthAndquality: Path("/images/waq/:image")
-  -> modPath("^/images/pdp", "/images")
+widthAndQuality: Path("/images/waq/:image")
+  -> modPath("^/images/waq", "/images")
   -> width(1000)
   -> quality(5)
   -> "http://localhost:9090";
