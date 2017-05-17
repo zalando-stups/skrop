@@ -6,11 +6,25 @@ Skrop is a media service based on [Skipper](https://github.com/zalando/skipper) 
 
 In order to be able to use Skrop, you have to be familiar with how
 [Skipper](https://github.com/zalando/skipper) works.
- 
-Here is how to start Skrop:
 
+### Install dependencies:
+```
+./packaging/build.sh
+go get github.com/tools/godep
+go get ./cmd/skrop/
+```
+### Run Skrop
 ```
 go run cmd/skrop/main.go -routes-file eskip/sample.eskip -verbose
+```
+### Test
+To test if everything is configured correctly you should open in your browser
+```
+http://localhost:9090/images/big-ben.jpg
+```
+and the resized version
+```
+http://localhost:9090/images/S/big-ben.jpg
 ```
 
 Here is how a route from the `sample.eskip` file would look like:
