@@ -21,11 +21,22 @@ func (r *addBackground) Name() string {
 }
 
 func (r *addBackground) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-
+	
 }
 
 func (r *addBackground) CreateFilter(args []interface{}) (filters.Filter, error) {
+	if len(args) != 1 {
+		return nil, filters.ErrInvalidFilterParameters
+	}
 
+	col, err := parseEskipRGBAArg(args[0])
+	f := addBackground(col)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return f, nil
 }
 
 func (r *addBackground) Request(ctx filters.FilterContext) {}
