@@ -40,4 +40,10 @@ widthAndQuality: Path("/images/waq/:image")
   -> quality(5)
   -> "http://localhost:9090";
 
+withVioletBackground: Path("/images/vio/:image")
+  -> modPath("^/images/vio", "/images")
+  -> addBackground(255, 25, 255)
+  -> width(1000)
+  -> "http://localhost:9090";
+
 static: * -> static("/", ".") -> <shunt>;

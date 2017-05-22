@@ -105,3 +105,11 @@ func parseEskipIntArg(arg interface{}) (int, error) {
 		return 0, filters.ErrInvalidFilterParameters
 	}
 }
+
+func parseEskipUint8Arg(arg interface{}) (uint8, error) {
+	if number, ok := arg.(float64); ok && math.Trunc(number) == number {
+		return uint8(number), nil
+	} else {
+		return 0, filters.ErrInvalidFilterParameters
+	}
+}
