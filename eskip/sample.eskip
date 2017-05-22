@@ -1,3 +1,6 @@
+// width(n)
+// quality(n) n<=100
+
 // http://localhost:9090/images/S/image-2k.jpg
 small: Path("/images/S/:image")
   -> modPath("^/images/S", "/images")
@@ -29,6 +32,18 @@ cropByWidth: Path("/images/cropbywidth/:image")
 cropByHeight: Path("/images/cropbyheight/:image")
   -> modPath("^/images/cropbyheight", "/images")
   -> cropByHeight(1000, "south")
+  -> "http://localhost:9090";
+
+widthAndQuality: Path("/images/waq/:image")
+  -> modPath("^/images/waq", "/images")
+  -> width(1000)
+  -> quality(5)
+  -> "http://localhost:9090";
+
+withVioletBackground: Path("/images/vio/:image")
+  -> modPath("^/images/vio", "/images")
+  -> addBackground(255, 25, 255)
+  -> width(1000)
   -> "http://localhost:9090";
 
 static: * -> static("/", ".") -> <shunt>;
