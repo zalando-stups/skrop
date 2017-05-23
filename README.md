@@ -18,6 +18,11 @@ go get ./cmd/skrop/
 go run cmd/skrop/main.go -routes-file eskip/sample.eskip -verbose
 ```
 ### Test
+
+```
+make all
+```
+
 To test if everything is configured correctly you should open in your browser
 ```
 http://localhost:9090/images/big-ben.jpg
