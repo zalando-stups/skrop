@@ -7,14 +7,11 @@ branches:
 
 language: go
 go:
-  - 1.7.x
+  - 1.8.x
 
 env:
-- VIPS_VERSION=8.4.5
-cache:
-  directories:
-  - $GOPATH/src
-  - $GOPATH/pkg
+- VIPS_VERSION=8.5.5
+
 before_install:
 - ./packaging/install-vips.sh
 

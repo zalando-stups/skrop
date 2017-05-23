@@ -111,5 +111,5 @@ modules.xml
 # End of https://www.gitignore.io/api/osx,linux,go,intellij
 
 ### Project ###
-skrop
+/skrop
 *coverage.txt

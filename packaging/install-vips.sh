@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-readonly VIPS_VERSION="8.4.5"
-readonly VIPS_SOURCE="http://www.vips.ecs.soton.ac.uk/supported/current"
+readonly VIPS_VERSION="8.5.5"
+readonly VIPS_SOURCE="https://github.com/jcupitt/libvips/releases/download"
 
 readonly IS_UBUNTU=$(cat /etc/*-release | grep -o -m 1 ubuntu)
 readonly IS_ALPINE=$(cat /etc/*-release | grep -o -m 1 alpine)
@@ -18,7 +18,8 @@ function install_on_alpine {
     tiff-dev \
     libgsf-dev \
     libpng-dev \
-  && wget ${VIPS_SOURCE}/vips-${VIPS_VERSION}.tar.gz \
+    expat-dev \
+  && wget ${VIPS_SOURCE}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
   && tar -zxf vips-${VIPS_VERSION}.tar.gz \
   && cd vips-${VIPS_VERSION}/ \
   && ./configure \
@@ -51,7 +52,8 @@ function install_on_ubuntu {
     libtiff5-dev \
     libgsf-1-dev \
     libpng-dev \
-  && wget ${VIPS_SOURCE}/vips-${VIPS_VERSION}.tar.gz \
+    libexpat-dev \
+  && wget ${VIPS_SOURCE}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
   && tar -zxf vips-${VIPS_VERSION}.tar.gz \
   && cd vips-${VIPS_VERSION}/ \
   && ./configure \

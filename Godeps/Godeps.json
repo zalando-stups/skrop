@@ -1,15 +1,15 @@
 {
 	"ImportPath": "github.com/zalando-incubator/skrop",
-	"GoVersion": "go1.7",
-	"GodepVersion": "v75",
+	"GoVersion": "go1.8",
+	"GodepVersion": "v79",
 	"Packages": [
 		"./..."
 	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/Sirupsen/logrus",
-			"Comment": "v0.11.0-25-g881bee4",
-			"Rev": "881bee4e20a5d11a6a88a5667c6f292072ac1963"
+			"Comment": "v0.11.5",
+			"Rev": "ba1b36c82c5e05c4f912a88eab0dcd91a171688f"
 		},
 		{
 			"ImportPath": "github.com/abbot/go-http-auth",
@@ -26,18 +26,23 @@
 			"Rev": "c8e499c3ef3c3e272ed8bdcc1ccf39f73c88debc"
 		},
 		{
+			"ImportPath": "github.com/oklog/ulid",
+			"Comment": "v0.3.0-6-g66bb656",
+			"Rev": "66bb6560562feca7045b23db1ae85b01260f87c5"
+		},
+		{
 			"ImportPath": "github.com/pmezard/go-difflib/difflib",
 			"Comment": "v1.0.0",
 			"Rev": "792786c7400a136282c1664665ae0a8db921c6c2"
 		},
 		{
 			"ImportPath": "github.com/rcrowley/go-metrics",
-			"Rev": "1f30fe9094a513ce4c700b9a54458bbb0c96996c"
+			"Rev": "cfa5a85e9f0abbdf1701b59082c36fc7bff10759"
 		},
 		{
 			"ImportPath": "github.com/stretchr/testify/assert",
-			"Comment": "v1.1.4-25-g2402e8e",
-			"Rev": "2402e8e7a02fc811447d11f881aa9746cdc57983"
+			"Comment": "v1.1.3-19-gd77da35",
+			"Rev": "d77da356e56a7428ad25149ca77381849a6a5232"
 		},
 		{
 			"ImportPath": "github.com/tj/go-debug",
@@ -50,111 +55,146 @@
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/dataclients/kubernetes",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/eskip",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/eskipfile",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/etcd",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/filters",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/filters/auth",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/filters/builtin",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/filters/cookie",
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/filters/diag",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/filters/filtertest",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/filters/flowid",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/filters/serve",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/filters/tee",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/innkeeper",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/logging",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/metrics",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/net",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/oauth",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/predicates",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/predicates/cookie",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/predicates/interval",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/predicates/query",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/predicates/source",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
+		},
+		{
+			"ImportPath": "github.com/zalando/skipper/predicates/traffic",
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/proxy",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "github.com/zalando/skipper/routing",
-			"Rev": "c077837371b2fbb11551b822f378c30c70904756"
+			"Comment": "v0.9.40",
+			"Rev": "0900c831bbfaffef685916651ba70803ee6821fe"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/bcrypt",
-			"Rev": "abc3c1b02083efdbef727c8631a865ad7d8d8b19"
+			"Rev": "f3241ce8505855877cc8a9717bd61a0f7c4ea83c"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/blowfish",
-			"Rev": "abc3c1b02083efdbef727c8631a865ad7d8d8b19"
+			"Rev": "f3241ce8505855877cc8a9717bd61a0f7c4ea83c"
 		},
 		{
 			"ImportPath": "golang.org/x/net/context",
@@ -162,12 +202,12 @@
 		},
 		{
 			"ImportPath": "golang.org/x/sys/unix",
-			"Rev": "d75a52659825e75fff6158388dddc6a5b04f9ba5"
+			"Rev": "dbc2be9168a660ef302e04b6ff6406de6f967473"
 		},
 		{
 			"ImportPath": "gopkg.in/h2non/bimg.v1",
-			"Comment": "v1.0.6",
-			"Rev": "abca04aab5bfd7113546677f10a502b7c752f41d"
+			"Comment": "v1.0.8",
+			"Rev": "b1a004dce34f059c98bb416a3cbd34a5101bdd3c"
 		}
 	]
 }
