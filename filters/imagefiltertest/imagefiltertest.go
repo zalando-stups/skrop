@@ -10,6 +10,7 @@ import (
 const (
 	LandscapeImageFile = "../images/lisbon-tram.jpg"
 	PortraitImageFile  = "../images/big-ben.jpg"
+	PNGImageFile       = "../images/bag.png"
 )
 
 type FakeImageFilter bimg.Options
@@ -48,5 +49,10 @@ func LandscapeImage() *bimg.Image {
 
 func PortraitImage() *bimg.Image {
 	buffer, _ := bimg.Read(PortraitImageFile)
+	return bimg.NewImage(buffer)
+}
+
+func PNGImage() *bimg.Image {
+	buffer, _ := bimg.Read(PNGImageFile)
 	return bimg.NewImage(buffer)
 }
