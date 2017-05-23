@@ -6,7 +6,7 @@ function cover_all {
   for d in $(go list ./... | grep -v vendor); do
     local name="$(echo "$d" | grep -o "[^/]*$")"
     echo >&2 "Testing ${d}…"
-    go test -race -coverprofile="$name.coverage.txt" -covermode=atomic ${d}
+    godep go test -race -coverprofile="$name.coverage.txt" -covermode=atomic ${d}
   done
 }
 

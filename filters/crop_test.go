@@ -1,6 +1,7 @@
 package filters
 
 import (
+	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
 	"gopkg.in/h2non/bimg.v1"
 	"testing"
@@ -22,9 +23,11 @@ func TestCrop_Name(t *testing.T) {
 func TestCrop_CreateOptions(t *testing.T) {
 	c := crop{width: 800, height: 600, cropType: North}
 	options, _ := c.CreateOptions(nil)
-	if (*options != bimg.Options{Width: 800, Height: 600, Crop: true, Gravity: bimg.GravityNorth}) {
-		t.Error("Create options for crop didn't return a correct value")
-	}
+
+	assert.Equal(t, 800, options.Width)
+	assert.Equal(t, 600, options.Height)
+	assert.Equal(t, true, options.Crop)
+	assert.Equal(t, bimg.GravityNorth, options.Gravity)
 }
 
 func TestCrop_CreateFilter(t *testing.T) {
