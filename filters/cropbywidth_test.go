@@ -30,7 +30,7 @@ func TestCropByWidth_CreateOptions(t *testing.T) {
 }
 
 func TestCropByWidth_CreateFilter(t *testing.T) {
-	imagefiltertest.TestCreate(t, NewCropByHeight, []imagefiltertest.CreateTestItem{{
+	imagefiltertest.TestCreate(t, NewCropByWidth, []imagefiltertest.CreateTestItem{{
 		Msg:  "no args",
 		Args: nil,
 		Err:  true,
