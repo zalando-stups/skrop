@@ -113,3 +113,11 @@ func parseEskipUint8Arg(arg interface{}) (uint8, error) {
 		return 0, filters.ErrInvalidFilterParameters
 	}
 }
+
+func parseEskipStringArg(arg interface{}) (string, error) {
+	if str, ok := arg.(string); ok {
+		return string(str), nil
+	} else {
+		return "", filters.ErrInvalidFilterParameters
+	}
+}
