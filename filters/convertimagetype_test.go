@@ -21,7 +21,8 @@ func TestConvertImageType_Name(t *testing.T) {
 
 func TestConvertImageType_CreateOptions(t *testing.T) {
 	c := &convertImageType{imageType: bimg.JPEG}
-	assert.Equal(t, bimg.JPEG, c.imageType)
+	options, _ := c.CreateOptions(nil)
+	assert.Equal(t, bimg.JPEG, options.Type)
 }
 
 func TestConvertImageType_CreateFilter(t *testing.T) {
