@@ -86,3 +86,13 @@ func TestParseEskipUint8ArgFailure(t *testing.T) {
 	_, err := parseEskipIntArg(1.2)
 	assert.NotNil(t, err, "There should be an error")
 }
+
+func TestParseEskipUstringArgSuccess(t *testing.T) {
+	result, _ := parseEskipStringArg("jpeg")
+	assert.Equal(t, "jpeg", result)
+}
+
+func TestParseEskipUstringArgFailure(t *testing.T) {
+	_, err := parseEskipStringArg(1.2)
+	assert.NotNil(t, err, "There should be an error")
+}
