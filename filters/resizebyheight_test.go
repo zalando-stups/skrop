@@ -21,7 +21,7 @@ func TestResizeByHeight_CreateOptions(t *testing.T) {
 	resizeByHeight := resizeByHeight{height: 150}
 	options, _ := resizeByHeight.CreateOptions(image)
 
-	assert.Equal(t, 150, options.Width)
+	assert.Equal(t, 150, options.Height)
 }
 
 func TestResizeByHeight_CreateFilter(t *testing.T) {
