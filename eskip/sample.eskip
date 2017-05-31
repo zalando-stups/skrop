@@ -1,5 +1,3 @@
-// width(n)
-// quality(n) n<=100
 
 // http://localhost:9090/images/S/image-2k.jpg
 small: Path("/images/S/:image")
