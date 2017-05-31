@@ -1,9 +1,9 @@
 package filters
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"testing"
 )
 
 func TestNewSharpen(t *testing.T) {
@@ -39,6 +39,10 @@ func TestSharpen_CreateFilter(t *testing.T) {
 	}, {
 		Msg:  "three args",
 		Args: []interface{}{25.0, 35.0, 103.0},
+		Err:  true,
+	}, {
+		Msg:  "type error",
+		Args: []interface{}{25.0, 35.0, 103.0, "abc", 1.0, 2.6},
 		Err:  true,
 	}, {
 		Msg:  "six args",

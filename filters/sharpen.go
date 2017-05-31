@@ -42,12 +42,31 @@ func (r *sharpen) CreateFilter(args []interface{}) (filters.Filter, error) {
 	f := &sharpen{}
 
 	f.Radius, err = parseEskipIntArg(args[0])
-	f.X1, err = parseEskipFloatArg(args[1])
-	f.Y2, err = parseEskipFloatArg(args[2])
-	f.Y3, err = parseEskipFloatArg(args[3])
-	f.M1, err = parseEskipFloatArg(args[4])
-	f.M2, err = parseEskipFloatArg(args[5])
+	if err != nil {
+		return nil, err
+	}
 
+	f.X1, err = parseEskipFloatArg(args[1])
+	if err != nil {
+		return nil, err
+	}
+
+	f.Y2, err = parseEskipFloatArg(args[2])
+	if err != nil {
+		return nil, err
+	}
+
+	f.Y3, err = parseEskipFloatArg(args[3])
+	if err != nil {
+		return nil, err
+	}
+
+	f.M1, err = parseEskipFloatArg(args[4])
+	if err != nil {
+		return nil, err
+	}
+
+	f.M2, err = parseEskipFloatArg(args[5])
 	if err != nil {
 		return nil, err
 	}
