@@ -58,7 +58,7 @@ Skrop provides a set of filters, which you can use within the routes:
 * **resize(width, height)** — resizes an image without preserving its aspect ratio
 * **addBackground(R, G, B)** — adds the background to a PNG image with transparency
 * **convertImageType(type)** — converts between different formats (for the list of supported types see [here](https://github.com/h2non/bimg/blob/master/type.go)
-* **sharpen(radius, X1, Y2, Y3, M1, M2)** — sharpens the image (for info about the meaning of the parameters and the suggested values see [here](http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/libvips-convolution.html#vips-sharpen)))
+* **sharpen(radius, X1, Y2, Y3, M1, M2)** — sharpens the image (for info about the meaning of the parameters and the suggested values see [here](http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/libvips-convolution.html#vips-sharpen))
 ```
 
 ## Packaging
