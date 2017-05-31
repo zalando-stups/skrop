@@ -98,6 +98,14 @@ func transformImage(out *io.PipeWriter, image *bimg.Image, opts *bimg.Options) e
 	return err
 }
 
+func parseEskipFloatArg(arg interface{}) (float64, error) {
+	if number, ok := arg.(float64); ok {
+		return float64(number), nil
+	} else {
+		return 0, filters.ErrInvalidFilterParameters
+	}
+}
+
 func parseEskipIntArg(arg interface{}) (int, error) {
 	if number, ok := arg.(float64); ok && math.Trunc(number) == number {
 		return int(number), nil

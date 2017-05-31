@@ -29,7 +29,7 @@ const (
 
   https://github.com/zalando-incubator/skrop`
 
-	addressUsage    = "network address that skoap should listen on"
+	addressUsage    = "network address that skrop should listen on"
 	verboseUsage    = "enable verbose logging"
 	routesFileUsage = `alternatively to the target address, it is possible to use a full
 	eskip route configuration, and specify the auth() and authTeam()
@@ -110,7 +110,8 @@ func main() {
 			skropFilters.NewQuality(),
 			skropFilters.NewAddBackground(),
 			skropFilters.NewLongerEdgeResize(),
-			skropFilters.NewConvertImageType()},
+			skropFilters.NewConvertImageType(),
+			skropFilters.NewSharpen()},
 		AccessLogDisabled:   true,
 		ProxyOptions:        proxy.OptionsPreserveOriginal,
 		CertPathTLS:         certPathTLS,
