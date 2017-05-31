@@ -13,7 +13,14 @@ const (
 	SharpenName = "sharpen"
 )
 
-type sharpen bimg.Sharpen
+type sharpen struct {
+	Radius int
+	X1     float64
+	Y2     float64
+	Y3     float64
+	M1     float64
+	M2     float64
+}
 
 func NewSharpen() filters.Spec {
 	return &sharpen{}
