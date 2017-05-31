@@ -61,7 +61,7 @@ Skrop provides a set of filters, which you can use within the routes:
 * **sharpen(radius, X1, Y2, Y3, M1, M2)** — sharpens the image (for info about the meaning of the parameters and the suggested values see [here](http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/libvips-convolution.html#vips-sharpen))
 * **width(size)** — resizes the image to the specified width keeping the ratio
 * **height(size)** — resizes the image to the specified height keeping the ratio
-
+* **blur(sigma, min_ampl)** — blurs the image (for info see [here](http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/libvips-convolution.html#vips-gaussblur))
 
 ## Packaging
 
