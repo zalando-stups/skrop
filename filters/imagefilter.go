@@ -6,7 +6,6 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 	"io"
 	"io/ioutil"
-	"math"
 )
 
 const (
@@ -41,7 +40,7 @@ type ImageFilter interface {
 	CreateOptions(image *bimg.Image) (*bimg.Options, error)
 }
 
-func handleResponse(ctx filters.FilterContext, f ImageFilter) {
+func HandleResponse(ctx filters.FilterContext, f ImageFilter) {
 	rsp := ctx.Response()
 
 	rsp.Header.Del("Content-Length")
@@ -96,36 +95,4 @@ func transformImage(out *io.PipeWriter, image *bimg.Image, opts *bimg.Options) e
 	_, err = out.Write(newImage)
 
 	return err
-}
-
-func parseEskipFloatArg(arg interface{}) (float64, error) {
-	if number, ok := arg.(float64); ok {
-		return float64(number), nil
-	} else {
-		return 0, filters.ErrInvalidFilterParameters
-	}
-}
-
-func parseEskipIntArg(arg interface{}) (int, error) {
-	if number, ok := arg.(float64); ok && math.Trunc(number) == number {
-		return int(number), nil
-	} else {
-		return 0, filters.ErrInvalidFilterParameters
-	}
-}
-
-func parseEskipUint8Arg(arg interface{}) (uint8, error) {
-	if number, ok := arg.(float64); ok && math.Trunc(number) == number {
-		return uint8(number), nil
-	} else {
-		return 0, filters.ErrInvalidFilterParameters
-	}
-}
-
-func parseEskipStringArg(arg interface{}) (string, error) {
-	if str, ok := arg.(string); ok {
-		return string(str), nil
-	} else {
-		return "", filters.ErrInvalidFilterParameters
-	}
 }

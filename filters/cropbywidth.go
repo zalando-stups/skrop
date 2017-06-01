@@ -4,6 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
+	"github.com/zalando-incubator/skrop/tools"
 )
 
 const CropByWidthName = "cropByWidth"
@@ -46,7 +47,7 @@ func (c *cropByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
 
 	f := &cropByWidth{cropType: Center}
 
-	f.width, err = parseEskipIntArg(args[0])
+	f.width, err = tools.ParseEskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
@@ -66,5 +67,5 @@ func (c *cropByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
 func (c *cropByWidth) Request(ctx filters.FilterContext) {}
 
 func (c *cropByWidth) Response(ctx filters.FilterContext) {
-	handleResponse(ctx, c)
+	HandleResponse(ctx, c)
 }

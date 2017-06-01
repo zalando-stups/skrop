@@ -4,6 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
+	"github.com/zalando-incubator/skrop/tools"
 )
 
 const (
@@ -42,17 +43,17 @@ func (r *addBackground) CreateFilter(args []interface{}) (filters.Filter, error)
 	var err error
 	f:= &addBackground{}
 
-	f.R, err = parseEskipUint8Arg(args[0])
+	f.R, err = tools.ParseEskipUint8Arg(args[0])
 	if err != nil {
 		return nil, err
 	}
 
-	f.G, err = parseEskipUint8Arg(args[1])
+	f.G, err = tools.ParseEskipUint8Arg(args[1])
 	if err != nil {
 		return nil, err
 	}
 
-	f.B, err = parseEskipUint8Arg(args[2])
+	f.B, err = tools.ParseEskipUint8Arg(args[2])
 	if err != nil {
 		return nil, err
 	}
@@ -64,5 +65,5 @@ func (r *addBackground) CreateFilter(args []interface{}) (filters.Filter, error)
 func (r *addBackground) Request(ctx filters.FilterContext) {}
 
 func (r *addBackground) Response(ctx filters.FilterContext) {
-	handleResponse(ctx, r)
+	HandleResponse(ctx, r)
 }
