@@ -4,7 +4,7 @@ import (
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	log "github.com/Sirupsen/logrus"
-	"github.com/zalando-incubator/skrop/tools"
+	"github.com/zalando-incubator/skrop/parse"
 )
 
 const ConvertImageType  = "convertImageType"
@@ -37,7 +37,7 @@ func (c *convertImageType) CreateFilter(args []interface{}) (filters.Filter, err
 
 	f := &convertImageType{}
 
-	imgType, err := tools.ParseEskipStringArg(args[0]);
+	imgType, err := parse.EskipStringArg(args[0]);
 
 	if err != nil || !bimg.IsTypeNameSupported(imgType) {
 		return nil, filters.ErrInvalidFilterParameters

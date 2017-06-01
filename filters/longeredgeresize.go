@@ -4,7 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"github.com/zalando-incubator/skrop/tools"
+	"github.com/zalando-incubator/skrop/parse"
 )
 
 const (
@@ -50,7 +50,7 @@ func (r *longerEdgeResize) CreateFilter(args []interface{}) (filters.Filter, err
 
 	f := &longerEdgeResize{}
 
-	f.size, err = tools.ParseEskipIntArg(args[0])
+	f.size, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err

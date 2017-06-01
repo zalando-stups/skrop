@@ -4,7 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"github.com/zalando-incubator/skrop/tools"
+	"github.com/zalando-incubator/skrop/parse"
 )
 
 // For infomations about the parameters meanings and default values have a look here:
@@ -49,32 +49,32 @@ func (r *sharpen) CreateFilter(args []interface{}) (filters.Filter, error) {
 
 	f := &sharpen{}
 
-	f.Radius, err = tools.ParseEskipIntArg(args[0])
+	f.Radius, err = parse.EskipIntArg(args[0])
 	if err != nil {
 		return nil, err
 	}
 
-	f.X1, err = tools.ParseEskipFloatArg(args[1])
+	f.X1, err = parse.EskipFloatArg(args[1])
 	if err != nil {
 		return nil, err
 	}
 
-	f.Y2, err = tools.ParseEskipFloatArg(args[2])
+	f.Y2, err = parse.EskipFloatArg(args[2])
 	if err != nil {
 		return nil, err
 	}
 
-	f.Y3, err = tools.ParseEskipFloatArg(args[3])
+	f.Y3, err = parse.EskipFloatArg(args[3])
 	if err != nil {
 		return nil, err
 	}
 
-	f.M1, err = tools.ParseEskipFloatArg(args[4])
+	f.M1, err = parse.EskipFloatArg(args[4])
 	if err != nil {
 		return nil, err
 	}
 
-	f.M2, err = tools.ParseEskipFloatArg(args[5])
+	f.M2, err = parse.EskipFloatArg(args[5])
 	if err != nil {
 		return nil, err
 	}

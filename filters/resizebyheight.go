@@ -4,7 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"github.com/zalando-incubator/skrop/tools"
+	"github.com/zalando-incubator/skrop/parse"
 )
 
 const (
@@ -39,7 +39,7 @@ func (r *resizeByHeight) CreateFilter(args []interface{}) (filters.Filter, error
 
 	f := &resizeByHeight{}
 
-	f.height, err = tools.ParseEskipIntArg(args[0])
+	f.height, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err

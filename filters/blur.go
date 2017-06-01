@@ -4,7 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"github.com/zalando-incubator/skrop/tools"
+	"github.com/zalando-incubator/skrop/parse"
 )
 
 const BlurName = "blur"
@@ -39,12 +39,12 @@ func (r *blur) CreateFilter(args []interface{}) (filters.Filter, error) {
 
 	f := &blur{}
 
-	f.Sigma, err = tools.ParseEskipFloatArg(args[0])
+	f.Sigma, err = parse.EskipFloatArg(args[0])
 	if err != nil {
 		return nil, err
 	}
 
-	f.MinAmpl, err = tools.ParseEskipFloatArg(args[1])
+	f.MinAmpl, err = parse.EskipFloatArg(args[1])
 	if err != nil {
 		return nil, err
 	}
