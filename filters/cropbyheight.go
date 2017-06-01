@@ -67,5 +67,5 @@ func (c *cropByHeight) CreateFilter(args []interface{}) (filters.Filter, error) 
 func (c *cropByHeight) Request(ctx filters.FilterContext) {}
 
 func (c *cropByHeight) Response(ctx filters.FilterContext) {
-	HandleResponse(ctx, c)
+	HandleImageResponse(ctx, c)
 }

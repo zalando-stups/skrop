@@ -85,5 +85,5 @@ func (r *sharpen) CreateFilter(args []interface{}) (filters.Filter, error) {
 func (r *sharpen) Request(ctx filters.FilterContext) {}
 
 func (r *sharpen) Response(ctx filters.FilterContext) {
-	HandleResponse(ctx, r)
+	HandleImageResponse(ctx, r)
 }

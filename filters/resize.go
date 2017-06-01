@@ -59,5 +59,5 @@ func (r *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 func (r *resize) Request(ctx filters.FilterContext) {}
 
 func (r *resize) Response(ctx filters.FilterContext) {
-	HandleResponse(ctx, r)
+	HandleImageResponse(ctx, r)
 }

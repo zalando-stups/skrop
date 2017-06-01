@@ -65,5 +65,5 @@ func (r *addBackground) CreateFilter(args []interface{}) (filters.Filter, error)
 func (r *addBackground) Request(ctx filters.FilterContext) {}
 
 func (r *addBackground) Response(ctx filters.FilterContext) {
-	HandleResponse(ctx, r)
+	HandleImageResponse(ctx, r)
 }

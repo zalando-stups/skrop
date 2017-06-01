@@ -53,5 +53,5 @@ func (r *quality) CreateFilter(args []interface{}) (filters.Filter, error) {
 func (r *quality) Request(ctx filters.FilterContext) {}
 
 func (r *quality) Response(ctx filters.FilterContext) {
-	HandleResponse(ctx, r)
+	HandleImageResponse(ctx, r)
 }

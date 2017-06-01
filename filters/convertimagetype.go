@@ -58,5 +58,5 @@ func (c *convertImageType) Request(ctx filters.FilterContext) {}
 
 func (c *convertImageType) Response(ctx filters.FilterContext) {
 	ctx.Response().Header.Set("Content-Type", "image/"+bimg.ImageTypeName(c.imageType))
-	HandleResponse(ctx, c)
+	HandleImageResponse(ctx, c)
 }

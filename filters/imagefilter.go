@@ -40,7 +40,7 @@ type ImageFilter interface {
 	CreateOptions(image *bimg.Image) (*bimg.Options, error)
 }
 
-func HandleResponse(ctx filters.FilterContext, f ImageFilter) {
+func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
 	rsp := ctx.Response()
 
 	rsp.Header.Del("Content-Length")

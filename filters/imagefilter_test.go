@@ -62,7 +62,7 @@ func TestHandleResponse(t *testing.T) {
 	fc := &filtertest.Context{FResponse: response}
 	imageFilter := imagefiltertest.FakeImageFilter(optionsTarget)
 
-	HandleResponse(fc, &imageFilter)
+	HandleImageResponse(fc, &imageFilter)
 
 	assertCorrectImageSize(fc.Response().Body, t)
 }

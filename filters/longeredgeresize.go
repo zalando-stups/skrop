@@ -62,5 +62,5 @@ func (r *longerEdgeResize) CreateFilter(args []interface{}) (filters.Filter, err
 func (r *longerEdgeResize) Request(ctx filters.FilterContext) {}
 
 func (r *longerEdgeResize) Response(ctx filters.FilterContext) {
-	HandleResponse(ctx, r)
+	HandleImageResponse(ctx, r)
 }
