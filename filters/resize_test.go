@@ -17,7 +17,7 @@ func TestResize_Name(t *testing.T) {
 	assert.Equal(t, "resize", r.Name())
 }
 
-func TestResize_CreateOptions_IgnoreProportions(t *testing.T) {
+func TestResize_CreateOptions_IgnoreProportions_IgnoreProportion(t *testing.T) {
 	r := resize{width: 800, height: 600, proportion: false}
 	options, _ := r.CreateOptions(imagefiltertest.LandscapeImage())
 
@@ -25,11 +25,11 @@ func TestResize_CreateOptions_IgnoreProportions(t *testing.T) {
 	assert.Equal(t, 600, options.Height)
 }
 
-func TestResize_CreateOptions1(t *testing.T) {
+func TestResize_CreateOptions_WithProportions1(t *testing.T) {
 	image := imagefiltertest.LandscapeImage()
 	size, _ := image.Size()
 
-	newHeight := size.Height - 1
+	newHeight := size.Height - 10
 
 	r := resize{width: size.Width, height: newHeight, proportion: true}
 	options, _ := r.CreateOptions(image)
@@ -38,7 +38,7 @@ func TestResize_CreateOptions1(t *testing.T) {
 	assert.Zero(t, options.Width)
 }
 
-func TestResize_CreateOptions2(t *testing.T) {
+func TestResize_CreateOptions_WithProportions2(t *testing.T) {
 	image := imagefiltertest.LandscapeImage()
 	size, _ := image.Size()
 
