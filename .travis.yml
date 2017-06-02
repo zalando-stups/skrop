@@ -16,7 +16,7 @@ before_install:
 - ./packaging/install-vips.sh
 
 install:
-- go get github.com/parse/godep
+- go get github.com/tools/godep
 - go get github.com/wadey/gocovmerge
 - godep restore
 script:
