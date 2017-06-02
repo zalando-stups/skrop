@@ -17,12 +17,38 @@ func TestResize_Name(t *testing.T) {
 	assert.Equal(t, "resize", r.Name())
 }
 
-func TestResize_CreateOptions(t *testing.T) {
-	r := resize{width: 800, height: 600}
-	options, _ := r.CreateOptions(nil)
+func TestResize_CreateOptions_IgnoreProportions(t *testing.T) {
+	r := resize{width: 800, height: 600, proportion: false}
+	options, _ := r.CreateOptions(imagefiltertest.LandscapeImage())
 
 	assert.Equal(t, 800, options.Width)
 	assert.Equal(t, 600, options.Height)
+}
+
+func TestResize_CreateOptions1(t *testing.T) {
+	image := imagefiltertest.LandscapeImage()
+	size, _ := image.Size()
+
+	newHeight := size.Height - 1
+
+	r := resize{width: size.Width, height: newHeight, proportion: true}
+	options, _ := r.CreateOptions(image)
+
+	assert.Equal(t, newHeight, options.Height)
+	assert.Zero(t, options.Width)
+}
+
+func TestResize_CreateOptions2(t *testing.T) {
+	image := imagefiltertest.LandscapeImage()
+	size, _ := image.Size()
+
+	newWidth := size.Width - 10
+
+	r := resize{width: newWidth, height: size.Height, proportion: true}
+	options, _ := r.CreateOptions(image)
+
+	assert.Equal(t, newWidth, options.Width)
+	assert.Zero(t, options.Height)
 }
 
 func TestResize_CreateFilter(t *testing.T) {
@@ -35,12 +61,12 @@ func TestResize_CreateFilter(t *testing.T) {
 		Args: []interface{}{800.0, 600.0},
 		Err:  false,
 	}, {
-		Msg:  "more than 2 args",
-		Args: []interface{}{800.0, 600.0, "whaaat?"},
-		Err:  true,
+		Msg:  "three args",
+		Args: []interface{}{800.0, 600.0, true},
+		Err:  false,
 	}, {
-		Msg:  "less than 2 args",
-		Args: []interface{}{800.0},
+		Msg:  "more than 3 args",
+		Args: []interface{}{800.0, 200.0, true, "Whaaat!"},
 		Err:  true,
 	}})
 }

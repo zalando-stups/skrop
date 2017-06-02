@@ -1,8 +1,8 @@
 package parse
 
 import (
-	"math"
 	"github.com/zalando/skipper/filters"
+	"math"
 )
 
 func EskipFloatArg(arg interface{}) (float64, error) {
@@ -34,5 +34,13 @@ func EskipStringArg(arg interface{}) (string, error) {
 		return string(str), nil
 	} else {
 		return "", filters.ErrInvalidFilterParameters
+	}
+}
+
+func EskipBoolArg(arg interface{}) (bool, error) {
+	if value, ok := arg.(bool); ok {
+		return value, nil
+	} else {
+		return false, filters.ErrInvalidFilterParameters
 	}
 }
