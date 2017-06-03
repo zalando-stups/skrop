@@ -4,6 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
+	"github.com/zalando-incubator/skrop/parse"
 )
 
 const (
@@ -38,7 +39,7 @@ func (r *quality) CreateFilter(args []interface{}) (filters.Filter, error) {
 
 	f := &quality{}
 
-	f.percentage, err = parseEskipIntArg(args[0])
+	f.percentage, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
@@ -52,5 +53,5 @@ func (r *quality) CreateFilter(args []interface{}) (filters.Filter, error) {
 func (r *quality) Request(ctx filters.FilterContext) {}
 
 func (r *quality) Response(ctx filters.FilterContext) {
-	handleResponse(ctx, r)
+	HandleImageResponse(ctx, r)
 }

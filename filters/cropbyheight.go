@@ -4,6 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
+	"github.com/zalando-incubator/skrop/parse"
 )
 
 const CropByHeightName = "cropByHeight"
@@ -46,7 +47,7 @@ func (c *cropByHeight) CreateFilter(args []interface{}) (filters.Filter, error) 
 
 	f := &cropByHeight{cropType: Center}
 
-	f.height, err = parseEskipIntArg(args[0])
+	f.height, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
@@ -66,5 +67,5 @@ func (c *cropByHeight) CreateFilter(args []interface{}) (filters.Filter, error) 
 func (c *cropByHeight) Request(ctx filters.FilterContext) {}
 
 func (c *cropByHeight) Response(ctx filters.FilterContext) {
-	handleResponse(ctx, c)
+	HandleImageResponse(ctx, c)
 }

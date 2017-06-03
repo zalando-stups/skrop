@@ -4,6 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
+	"github.com/zalando-incubator/skrop/parse"
 )
 
 const (
@@ -40,13 +41,13 @@ func (r *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 
 	f := &resize{}
 
-	f.width, err = parseEskipIntArg(args[0])
+	f.width, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
 	}
 
-	f.height, err = parseEskipIntArg(args[1])
+	f.height, err = parse.EskipIntArg(args[1])
 
 	if err != nil {
 		return nil, err
@@ -58,5 +59,5 @@ func (r *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 func (r *resize) Request(ctx filters.FilterContext) {}
 
 func (r *resize) Response(ctx filters.FilterContext) {
-	handleResponse(ctx, r)
+	HandleImageResponse(ctx, r)
 }
