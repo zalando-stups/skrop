@@ -55,7 +55,7 @@ Skrop provides a set of filters, which you can use within the routes:
 * **crop(width, height, type)** — crops the image to have the specified width and height the type can be "north", "south", "east" and "west"
 * **cropByHeight(height, type)** — crops the image to have the specified height
 * **cropByWidth(width, type)** — crops the image to have the specified width
-* **resize(width, height, <keep proportions?>)** — resizes an image. Third parameter is optional: true to keep proportions, false to ignore proportions (default to true)
+* **resize(width, height, <keep aspect ration?>)** — resizes an image. Third parameter is optional: true to keep aspect ratio, false to ignore (default to true)
 * **addBackground(R, G, B)** — adds the background to a PNG image with transparency
 * **convertImageType(type)** — converts between different formats (for the list of supported types see [here](https://github.com/h2non/bimg/blob/master/type.go)
 * **sharpen(radius, X1, Y2, Y3, M1, M2)** — sharpens the image (for info about the meaning of the parameters and the suggested values see [here](http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/libvips-convolution.html#vips-sharpen))

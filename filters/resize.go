@@ -13,9 +13,9 @@ const (
 )
 
 type resize struct {
-	width      int
-	height     int
-	proportion bool
+	width           int
+	height          int
+	keepAspectRatio bool
 }
 
 func NewResize() filters.Spec {
@@ -29,7 +29,7 @@ func (r *resize) Name() string {
 func (r *resize) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	log.Debug("Create options for resize ", r)
 
-	if !r.proportion {
+	if !r.keepAspectRatio {
 		return &bimg.Options{
 			Width:  r.width,
 			Height: r.height,
@@ -78,13 +78,13 @@ func (r *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 	}
 
 	if len(args) == 3 {
-		f.proportion, err = parse.EskipBoolArg(args[2])
+		f.keepAspectRatio, err = parse.EskipBoolArg(args[2])
 
 		if err != nil {
 			return nil, err
 		}
 	} else {
-		f.proportion = true
+		f.keepAspectRatio = true
 	}
 
 	return f, nil
