@@ -33,7 +33,7 @@ func (r *blur) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 func (r *blur) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
-	if len(args) != 2 {
+	if len(args) != 1 && len(args) != 2 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
@@ -44,9 +44,13 @@ func (r *blur) CreateFilter(args []interface{}) (filters.Filter, error) {
 		return nil, err
 	}
 
-	f.MinAmpl, err = parse.EskipFloatArg(args[1])
-	if err != nil {
-		return nil, err
+	if len(args) == 2 {
+		f.MinAmpl, err = parse.EskipFloatArg(args[1])
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		f.MinAmpl = 0
 	}
 
 	return f, nil
