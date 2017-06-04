@@ -16,7 +16,7 @@ func TestBlur_Name(t *testing.T) {
 	assert.Equal(t, "blur", c.Name())
 }
 
-func TestBlur_CreateOptions(t *testing.T) {
+func TestBlur_CreateOptions_ExplicitParam(t *testing.T) {
 	image := imagefiltertest.LandscapeImage()
 	blur := blur{Sigma: 19, MinAmpl: 21}
 	options, _ := blur.CreateOptions(image)
@@ -25,6 +25,17 @@ func TestBlur_CreateOptions(t *testing.T) {
 
 	assert.Equal(t, float64(19), blu.Sigma)
 	assert.Equal(t, float64(21), blu.MinAmpl)
+}
+
+func TestBlur_CreateOptions_ImplicitParam(t *testing.T) {
+	image := imagefiltertest.LandscapeImage()
+	blur := blur{Sigma: 19}
+	options, _ := blur.CreateOptions(image)
+
+	blu := options.GaussianBlur
+
+	assert.Equal(t, float64(19), blu.Sigma)
+	assert.Equal(t, float64(0), blu.MinAmpl)
 }
 
 func TestBlur_CreateFilter(t *testing.T) {
