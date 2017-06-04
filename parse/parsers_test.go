@@ -44,3 +44,13 @@ func TestParseEskipFloatArgFailure(t *testing.T) {
 	_, err := EskipFloatArg("1")
 	assert.NotNil(t, err)
 }
+
+func TestEskipBoolArg(t *testing.T) {
+	result, _ := EskipBoolArg(true)
+	assert.True(t, result)
+}
+
+func TestEskipBoolArgFailure(t *testing.T) {
+	_, err := EskipBoolArg(13)
+	assert.NotNil(t, err)
+}
