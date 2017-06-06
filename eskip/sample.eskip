@@ -61,4 +61,15 @@ convertImageType: Path("/images/conv/:image")
  -> convertImageType("jpeg")
  -> "http://localhost:9090";
 
+video: Path("/images/vid/:image")
+ -> modPath("^/images/vid", "/images")
+ -> overlayImage("images/video.png", 1.0, "CC")
+ -> "http://localhost:9090";
+
+//imageOverlay(<filename>, <opacity>, <gravity>, <top_margin>, <right_margin>, <bottom_margin>, <left_margin>)
+new: Path("/images/new/:image")
+ -> modPath("^/images/new", "/images")
+ -> overlayImage("images/star.png", 1.0, "NE", 10, 10, 0, 0)
+ -> "http://localhost:9090";
+
 static: * -> static("/", ".") -> <shunt>;
