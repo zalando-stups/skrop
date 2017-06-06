@@ -11,7 +11,6 @@ const (
 	LandscapeImageFile = "../images/lisbon-tram.jpg"
 	PortraitImageFile  = "../images/big-ben.jpg"
 	PNGImageFile       = "../images/bag.png"
-	IconImageFile       = "../images/bag.png"
 )
 
 type FakeImageFilter bimg.Options
