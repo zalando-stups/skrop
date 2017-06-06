@@ -63,15 +63,15 @@ func (c *convertImageType) Response(ctx filters.FilterContext) {
 	HandleImageResponse(ctx, c)
 
 	resp := ctx.Response()
-	fileName:= "result"
+	var fileName string
 	fileType := bimg.ImageTypeName(c.imageType)
 
 	uriParts := strings.Split(ctx.Request().RequestURI, "/")
 
 	if len(uriParts) > 0 {
-		nameWithExt := uriParts[len(uriParts)-1]
-		if len(strings.Split(nameWithExt, ".")) == 2 {
-			fileName = strings.Split(nameWithExt, ".")[0]
+		fileName = uriParts[len(uriParts)-1]
+		if len(strings.Split(fileName, ".")) == 2 {
+			fileName = strings.Split(fileName, ".")[0]
 		}
 	}
 

@@ -49,28 +49,31 @@ func TestConvertImageType_CreateFilter(t *testing.T) {
 	}})
 }
 
-func TestConvertImageType_Response(t *testing.T) {
+func TestConvertImageType_Response_WithExtension(t *testing.T) {
+	fc := createFilterContext(t, "http://localhost:9090/images/bag.png")
+	fc.Request().RequestURI = "/images/bag.png"
+	c := convertImageType{imageType: bimg.ImageType(1)}
 
-	fc1 := createFilterContext(t, "http://localhost:9090/images/shoe")
-	c1:= convertImageType{imageType: bimg.ImageType(1)}
+	c.Response(fc)
+	rsp := fc.FResponse
 
-	c1.Response(fc1)
-	rsp1 := fc1.FResponse
+	assert.Equal(t, rsp.Header.Get("Content-Type"), "image/jpeg")
+	assert.Equal(t, rsp.Header.Get("Content-Disposition"), "inline;filename=bag.jpeg")
+	rsp.Body.Close()
+}
 
-	assert.Equal(t, rsp1.Header.Get("Content-Type"), "image/jpeg")
-	assert.Equal(t, rsp1.Header.Get("Content-Disposition"), "inline;filename=result.jpeg")
-	rsp1.Body.Close()
+func TestConvertImageType_Response_WithOutExtension(t *testing.T) {
 
-	fc2 := createFilterContext(t, "http://localhost:9090/images/bag.png")
-	fc2.Request().RequestURI = "/images/bag.png"
-	c2 := convertImageType{imageType: bimg.ImageType(1)}
+	fc := createFilterContext(t, "http://localhost:9090/images/shoe")
+	c := convertImageType{imageType: bimg.ImageType(1)}
+	fc.Request().RequestURI = "/images/bag"
 
-	c2.Response(fc2)
-	rsp2 := fc2.FResponse
+	c.Response(fc)
+	rsp := fc.FResponse
 
-	assert.Equal(t, rsp2.Header.Get("Content-Type"), "image/jpeg")
-	assert.Equal(t, rsp2.Header.Get("Content-Disposition"), "inline;filename=bag.jpeg")
-	rsp2.Body.Close()
+	assert.Equal(t, rsp.Header.Get("Content-Type"), "image/jpeg")
+	assert.Equal(t, rsp.Header.Get("Content-Disposition"), "inline;filename=bag.jpeg")
+	rsp.Body.Close()
 }
 
 func createFilterContext(t *testing.T,  url string) *filtertest.Context {
