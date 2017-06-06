@@ -5,6 +5,10 @@ import (
 	"testing"
 	"gopkg.in/h2non/bimg.v1"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"net/http"
+	"bytes"
+	"io/ioutil"
+	"github.com/zalando/skipper/filters/filtertest"
 )
 
 func TestNewConvertImageType(t *testing.T) {
@@ -43,4 +47,45 @@ func TestConvertImageType_CreateFilter(t *testing.T) {
 		[]interface{}{"jpeg", "webp"},
 		true,
 	}})
+}
+
+func TestConvertImageType_Response(t *testing.T) {
+
+	fc := createFilterContext(t, "http://localhost:9090/images/shoe")
+	c:= convertImageType{imageType: bimg.ImageType(1)}
+
+	c.Response(fc)
+	rsp := fc.FResponse
+
+	assert.Equal(t, rsp.Header.Get("Content-Type"), "image/jpeg")
+	assert.Equal(t, rsp.Header.Get("Content-Disposition"), "inline;filename=result.jpeg")
+	rsp.Body.Close()
+
+	fc = createFilterContext(t, "http://localhost:9090/images/bag.png")
+	fc.Request().RequestURI = "/images/bag.png"
+	c  = convertImageType{imageType: bimg.ImageType(1)}
+
+	c.Response(fc)
+	rsp = fc.FResponse
+
+	assert.Equal(t, rsp.Header.Get("Content-Type"), "image/jpeg")
+	assert.Equal(t, rsp.Header.Get("Content-Disposition"), "inline;filename=bag.jpeg")
+	rsp.Body.Close()
+}
+
+func createFilterContext(t *testing.T,  url string) *filtertest.Context {
+	buffer, err := bimg.Read(imagefiltertest.PNGImageFile)
+	assert.Nil(t, err, "Failed to read sample image")
+	imageReader := ioutil.NopCloser(bytes.NewReader(buffer))
+	response := &http.Response{Body: imageReader}
+	response.Header = make(http.Header)
+	response.Header.Add("Content-Length", "100")
+
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	return &filtertest.Context{FResponse: response, FRequest: req}
 }

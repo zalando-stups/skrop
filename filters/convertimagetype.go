@@ -5,6 +5,8 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando-incubator/skrop/parse"
+	"strings"
+	"fmt"
 )
 
 const ConvertImageType  = "convertImageType"
@@ -57,6 +59,26 @@ func (c *convertImageType) CreateFilter(args []interface{}) (filters.Filter, err
 func (c *convertImageType) Request(ctx filters.FilterContext) {}
 
 func (c *convertImageType) Response(ctx filters.FilterContext) {
-	ctx.Response().Header.Set("Content-Type", "image/"+bimg.ImageTypeName(c.imageType))
+
 	HandleImageResponse(ctx, c)
+
+	resp := ctx.Response()
+	fileName:= "result"
+	fileType := bimg.ImageTypeName(c.imageType)
+
+	uriParts := strings.Split(ctx.Request().RequestURI, "/")
+
+	if len(uriParts) > 0 {
+		nameWithExt := uriParts[len(uriParts)-1]
+		if len(strings.Split(nameWithExt, ".")) == 2 {
+			fileName = strings.Split(nameWithExt, ".")[0]
+		}
+	}
+
+	contentType := fmt.Sprintf("image/%s",fileType)
+	fileName = fmt.Sprintf("inline;filename=%s.%s",fileName, fileType)
+
+	resp.Header.Set("Content-Type", contentType)
+	resp.Header.Set("Content-Disposition", fileName)
+
 }
