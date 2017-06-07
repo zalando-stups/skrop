@@ -113,6 +113,7 @@ func main() {
 			skropFilters.NewLongerEdgeResize(),
 			skropFilters.NewConvertImageType(),
 			skropFilters.NewBlur(),
+			skropFilters.NewOverlayImage(),
 			skropFilters.NewSharpen()},
 		AccessLogDisabled:   true,
 		ProxyOptions:        proxy.OptionsPreserveOriginal,
