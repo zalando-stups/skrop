@@ -20,7 +20,7 @@ func TestOverlay_Name(t *testing.T) {
 func TestOverlay_CreateOptions_SE(t *testing.T) {
 	image := imagefiltertest.LandscapeImage()
 	size, _ := image.Size()
-	overArr := readImage("../images/star.png")
+	overArr, _ := readImage("../images/star.png")
 	overImage := bimg.NewImage(overArr)
 	overSize, _ := overImage.Size()
 	overlay := &overlay{file: "../images/star.png",
@@ -44,7 +44,7 @@ func TestOverlay_CreateOptions_SE(t *testing.T) {
 
 func TestOverlay_CreateOptions_NW(t *testing.T) {
 	image := imagefiltertest.LandscapeImage()
-	overArr := readImage("../images/star.png")
+	overArr, _ := readImage("../images/star.png")
 	overlay := &overlay{file: "../images/star.png",
 		opacity:           0.9,
 		horizontalGravity: bimg.GravityWest,
@@ -67,7 +67,7 @@ func TestOverlay_CreateOptions_NW(t *testing.T) {
 func TestOverlay_CreateOptions_CC(t *testing.T) {
 	image := imagefiltertest.LandscapeImage()
 	size, _ := image.Size()
-	overArr := readImage("../images/star.png")
+	overArr, _ := readImage("../images/star.png")
 	overImage := bimg.NewImage(overArr)
 	overSize, _ := overImage.Size()
 	overlay := &overlay{file: "../images/star.png",
