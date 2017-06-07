@@ -83,7 +83,11 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		return nil, err
 	}
 
-	overArr := readImage(r.file)
+	overArr, err := readImage(r.file)
+	if err != nil {
+		return nil, err
+	}
+
 	overImage := bimg.NewImage(overArr)
 	overSize, err := overImage.Size()
 	if err != nil {
@@ -114,7 +118,7 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		x = origSize.Width - r.rightMargin - overSize.Width
 	}
 
-	// in case y overflows the image
+	// in case x overflows the image
 	if x < 0 || x+overSize.Width > origSize.Width {
 		return nil, errors.New("Error: the overlay image in placed outside the image area on the x axe")
 	}
@@ -126,11 +130,19 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	}}, nil
 }
 
-func readImage(file string) []byte {
-	img, _ := os.Open(file)
-	buf, _ := ioutil.ReadAll(img)
+func readImage(file string) ([]byte, error) {
+	img, err := os.Open(file)
+	if err != nil {
+		return nil, err
+	}
 	defer img.Close()
-	return buf
+
+	buf, err := ioutil.ReadAll(img)
+	if err != nil {
+		return nil, err
+	}
+
+	return buf, nil
 }
 
 func (r *overlay) CreateFilter(args []interface{}) (filters.Filter, error) {
