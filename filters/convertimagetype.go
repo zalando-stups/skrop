@@ -63,9 +63,19 @@ func (c *convertImageType) Response(ctx filters.FilterContext) {
 	HandleImageResponse(ctx, c)
 
 	resp := ctx.Response()
-	var fileName string
+
 	fileType := bimg.ImageTypeName(c.imageType)
 
+	contentType := fmt.Sprintf("image/%s",fileType)
+	contentDisp := fmt.Sprintf("inline;filename=%s.%s", extractFileName(ctx), fileType)
+
+	resp.Header.Set("Content-Type", contentType)
+	resp.Header.Set("Content-Disposition", contentDisp)
+
+}
+
+func extractFileName(ctx filters.FilterContext) string {
+	var fileName string
 	uriParts := strings.Split(ctx.Request().RequestURI, "/")
 
 	if len(uriParts) > 0 {
@@ -75,10 +85,5 @@ func (c *convertImageType) Response(ctx filters.FilterContext) {
 		}
 	}
 
-	contentType := fmt.Sprintf("image/%s",fileType)
-	fileName = fmt.Sprintf("inline;filename=%s.%s",fileName, fileType)
-
-	resp.Header.Set("Content-Type", contentType)
-	resp.Header.Set("Content-Disposition", fileName)
-
+	return fileName
 }
