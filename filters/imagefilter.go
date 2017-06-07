@@ -6,6 +6,7 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 	"io"
 	"io/ioutil"
+	"errors"
 )
 
 const (
@@ -53,8 +54,14 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
 }
 
 func handleImageTransform(out *io.PipeWriter, in io.ReadCloser, f ImageFilter) error {
+	var err error
+
 	defer func() {
 		in.Close()
+		if err == nil {
+			err = io.EOF
+		}
+		out.CloseWithError(err)
 	}()
 
 	imageBytes, err := ioutil.ReadAll(in)
@@ -63,36 +70,34 @@ func handleImageTransform(out *io.PipeWriter, in io.ReadCloser, f ImageFilter) e
 		return err
 	}
 
-	log.Debug("Image bytes length: ", len(imageBytes))
+	imageBytesLength := len(imageBytes)
 
-	responseImage := bimg.NewImage(imageBytes)
+	log.Debug("Image bytes length: ", imageBytesLength)
 
-	options, err := f.CreateOptions(responseImage)
+	if imageBytesLength == 0 {
+		return errors.New("original image is empty. nothing to process")
+	}
+
+	originalImage := bimg.NewImage(imageBytes)
+
+	options, err := f.CreateOptions(originalImage)
 
 	if err != nil {
 		return err
 	}
 
-	return transformImage(out, responseImage, options)
+	err = transformImage(out, originalImage, options)
+	return err
 }
 
 func transformImage(out *io.PipeWriter, image *bimg.Image, opts *bimg.Options) error {
-	var err error
-
-	defer func() {
-		if err == nil {
-			err = io.EOF
-		}
-		out.CloseWithError(err)
-	}()
-
-	newImage, err := image.Process(*opts)
+	transformedImageBytes, err := image.Process(*opts)
 
 	if err != nil {
 		return err
 	}
 
-	_, err = out.Write(newImage)
+	_, err = out.Write(transformedImageBytes)
 
 	return err
 }

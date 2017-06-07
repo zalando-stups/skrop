@@ -44,16 +44,6 @@ func assertCorrectImageSize(r io.Reader, t *testing.T) {
 
 }
 
-func TestTransformImage(t *testing.T) {
-	image := imagefiltertest.LandscapeImage()
-
-	r, w := io.Pipe()
-
-	go transformImage(w, image, &optionsTarget)
-
-	assertCorrectImageSize(r, t)
-}
-
 func TestHandleResponse(t *testing.T) {
 	imageReader := createSampleImageReader(t)
 	response := &http.Response{Body: imageReader}
@@ -66,5 +56,3 @@ func TestHandleResponse(t *testing.T) {
 
 	assertCorrectImageSize(fc.Response().Body, t)
 }
-
-
