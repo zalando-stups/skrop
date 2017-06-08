@@ -58,7 +58,7 @@ withVioletBackground: Path("/images/vio/:image")
 
 resize_no_ratio: Path("/images/dist/:image")
   -> modPath("^/images/dist", "/images")
-  -> resize(255, 25, "false")
+  -> resize(255, 25, "keepAspectRatio")
   -> "http://localhost:9090";
 
 convertImageType: Path("/images/conv/:image")
