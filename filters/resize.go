@@ -6,6 +6,7 @@ import (
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	"math"
+	"strconv"
 )
 
 const (
@@ -78,8 +79,12 @@ func (r *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 	}
 
 	if len(args) == 3 {
-		f.keepAspectRatio, err = parse.EskipBoolArg(args[2])
+		boolStr, err := parse.EskipStringArg(args[2])
+		if err != nil {
+			return nil, err
+		}
 
+		f.keepAspectRatio, err = strconv.ParseBool(boolStr)
 		if err != nil {
 			return nil, err
 		}

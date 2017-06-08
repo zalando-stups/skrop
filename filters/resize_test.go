@@ -72,11 +72,11 @@ func TestResize_CreateFilter(t *testing.T) {
 		Err:  false,
 	}, {
 		Msg:  "three args",
-		Args: []interface{}{800.0, 600.0, true},
+		Args: []interface{}{800.0, 600.0, "true"},
 		Err:  false,
 	}, {
 		Msg:  "more than 3 args",
-		Args: []interface{}{800.0, 200.0, true, "Whaaat!"},
+		Args: []interface{}{800.0, 200.0, "true", "Whaaat!"},
 		Err:  true,
 	}})
 }
