@@ -63,6 +63,7 @@ resize_no_ratio: Path("/images/dist/:image")
 
 convertImageType: Path("/images/conv/:image")
  -> modPath("^/images/conv", "/images")
+ -> resize(50, 100, "ignoreAspectRatio")
  -> convertImageType("jpeg")
  -> "http://localhost:9090";
 
