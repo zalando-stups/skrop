@@ -72,11 +72,30 @@ func TestResize_CreateFilter(t *testing.T) {
 		Err:  false,
 	}, {
 		Msg:  "three args",
-		Args: []interface{}{800.0, 600.0, true},
+		Args: []interface{}{800.0, 600.0, "ignoreAspectRatio"},
 		Err:  false,
 	}, {
 		Msg:  "more than 3 args",
-		Args: []interface{}{800.0, 200.0, true, "Whaaat!"},
+		Args: []interface{}{800.0, 200.0, "test", "Whaaat!"},
 		Err:  true,
 	}})
+}
+
+func TestResize_CreateFilter_IgnoreAspectRatio(t *testing.T) {
+
+	f := &resize{}
+
+	nf, _ := f.CreateFilter([]interface{}{100.0, 50.0, "ignoreAspectRatio"})
+	i := nf.(*resize)
+
+	assert.Equal(t, false, i.keepAspectRatio)
+}
+func TestResize_CreateFilter_KeepAspectRatio(t *testing.T) {
+
+	f := &resize{}
+
+	nf, _ := f.CreateFilter([]interface{}{100.0, 50.0, "anything"})
+	i := nf.(*resize)
+
+	assert.Equal(t, true, i.keepAspectRatio)
 }

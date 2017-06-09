@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	ResizeName = "resize"
+	ResizeName           = "resize"
+	ignoreAspectRatioStr = "ignoreAspectRatio"
 )
 
 type resize struct {
@@ -78,11 +79,13 @@ func (r *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 	}
 
 	if len(args) == 3 {
-		f.keepAspectRatio, err = parse.EskipBoolArg(args[2])
-
+		ratio, err := parse.EskipStringArg(args[2])
 		if err != nil {
 			return nil, err
 		}
+
+		f.keepAspectRatio = !(ratio == ignoreAspectRatioStr)
+
 	} else {
 		f.keepAspectRatio = true
 	}
