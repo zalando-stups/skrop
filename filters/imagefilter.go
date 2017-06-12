@@ -1,20 +1,21 @@
 package filters
 
 import (
+	"errors"
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	"io"
 	"io/ioutil"
-	"errors"
 )
 
 const (
-	North  = "north"
-	South  = "south"
-	East   = "east"
-	West   = "west"
-	Center = "center"
+	North   = "north"
+	South   = "south"
+	East    = "east"
+	West    = "west"
+	Center  = "center"
+	Quality = 100
 )
 
 var (
@@ -91,7 +92,8 @@ func handleImageTransform(out *io.PipeWriter, in io.ReadCloser, f ImageFilter) e
 }
 
 func transformImage(out *io.PipeWriter, image *bimg.Image, opts *bimg.Options) error {
-	transformedImageBytes, err := image.Process(*opts)
+	opt := applyDefaults(opts)
+	transformedImageBytes, err := image.Process(*opt)
 
 	if err != nil {
 		return err
@@ -100,4 +102,10 @@ func transformImage(out *io.PipeWriter, image *bimg.Image, opts *bimg.Options) e
 	_, err = out.Write(transformedImageBytes)
 
 	return err
+}
+
+func applyDefaults(o *bimg.Options) *bimg.Options {
+	if o.Quality == 0 {
+		o.Quality = Quality
+	}
 }
