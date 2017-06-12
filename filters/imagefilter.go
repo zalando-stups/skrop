@@ -92,8 +92,8 @@ func handleImageTransform(out *io.PipeWriter, in io.ReadCloser, f ImageFilter) e
 }
 
 func transformImage(out *io.PipeWriter, image *bimg.Image, opts *bimg.Options) error {
-	opt := applyDefaults(opts)
-	transformedImageBytes, err := image.Process(*opt)
+	defOpt := applyDefaults(opts)
+	transformedImageBytes, err := image.Process(*defOpt)
 
 	if err != nil {
 		return err
@@ -108,4 +108,5 @@ func applyDefaults(o *bimg.Options) *bimg.Options {
 	if o.Quality == 0 {
 		o.Quality = Quality
 	}
+	return o
 }
