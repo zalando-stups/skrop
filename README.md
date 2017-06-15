@@ -59,8 +59,8 @@ Skrop provides a set of filters, which you can use within the routes:
 * **addBackground(R, G, B)** — adds the background to a PNG image with transparency
 * **convertImageType(type)** — converts between different formats (for the list of supported types see [here](https://github.com/h2non/bimg/blob/master/type.go)
 * **sharpen(radius, X1, Y2, Y3, M1, M2)** — sharpens the image (for info about the meaning of the parameters and the suggested values see [here](http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/libvips-convolution.html#vips-sharpen))
-* **width(size)** — resizes the image to the specified width keeping the ratio
-* **height(size)** — resizes the image to the specified height keeping the ratio
+* **width(size, opt-enlarge)** — resizes the image to the specified width keeping the ratio. If the second arg is specified and it is equals to "DO_NOT_ENLARGE", the image will not be enlarged
+* **height(size, opt-enlarge)** — resizes the image to the specified height keeping the ratio. If the second arg is specified and it is equals to "DO_NOT_ENLARGE", the image will not be enlarged
 * **blur(sigma, min_ampl)** — blurs the image (for info see [here](http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/libvips-convolution.html#vips-gaussblur))
 * **imageOverlay(filename, opacity, gravity, opt-top-margin, opt-right-margin, opt-bottom-margin, opt-left-margin)** — puts an image onverlay over the required image
 

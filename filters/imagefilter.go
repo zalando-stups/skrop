@@ -10,13 +10,13 @@ import (
 )
 
 const (
-	North   = "north"
-	South   = "south"
-	East    = "east"
-	West    = "west"
-	Center  = "center"
-	Quality = 100
-	doNotEnlarge      = "DO_NOT_ENLARGE"
+	North        = "north"
+	South        = "south"
+	East         = "east"
+	West         = "west"
+	Center       = "center"
+	Quality      = 100
+	doNotEnlarge = "DO_NOT_ENLARGE"
 )
 
 var (
