@@ -16,6 +16,7 @@ const (
 	West    = "west"
 	Center  = "center"
 	Quality = 100
+	doNotEnlarge      = "DO_NOT_ENLARGE"
 )
 
 var (

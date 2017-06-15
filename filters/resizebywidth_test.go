@@ -16,12 +16,44 @@ func TestResizeByWidth_Name(t *testing.T) {
 	assert.Equal(t, "width", c.Name())
 }
 
-func TestResizeByWidth_CreateOptions(t *testing.T) {
+func TestResizeByWidth_CreateOptions_Shrink_EnlargeAllowed(t *testing.T) {
 	image := imagefiltertest.LandscapeImage()
-	resizeByWidth := resizeByWidth{width: 150}
+	size, _ := image.Size()
+	newSize := size.Width / 2
+	resizeByWidth := resizeByWidth{width: newSize, enlarge: true}
 	options, _ := resizeByWidth.CreateOptions(image)
 
-	assert.Equal(t, 150, options.Width)
+	assert.Equal(t, newSize, options.Width)
+}
+
+func TestResizeByWidth_CreateOptions_Enlarge_EnlargeAllowed(t *testing.T) {
+	image := imagefiltertest.LandscapeImage()
+	size, _ := image.Size()
+	newSize := size.Width * 2
+	resizeByWidth := resizeByWidth{width: newSize, enlarge: true}
+	options, _ := resizeByWidth.CreateOptions(image)
+
+	assert.Equal(t, newSize, options.Width)
+}
+
+func TestResizeByWidth_CreateOptions_Shrink_EnlargeNotAllowed(t *testing.T) {
+	image := imagefiltertest.LandscapeImage()
+	size, _ := image.Size()
+	newSize := size.Width / 2
+	resizeByWidth := resizeByWidth{width: newSize, enlarge: false}
+	options, _ := resizeByWidth.CreateOptions(image)
+
+	assert.Equal(t, newSize, options.Width)
+}
+
+func TestResizeByWidth_CreateOptions_Enlarge_EnlargeNotAllowed(t *testing.T) {
+	image := imagefiltertest.LandscapeImage()
+	size, _ := image.Size()
+	newSize := size.Width * 2
+	resizeByWidth := resizeByWidth{width: newSize, enlarge: false}
+	options, _ := resizeByWidth.CreateOptions(image)
+
+	assert.Equal(t, 0, options.Width)
 }
 
 func TestResizeByWidth_CreateFilter(t *testing.T) {
@@ -34,8 +66,16 @@ func TestResizeByWidth_CreateFilter(t *testing.T) {
 		Args: []interface{}{256.0},
 		Err:  false,
 	}, {
-		Msg:  "more than one args",
-		Args: []interface{}{256.0, 100.0},
+		Msg:  "two args",
+		Args: []interface{}{100.0, "DO_NOT_ENLARGE"},
+		Err:  false,
+	}, {
+		Msg:  "wrong 2nd args",
+		Args: []interface{}{1000.0, 100.0},
+		Err:  true,
+	}, {
+		Msg:  "more than two args",
+		Args: []interface{}{2000.0, "DO_NOT_ENLARGE", 1.0},
 		Err:  true,
 	}})
 }
