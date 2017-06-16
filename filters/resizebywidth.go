@@ -33,7 +33,7 @@ func (r *resizeByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) 
 			return nil, err
 		}
 
-		// in case the image is bigger than the requested, do not change it
+		// enlargement not allowed here
 		if size.Width <= r.width {
 			return &bimg.Options{}, nil
 		}
@@ -57,16 +57,15 @@ func (r *resizeByWidth) CreateFilter(args []interface{}) (filters.Filter, error)
 		return nil, err
 	}
 
+	f.enlarge = true
+
 	if len(args) == 2 {
-		var cons string
-		cons, err = parse.EskipStringArg(args[1])
+		cons, err := parse.EskipStringArg(args[1])
 		if err != nil {
 			return nil, err
 		}
 
 		f.enlarge = !(cons == doNotEnlarge)
-	} else {
-		f.enlarge = true
 	}
 
 	return f, nil
