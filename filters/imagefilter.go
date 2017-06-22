@@ -90,7 +90,7 @@ func transformImage(rsp *http.Response, image *bimg.Image, opts *bimg.Options) e
 
 	rsp.Body = ioutil.NopCloser(bytes.NewReader(transformedImageBytes))
 
-	return err
+	return nil
 }
 
 func applyDefaults(o *bimg.Options) *bimg.Options {
