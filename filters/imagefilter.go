@@ -5,8 +5,9 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"io"
 	"io/ioutil"
+	"net/http"
+	"bytes"
 )
 
 const (
@@ -48,25 +49,12 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
 
 	rsp.Header.Del("Content-Length")
 
-	in := rsp.Body
-	r, w := io.Pipe()
-	rsp.Body = r
-
-	go handleImageTransform(w, in, f)
+	handleImageTransform(rsp, f)
 }
 
-func handleImageTransform(out *io.PipeWriter, in io.ReadCloser, f ImageFilter) error {
+func handleImageTransform(rsp *http.Response, f ImageFilter) error {
 	var err error
-
-	defer func() {
-		in.Close()
-		if err == nil {
-			err = io.EOF
-		}
-		out.CloseWithError(err)
-	}()
-
-	imageBytes, err := ioutil.ReadAll(in)
+	imageBytes, err := ioutil.ReadAll(rsp.Body)
 
 	if err != nil {
 		return err
@@ -88,11 +76,11 @@ func handleImageTransform(out *io.PipeWriter, in io.ReadCloser, f ImageFilter) e
 		return err
 	}
 
-	err = transformImage(out, originalImage, options)
+	err = transformImage(rsp, originalImage, options)
 	return err
 }
 
-func transformImage(out *io.PipeWriter, image *bimg.Image, opts *bimg.Options) error {
+func transformImage(rsp *http.Response, image *bimg.Image, opts *bimg.Options) error {
 	defOpt := applyDefaults(opts)
 	transformedImageBytes, err := image.Process(*defOpt)
 
@@ -100,7 +88,7 @@ func transformImage(out *io.PipeWriter, image *bimg.Image, opts *bimg.Options) e
 		return err
 	}
 
-	_, err = out.Write(transformedImageBytes)
+	rsp.Body = ioutil.NopCloser(bytes.NewReader(transformedImageBytes))
 
 	return err
 }
