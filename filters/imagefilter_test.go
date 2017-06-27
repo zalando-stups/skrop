@@ -56,3 +56,17 @@ func TestHandleResponse(t *testing.T) {
 
 	assertCorrectImageSize(fc.Response().Body, t)
 }
+
+
+func TestHandleResponseWithInvalidImage(t *testing.T) {
+	imageReader := ioutil.NopCloser(bytes.NewBufferString("invalid image"))
+	response := &http.Response{Body: imageReader}
+	response.Header = make(http.Header)
+	response.Header.Add("Content-Length", "100")
+	fc := &filtertest.Context{FResponse: response}
+	imageFilter := imagefiltertest.FakeImageFilter(optionsTarget)
+
+	HandleImageResponse(fc, &imageFilter)
+
+	assert.Equal(t, http.StatusInternalServerError, fc.FResponse.StatusCode)
+}
