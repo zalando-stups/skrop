@@ -6,8 +6,9 @@ import (
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	"io/ioutil"
-	"net/http"
 	"bytes"
+	"io"
+	"net/http"
 )
 
 const (
@@ -47,17 +48,30 @@ type ImageFilter interface {
 func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
 	rsp := ctx.Response()
 
+	defer rsp.Body.Close()
+
 	rsp.Header.Del("Content-Length")
 
-	handleImageTransform(rsp, f)
-}
-
-func handleImageTransform(rsp *http.Response, f ImageFilter) error {
-	var err error
-	imageBytes, err := ioutil.ReadAll(rsp.Body)
+	r, err := handleImageTransform(rsp.Body, f)
 
 	if err != nil {
-		return err
+		log.Error("failed to process image ", err.Error())
+		ctx.Serve(&http.Response{
+			StatusCode:http.StatusInternalServerError,
+			Body: ioutil.NopCloser(bytes.NewBufferString(err.Error())),
+		})
+		return
+	}
+
+	rsp.Body = ioutil.NopCloser(r)
+}
+
+func handleImageTransform(r io.Reader, f ImageFilter) (io.Reader, error) {
+	var err error
+	imageBytes, err := ioutil.ReadAll(r)
+
+	if err != nil {
+		return nil, err
 	}
 
 	imageBytesLength := len(imageBytes)
@@ -65,7 +79,7 @@ func handleImageTransform(rsp *http.Response, f ImageFilter) error {
 	log.Debug("Image bytes length: ", imageBytesLength)
 
 	if imageBytesLength == 0 {
-		return errors.New("original image is empty. nothing to process")
+		return nil, errors.New("original image is empty. nothing to process")
 	}
 
 	originalImage := bimg.NewImage(imageBytes)
@@ -73,24 +87,28 @@ func handleImageTransform(rsp *http.Response, f ImageFilter) error {
 	options, err := f.CreateOptions(originalImage)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err = transformImage(rsp, originalImage, options)
-	return err
+	transBytes, err := transformImage(originalImage, options)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return bytes.NewReader(transBytes), nil
 }
 
-func transformImage(rsp *http.Response, image *bimg.Image, opts *bimg.Options) error {
+func transformImage(image *bimg.Image, opts *bimg.Options) ([]byte, error) {
 	defOpt := applyDefaults(opts)
+
 	transformedImageBytes, err := image.Process(*defOpt)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	rsp.Body = ioutil.NopCloser(bytes.NewReader(transformedImageBytes))
-
-	return nil
+	return transformedImageBytes, nil
 }
 
 func applyDefaults(o *bimg.Options) *bimg.Options {
