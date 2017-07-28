@@ -70,6 +70,4 @@ func (s *setupResponse) Response(ctx filters.FilterContext) {
 
 	ctx.StateBag()[SkropImage] = bimg.NewImage(buf)
 	ctx.StateBag()[SkropOptions] = &bimg.Options{}
-
-	rsp.Body = ioutil.NopCloser(bytes.NewReader(buf))
 }

@@ -96,6 +96,9 @@ func FinalizeResponse(ctx filters.FilterContext) {
 	}
 
 	rsp := ctx.Response()
+
+	defer rsp.Body.Close()
+
 	rsp.Body = ioutil.NopCloser(bytes.NewReader(buf))
 }
 
