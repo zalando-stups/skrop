@@ -1,13 +1,11 @@
 package filters
 
 import (
-	"errors"
+	"bytes"
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	"io/ioutil"
-	"bytes"
-	"io"
 	"net/http"
 )
 
@@ -43,60 +41,62 @@ func init() {
 
 type ImageFilter interface {
 	CreateOptions(image *bimg.Image) (*bimg.Options, error)
+	CanBeMerged(other *bimg.Options, self *bimg.Options) bool
+	Merge(other *bimg.Options, self *bimg.Options) *bimg.Options
 }
 
 func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
-	rsp := ctx.Response()
+	image := ctx.StateBag()[SkropImage].(*bimg.Image)
 
-	defer rsp.Body.Close()
-
-	rsp.Header.Del("Content-Length")
-
-	r, err := handleImageTransform(rsp.Body, f)
-
+	opt, err := f.CreateOptions(image)
 	if err != nil {
-		log.Error("failed to process image ", err.Error())
+		log.Error("Failed to create options ", err.Error())
 		ctx.Serve(&http.Response{
-			StatusCode:http.StatusInternalServerError,
-			Body: ioutil.NopCloser(bytes.NewBufferString(err.Error())),
+			StatusCode: http.StatusInternalServerError,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(err.Error())),
 		})
 		return
 	}
 
-	rsp.Body = ioutil.NopCloser(r)
+	opts := ctx.StateBag()[SkropOptions].(*bimg.Options)
+
+	if f.CanBeMerged(opts, opt) {
+		ctx.StateBag()[SkropOptions] = f.Merge(opts, opt)
+	}
+
+	//transform the image
+	buf, err := transformImage(image, opts)
+	if err != nil {
+		log.Error("Failed to process image ", err.Error())
+		ctx.Serve(&http.Response{
+			StatusCode: http.StatusInternalServerError,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(err.Error())),
+		})
+		return
+	}
+
+	// set opt in the stateBag
+	ctx.StateBag()[SkropImage] = bimg.NewImage(buf)
+	ctx.StateBag()[SkropOptions] = opt
+
 }
 
-func handleImageTransform(r io.Reader, f ImageFilter) (io.Reader, error) {
-	var err error
-	imageBytes, err := ioutil.ReadAll(r)
+func FinalizeResponse(ctx filters.FilterContext) {
+	image := ctx.StateBag()[SkropImage].(*bimg.Image)
+	opts := ctx.StateBag()[SkropOptions].(*bimg.Options)
 
+	buf, err := transformImage(image, opts)
 	if err != nil {
-		return nil, err
+		log.Error("Failed to process image ", err.Error())
+		ctx.Serve(&http.Response{
+			StatusCode: http.StatusInternalServerError,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(err.Error())),
+		})
+		return
 	}
 
-	imageBytesLength := len(imageBytes)
-
-	log.Debug("Image bytes length: ", imageBytesLength)
-
-	if imageBytesLength == 0 {
-		return nil, errors.New("original image is empty. nothing to process")
-	}
-
-	originalImage := bimg.NewImage(imageBytes)
-
-	options, err := f.CreateOptions(originalImage)
-
-	if err != nil {
-		return nil, err
-	}
-
-	transBytes, err := transformImage(originalImage, options)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return bytes.NewReader(transBytes), nil
+	rsp := ctx.Response()
+	rsp.Body = ioutil.NopCloser(bytes.NewReader(buf))
 }
 
 func transformImage(image *bimg.Image, opts *bimg.Options) ([]byte, error) {
