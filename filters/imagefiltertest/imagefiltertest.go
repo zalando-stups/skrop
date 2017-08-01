@@ -21,9 +21,19 @@ type CreateTestItem struct {
 	Err  bool
 }
 
-func (h *FakeImageFilter) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
-	options := bimg.Options(*h)
+func (s *FakeImageFilter) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
+	options := bimg.Options(*s)
 	return &options, nil
+}
+
+func (s *FakeImageFilter) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	return (other.Width == 0 && other.Height == 0) ||
+		(other.Width == self.Width && other.Height == self.Height)
+}
+
+func (s *FakeImageFilter) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Background = self.Background
+	return other
 }
 
 func TestCreate(t *testing.T, spec func() filters.Spec, items []CreateTestItem) {

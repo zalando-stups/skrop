@@ -39,7 +39,7 @@ func (r *convertImageType) CanBeMerged(other *bimg.Options, self *bimg.Options) 
 }
 
 func (r *convertImageType) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
-	other.Background = self.Background
+	other.Type = self.Type
 	return other
 }
 

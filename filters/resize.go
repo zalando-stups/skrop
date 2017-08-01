@@ -62,7 +62,8 @@ func (s *resize) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 }
 
 func (s *resize) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
-	other.Quality = self.Quality
+	other.Width = self.Width
+	other.Height = self.Height
 	return other
 }
 

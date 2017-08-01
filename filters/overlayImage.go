@@ -106,7 +106,7 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 
 	// in case y overflows the image
 	if y < 0 || y+overSize.Height > origSize.Height {
-		return nil, errors.New("Error: the overlay image in placed outside the image area on the y axe")
+		return nil, errors.New("Error: the overlay image is placed outside the image area on the y axe")
 	}
 
 	switch r.horizontalGravity {
@@ -120,7 +120,7 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 
 	// in case x overflows the image
 	if x < 0 || x+overSize.Width > origSize.Width {
-		return nil, errors.New("Error: the overlay image in placed outside the image area on the x axe")
+		return nil, errors.New("Error: the overlay image is placed outside the image area on the x axe")
 	}
 
 	return &bimg.Options{WatermarkImage: bimg.WatermarkImage{Buf: overArr,

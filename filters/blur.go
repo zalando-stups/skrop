@@ -34,11 +34,11 @@ func (r *blur) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	zero := bimg.GaussianBlur{}
 
 	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
-	return other.GaussianBlur == zero || self.GaussianBlur == zero || other.Background == self.Background
+	return other.GaussianBlur == zero || other.GaussianBlur == self.GaussianBlur
 }
 
 func (r *blur) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
-	other.Background = self.Background
+	other.GaussianBlur = self.GaussianBlur
 	return other
 }
 

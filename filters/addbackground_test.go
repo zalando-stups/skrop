@@ -3,6 +3,7 @@ package filters
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"gopkg.in/h2non/bimg.v1"
 	"testing"
 )
 
@@ -14,6 +15,31 @@ func TestNewAddBackground(t *testing.T) {
 func TestAddBackground_Name(t *testing.T) {
 	c := addBackground{}
 	assert.Equal(t, "addBackground", c.Name())
+}
+
+func TestAddBackground_CanBeMerged_True(t *testing.T) {
+	s := addBackground{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{Background: bimg.Color{R: 240, G: 0, B: 200}}
+
+	assert.True(t, s.CanBeMerged(opt, self))
+}
+
+func TestAddBackground_CanBeMerged_False(t *testing.T) {
+	s := addBackground{}
+	opt := &bimg.Options{Background: bimg.Color{R: 10, G: 153, B: 200}}
+	self := &bimg.Options{Background: bimg.Color{R: 240, G: 0, B: 200}}
+
+	assert.False(t, s.CanBeMerged(opt, self))
+}
+
+func TestAddBackground_Merge(t *testing.T) {
+	s := addBackground{}
+	self := &bimg.Options{Background: bimg.Color{R: 240, G: 0, B: 200}}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.Equal(t, self.Background, opt.Background)
 }
 
 func TestAddBackground_CreateOptionsPNG(t *testing.T) {

@@ -1,14 +1,14 @@
 package filters
 
 import (
-	"github.com/stretchr/testify/assert"
-	"testing"
-	"gopkg.in/h2non/bimg.v1"
-	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
-	"net/http"
 	"bytes"
-	"io/ioutil"
+	"github.com/stretchr/testify/assert"
+	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
 	"github.com/zalando/skipper/filters/filtertest"
+	"gopkg.in/h2non/bimg.v1"
+	"io/ioutil"
+	"net/http"
+	"testing"
 )
 
 func TestNewConvertImageType(t *testing.T) {
@@ -27,6 +27,31 @@ func TestConvertImageType_CreateOptions(t *testing.T) {
 	c := &convertImageType{imageType: bimg.JPEG}
 	options, _ := c.CreateOptions(nil)
 	assert.Equal(t, bimg.JPEG, options.Type)
+}
+
+func TestConvertImageType_CanBeMerged_True(t *testing.T) {
+	s := convertImageType{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{Type: 1}
+
+	assert.True(t, s.CanBeMerged(opt, self))
+}
+
+func TestConvertImageType_CanBeMerged_False(t *testing.T) {
+	s := convertImageType{}
+	opt := &bimg.Options{Type: 1}
+	self := &bimg.Options{Type: 2}
+
+	assert.False(t, s.CanBeMerged(opt, self))
+}
+
+func TestConvertImageType_Merge(t *testing.T) {
+	s := convertImageType{}
+	self := &bimg.Options{Type: 3}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.Equal(t, self.Background, opt.Background)
 }
 
 func TestConvertImageType_CreateFilter(t *testing.T) {
@@ -76,7 +101,7 @@ func TestConvertImageType_Response_WithOutExtension(t *testing.T) {
 	rsp.Body.Close()
 }
 
-func createFilterContext(t *testing.T,  url string) *filtertest.Context {
+func createFilterContext(t *testing.T, url string) *filtertest.Context {
 	buffer, err := bimg.Read(imagefiltertest.PNGImageFile)
 	assert.Nil(t, err, "Failed to read sample image")
 	imageReader := ioutil.NopCloser(bytes.NewReader(buffer))
@@ -84,11 +109,15 @@ func createFilterContext(t *testing.T,  url string) *filtertest.Context {
 	response.Header = make(http.Header)
 	response.Header.Add("Content-Length", "100")
 
+	bag := make(map[string]interface{})
+	bag[SkropImage] = bimg.NewImage(buffer)
+	bag[SkropOptions] = &bimg.Options{}
+
 	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	return &filtertest.Context{FResponse: response, FRequest: req}
+	return &filtertest.Context{FResponse: response, FRequest: req, FStateBag: bag}
 }

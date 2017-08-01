@@ -5,6 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"gopkg.in/h2non/bimg.v1"
 )
 
 func TestNewResize(t *testing.T) {
@@ -59,6 +60,32 @@ func TestResize_CreateOptions_WithProportions2(t *testing.T) {
 
 	assert.Equal(t, newWidth, options.Width)
 	assert.Zero(t, options.Height)
+}
+
+func TestResize_CanBeMerged_True(t *testing.T) {
+	s := resize{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{Width: 265, Height: 365}
+
+	assert.True(t, s.CanBeMerged(opt, self))
+}
+
+func TestResize_CanBeMerged_False(t *testing.T) {
+	s := resize{}
+	opt := &bimg.Options{Width: 265, Height: 365}
+	self := &bimg.Options{Width: 144, Height: 963}
+
+	assert.False(t, s.CanBeMerged(opt, self))
+}
+
+func TestResize_Merge(t *testing.T) {
+	s := resize{}
+	self := &bimg.Options{Width: 265, Height: 365}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.Equal(t, self.Width, opt.Width)
+	assert.Equal(t, self.Height, opt.Height)
 }
 
 func TestResize_CreateFilter(t *testing.T) {
