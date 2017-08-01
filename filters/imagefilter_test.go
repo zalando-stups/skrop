@@ -44,29 +44,56 @@ func assertCorrectImageSize(r io.Reader, t *testing.T) {
 
 }
 
-func TestHandleResponse(t *testing.T) {
-	imageReader := createSampleImageReader(t)
-	response := &http.Response{Body: imageReader}
-	response.Header = make(http.Header)
-	response.Header.Add("Content-Length", "100")
-	fc := &filtertest.Context{FResponse: response}
-	imageFilter := imagefiltertest.FakeImageFilter(optionsTarget)
+func TestFinalizeResponse(t *testing.T) {
+	fc := createFilterContext(t, "doesNotMatter.com")
+	//fc.FResponse = response
+	fc.FStateBag[SkropOptions] = &optionsTarget
 
-	HandleImageResponse(fc, &imageFilter)
+	FinalizeResponse(fc)
 
 	assertCorrectImageSize(fc.Response().Body, t)
 }
 
-
 func TestHandleResponseWithInvalidImage(t *testing.T) {
-	imageReader := ioutil.NopCloser(bytes.NewBufferString("invalid image"))
+	fc := createFilterContext(t, "doesNotMatter.com")
+	fc.FStateBag[SkropOptions] = &optionsTarget
+	fc.FStateBag[SkropImage] = bimg.NewImage([]byte("invalid image"))
+
+	FinalizeResponse(fc)
+
+	assert.Equal(t, http.StatusInternalServerError, fc.FResponse.StatusCode)
+}
+
+func TestHandleImageResponse(t *testing.T) {
+	imageReader := createSampleImageReader(t)
 	response := &http.Response{Body: imageReader}
 	response.Header = make(http.Header)
 	response.Header.Add("Content-Length", "100")
-	fc := &filtertest.Context{FResponse: response}
+	fc := createFilterContext(t, "doesNotMatter.com")
 	imageFilter := imagefiltertest.FakeImageFilter(optionsTarget)
 
 	HandleImageResponse(fc, &imageFilter)
 
-	assert.Equal(t, http.StatusInternalServerError, fc.FResponse.StatusCode)
+	assert.Equal(t, fc.FStateBag[SkropOptions], &optionsTarget)
+}
+
+func createFilterContext(t *testing.T, url string) *filtertest.Context {
+	buffer, err := bimg.Read(imagefiltertest.PNGImageFile)
+	assert.Nil(t, err, "Failed to read sample image")
+	imageReader := ioutil.NopCloser(bytes.NewReader(buffer))
+	response := &http.Response{Body: imageReader}
+	response.Header = make(http.Header)
+	response.Header.Add("Content-Length", "100")
+
+	bag := make(map[string]interface{})
+	bag[SkropImage] = bimg.NewImage(buffer)
+	bag[SkropOptions] = &bimg.Options{}
+
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	return &filtertest.Context{FResponse: response, FRequest: req, FStateBag: bag}
 }

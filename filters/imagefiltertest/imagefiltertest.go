@@ -32,7 +32,9 @@ func (s *FakeImageFilter) CanBeMerged(other *bimg.Options, self *bimg.Options) b
 }
 
 func (s *FakeImageFilter) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
-	other.Background = self.Background
+	other.Width = self.Width
+	other.Height = self.Height
+	other.Quality = self.Quality
 	return other
 }
 

@@ -1,13 +1,9 @@
 package filters
 
 import (
-	"bytes"
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
-	"github.com/zalando/skipper/filters/filtertest"
 	"gopkg.in/h2non/bimg.v1"
-	"io/ioutil"
-	"net/http"
 	"testing"
 )
 
@@ -101,23 +97,3 @@ func TestConvertImageType_Response_WithOutExtension(t *testing.T) {
 	rsp.Body.Close()
 }
 
-func createFilterContext(t *testing.T, url string) *filtertest.Context {
-	buffer, err := bimg.Read(imagefiltertest.PNGImageFile)
-	assert.Nil(t, err, "Failed to read sample image")
-	imageReader := ioutil.NopCloser(bytes.NewReader(buffer))
-	response := &http.Response{Body: imageReader}
-	response.Header = make(http.Header)
-	response.Header.Add("Content-Length", "100")
-
-	bag := make(map[string]interface{})
-	bag[SkropImage] = bimg.NewImage(buffer)
-	bag[SkropOptions] = &bimg.Options{}
-
-	req, err := http.NewRequest("GET", url, nil)
-
-	if err != nil {
-		t.Error(err)
-	}
-
-	return &filtertest.Context{FResponse: response, FRequest: req, FStateBag: bag}
-}
