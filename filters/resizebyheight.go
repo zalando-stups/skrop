@@ -43,6 +43,15 @@ func (r *resizeByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error)
 		Height: r.height}, nil
 }
 
+func (s *resizeByHeight) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	return other.Height == 0 || other.Height == self.Height
+}
+
+func (s *resizeByHeight) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Height = self.Height
+	return other
+}
+
 func (r *resizeByHeight) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 

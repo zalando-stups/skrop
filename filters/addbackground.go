@@ -39,7 +39,7 @@ func (s *addBackground) CanBeMerged(other *bimg.Options, self *bimg.Options) boo
 	zero := bimg.Color{}
 
 	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
-	return other.Background == zero || self.Background == zero || other.Background == self.Background
+	return other.Background == zero || other.Background == self.Background
 }
 
 func (s *addBackground) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {

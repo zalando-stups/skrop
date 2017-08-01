@@ -40,6 +40,19 @@ func (r *sharpen) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		Sharpen: sha}, nil
 }
 
+func (s *sharpen) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	zero := bimg.Sharpen{}
+
+	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
+	return other.Sharpen == zero || other.Sharpen == self.Sharpen
+}
+
+func (s *sharpen) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Background = self.Background
+	return other
+}
+
+
 func (r *sharpen) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 

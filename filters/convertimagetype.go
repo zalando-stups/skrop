@@ -1,17 +1,17 @@
 package filters
 
 import (
-	"github.com/zalando/skipper/filters"
-	"gopkg.in/h2non/bimg.v1"
+	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/zalando-incubator/skrop/parse"
+	"github.com/zalando/skipper/filters"
+	"gopkg.in/h2non/bimg.v1"
 	"strings"
-	"fmt"
 )
 
-const ConvertImageType  = "convertImageType"
+const ConvertImageType = "convertImageType"
 
-type convertImageType struct{
+type convertImageType struct {
 	imageType bimg.ImageType
 }
 
@@ -32,10 +32,10 @@ func (c *convertImageType) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
 }
 
 func (r *convertImageType) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
-	zero := bimg.GaussianBlur{}
+	var zero bimg.ImageType = 0
 
 	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
-	return other.GaussianBlur == zero || self.GaussianBlur == zero || other.Background == self.Background
+	return other.Type == zero || other.Type == self.Type
 }
 
 func (r *convertImageType) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
@@ -51,7 +51,7 @@ func (c *convertImageType) CreateFilter(args []interface{}) (filters.Filter, err
 
 	f := &convertImageType{}
 
-	imgType, err := parse.EskipStringArg(args[0]);
+	imgType, err := parse.EskipStringArg(args[0])
 
 	if err != nil || !bimg.IsTypeNameSupported(imgType) {
 		return nil, filters.ErrInvalidFilterParameters
@@ -67,7 +67,6 @@ func (c *convertImageType) CreateFilter(args []interface{}) (filters.Filter, err
 	return f, err
 }
 
-
 func (c *convertImageType) Request(ctx filters.FilterContext) {}
 
 func (c *convertImageType) Response(ctx filters.FilterContext) {
@@ -78,7 +77,7 @@ func (c *convertImageType) Response(ctx filters.FilterContext) {
 
 	fileType := bimg.ImageTypeName(c.imageType)
 
-	contentType := fmt.Sprintf("image/%s",fileType)
+	contentType := fmt.Sprintf("image/%s", fileType)
 	contentDisp := fmt.Sprintf("inline;filename=%s.%s", extractFileName(ctx), fileType)
 
 	resp.Header.Set("Content-Type", contentType)

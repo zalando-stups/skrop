@@ -130,6 +130,25 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	}}, nil
 }
 
+func (s *overlay) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	zero := bimg.WatermarkImage{}
+
+	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
+	return equals(other.WatermarkImage, zero) || equals(other.WatermarkImage, self.WatermarkImage)
+}
+
+func equals(one bimg.WatermarkImage, two bimg.WatermarkImage) bool {
+	return one.Opacity == two.Opacity &&
+		one.Top == two.Top &&
+		one.Left == two.Left &&
+		len(one.Buf) == len(two.Buf)
+}
+
+func (s *overlay) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.WatermarkImage = self.WatermarkImage
+	return other
+}
+
 func readImage(file string) ([]byte, error) {
 	img, err := os.Open(file)
 	if err != nil {

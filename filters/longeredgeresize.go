@@ -41,6 +41,31 @@ func (r *longerEdgeResize) CreateOptions(image *bimg.Image) (*bimg.Options, erro
 	}
 }
 
+func (s *longerEdgeResize) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	if self.Width != 0 {
+		return other.Width == 0 || other.Width == self.Width
+	}
+
+	//if Height was set
+	return other.Height == 0 || other.Height == self.Height
+
+}
+
+func (s *longerEdgeResize) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+
+	//if Width was set
+	if self.Width != 0 {
+		other.Width = self.Width
+	}
+
+	//if Height was set
+	if self.Height != 0 {
+		other.Height = self.Height
+	}
+
+	return other
+}
+
 func (r *longerEdgeResize) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 

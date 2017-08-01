@@ -30,6 +30,15 @@ func (r *quality) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		Quality: r.percentage}, nil
 }
 
+func (s *quality) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	return other.Quality == 0 || other.Quality == self.Quality
+}
+
+func (s *quality) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Quality = self.Quality
+	return other
+}
+
 func (r *quality) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
