@@ -61,6 +61,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
 	opts := ctx.StateBag()[SkropOptions].(*bimg.Options)
 
 	if f.CanBeMerged(opts, opt) {
+		log.Debug("Filter ", f, " merged in ", ctx.StateBag()[SkropOptions])
 		ctx.StateBag()[SkropOptions] = f.Merge(opts, opt)
 	}
 

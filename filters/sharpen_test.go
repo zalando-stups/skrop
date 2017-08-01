@@ -54,7 +54,7 @@ func TestSharpen_Merge(t *testing.T) {
 
 	opt := s.Merge(&bimg.Options{}, self)
 
-	assert.Equal(t, self.GaussianBlur, opt.GaussianBlur)
+	assert.Equal(t, self.Sharpen, opt.Sharpen)
 }
 
 func TestSharpen_CreateFilter(t *testing.T) {
