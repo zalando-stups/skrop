@@ -71,7 +71,7 @@ func TestConvertImageType_CreateFilter(t *testing.T) {
 }
 
 func TestConvertImageType_Response_WithExtension(t *testing.T) {
-	fc := createFilterContext(t, "http://localhost:9090/images/bag.png")
+	fc := createDefaultContext(t, "http://localhost:9090/images/bag.png")
 	fc.Request().RequestURI = "/images/bag.png"
 	c := convertImageType{imageType: bimg.ImageType(1)}
 
@@ -85,7 +85,7 @@ func TestConvertImageType_Response_WithExtension(t *testing.T) {
 
 func TestConvertImageType_Response_WithOutExtension(t *testing.T) {
 
-	fc := createFilterContext(t, "http://localhost:9090/images/shoe")
+	fc := createDefaultContext(t, "http://localhost:9090/images/shoe")
 	c := convertImageType{imageType: bimg.ImageType(1)}
 	fc.Request().RequestURI = "/images/bag"
 

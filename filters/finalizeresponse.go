@@ -7,7 +7,7 @@ import "github.com/zalando/skipper/filters"
 type finalizeResponse struct{}
 
 const (
-	FinalizeResponseName = "setupResponse"
+	FinalizeResponseName = "finalizeResponse"
 )
 
 func NewFinalizeResponse() filters.Spec {

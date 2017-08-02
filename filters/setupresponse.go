@@ -63,7 +63,7 @@ func (s *setupResponse) Response(ctx filters.FilterContext) {
 		log.Error("Original image is empty. Nothing to process")
 		ctx.Serve(&http.Response{
 			StatusCode: http.StatusInternalServerError,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(err.Error())),
+			Body:       ioutil.NopCloser(bytes.NewBufferString("Original image is empty. Nothing to process")),
 		})
 		return
 	}
