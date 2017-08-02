@@ -32,7 +32,7 @@ func (s *setupResponse) CreateFilter(args []interface{}) (filters.Filter, error)
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	return &addBackground{}, nil
+	return &setupResponse{}, nil
 }
 
 func (s *setupResponse) Request(ctx filters.FilterContext) {}

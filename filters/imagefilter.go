@@ -61,8 +61,8 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
 	opts := ctx.StateBag()[SkropOptions].(*bimg.Options)
 
 	if f.CanBeMerged(opts, opt) {
-		log.Debug("Filter ", f, " merged in ", ctx.StateBag()[SkropOptions])
 		ctx.StateBag()[SkropOptions] = f.Merge(opts, opt)
+		log.Debug("Filter ", f, " merged in ", ctx.StateBag()[SkropOptions])
 		return
 	}
 
@@ -106,6 +106,8 @@ func FinalizeResponse(ctx filters.FilterContext) {
 
 func transformImage(image *bimg.Image, opts *bimg.Options) ([]byte, error) {
 	defOpt := applyDefaults(opts)
+
+	log.Debug("Successfully applied the following options on the image: ", opts)
 
 	transformedImageBytes, err := image.Process(*defOpt)
 

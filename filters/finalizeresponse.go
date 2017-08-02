@@ -23,7 +23,7 @@ func (s *finalizeResponse) CreateFilter(args []interface{}) (filters.Filter, err
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	return &addBackground{}, nil
+	return &finalizeResponse{}, nil
 }
 
 func (s *finalizeResponse) Request(ctx filters.FilterContext) {}
