@@ -48,7 +48,7 @@ func (s *sharpen) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 }
 
 func (s *sharpen) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
-	other.Background = self.Background
+	other.Sharpen = self.Sharpen
 	return other
 }
 
