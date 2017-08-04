@@ -1,4 +1,4 @@
-package skrop
+package dataclient
 
 import (
 	log "github.com/Sirupsen/logrus"
