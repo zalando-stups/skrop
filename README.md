@@ -69,6 +69,10 @@ apply for that specific route. Skrop adds by default two filters (setupResponse(
 The filter setupResponse() initialize the response by adding in the context the image received from the backend.
 The finalizeResponse() needs to be added at the end, because it triggers the last transformation of the image.
 
+Because of performances, each filter does not trigger a transformation of the image, but if possible it is merged with
+the result of the previous filters. The image is actually transformed every time the filter cannot be merged with the
+previous one e.g. both edit the same attribute and also at the end of the filter chain by the finalizeResponse filter.
+
 ## Packaging
 In order to package skrop for production, you're going to need [Docker](https://docs.docker.com).
 To build a Docker image, just run the build script (the arguments are optional):
