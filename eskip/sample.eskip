@@ -2,108 +2,80 @@
 // http://localhost:9090/images/S/image-2k.jpg
 small: Path("/images/S/:image")
   -> modPath("^/images/S", "/images")
-  -> finalizeResponse()
   -> longerEdgeResize(800)
-  -> setupResponse()
   -> "http://localhost:9090";
 
 smallAndSharp: Path("/images/Ss/:image")
   -> modPath("^/images/Ss", "/images")
-  -> finalizeResponse()
   -> longerEdgeResize(800)
   -> sharpen(1, 2, 10, 20, 0, 3)
-  -> setupResponse()
   -> "http://localhost:9090";
 
 smallAndBlurred: Path("/images/Sb/:image")
   -> modPath("^/images/Sb", "/images")
-  -> finalizeResponse()
   -> longerEdgeResize(800)
   -> blur(20, 20)
-  -> setupResponse()
   -> "http://localhost:9090";
 
 medium: Path("/images/M/:image")
   -> modPath("^/images/M", "/images")
-  -> finalizeResponse()
   -> longerEdgeResize(1200)
-  -> setupResponse()
   -> "http://localhost:9090";
 
 large: Path("/images/L/:image")
   -> modPath("^/images/L", "/images")
-  -> finalizeResponse()
   -> longerEdgeResize(1920)
-  -> setupResponse()
   -> "http://localhost:9090";
 
 // http://localhost:9090/images/teaser/image-2k.jpg
 teaser: Path("/images/teaser/:image")
   -> modPath("^/images/teaser", "/images")
-  -> finalizeResponse()
   -> longerEdgeResize(1920)
   -> crop(1920, 1016)
-  -> setupResponse()
   -> "http://localhost:9090";
 
 cropByWidth: Path("/images/cropbywidth/:image")
   -> modPath("^/images/cropbywidth", "/images")
-  -> finalizeResponse()
   -> cropByWidth(1200, "east")
-  -> setupResponse()
   -> "http://localhost:9090";
 
 cropByHeight: Path("/images/cropbyheight/:image")
   -> modPath("^/images/cropbyheight", "/images")
-  -> finalizeResponse()
   -> cropByHeight(1000, "south")
-  -> setupResponse()
   -> "http://localhost:9090";
 
 widthAndQuality: Path("/images/waq/:image")
   -> modPath("^/images/waq", "/images")
-  -> finalizeResponse()
   -> width(1000)
   -> quality(5)
-  -> setupResponse()
   -> "http://localhost:9090";
 
 withVioletBackground: Path("/images/vio/:image")
   -> modPath("^/images/vio", "/images")
-  -> finalizeResponse()
   -> addBackground(255, 25, 255)
   -> width(1000)
-  -> setupResponse()
   -> "http://localhost:9090";
 
 resize_no_ratio: Path("/images/dist/:image")
   -> modPath("^/images/dist", "/images")
-  -> finalizeResponse()
   -> resize(255, 25, "keepAspectRatio")
-  -> setupResponse()
   -> "http://localhost:9090";
 
 convertImageType: Path("/images/conv/:image")
   -> modPath("^/images/conv", "/images")
-  -> finalizeResponse()
   -> resize(50, 100, "ignoreAspectRatio")
   -> convertImageType("jpeg")
-  -> setupResponse()
   -> "http://localhost:9090";
 
 video: Path("/images/vid/:image")
   -> modPath("^/images/vid", "/images")
-  -> finalizeResponse()
   -> overlayImage("images/video.png", 1.0, "CC")
-  -> setupResponse()
   -> "http://localhost:9090";
 
 //imageOverlay(<filename>, <opacity>, <gravity>, <top_margin>, <right_margin>, <bottom_margin>, <left_margin>)
 new: Path("/images/new/:image")
   -> modPath("^/images/new", "/images")
-  -> finalizeResponse()
   -> overlayImage("images/star.png", 1.0, "NE", 10, 10, 0, 0)
-  -> setupResponse()
   -> "http://localhost:9090";
 
 static: * -> static("/", ".") -> <shunt>;

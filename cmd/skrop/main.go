@@ -9,7 +9,9 @@ import (
 	"os"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/zalando-incubator/skrop"
 	"github.com/zalando/skipper/proxy"
+	"github.com/zalando/skipper/routing"
 )
 
 const (
@@ -99,8 +101,10 @@ func main() {
 	log.Debug(fmt.Sprintf("Using routes-file %s", routesFile))
 
 	o := skipper.Options{
-		Address:    address,
-		RoutesFile: routesFile,
+		Address: address,
+		CustomDataClients: []routing.DataClient{
+			skrop.NewSkropDataClient(routesFile),
+		},
 		CustomFilters: []filters.Spec{
 			skropFilters.NewResize(),
 			skropFilters.NewCrop(),
