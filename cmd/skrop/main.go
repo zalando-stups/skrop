@@ -12,6 +12,7 @@ import (
 	"github.com/zalando-incubator/skrop"
 	"github.com/zalando/skipper/proxy"
 	"github.com/zalando/skipper/routing"
+	"github.com/zalando-incubator/skrop/dataclient"
 )
 
 const (
@@ -103,7 +104,7 @@ func main() {
 	o := skipper.Options{
 		Address: address,
 		CustomDataClients: []routing.DataClient{
-			skrop.NewSkropDataClient(routesFile),
+			dataclient.NewSkropDataClient(routesFile),
 		},
 		CustomFilters: []filters.Spec{
 			skropFilters.NewResize(),
