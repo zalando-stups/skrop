@@ -46,7 +46,6 @@ func assertCorrectImageSize(r io.Reader, t *testing.T) {
 
 func TestFinalizeResponse(t *testing.T) {
 	fc := createDefaultContext(t, "doesNotMatter.com")
-	//fc.FResponse = response
 	fc.FStateBag[SkropOptions] = &optionsTarget
 
 	FinalizeResponse(fc)
