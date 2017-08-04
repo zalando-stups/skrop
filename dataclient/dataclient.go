@@ -2,6 +2,7 @@ package dataclient
 
 import (
 	log "github.com/Sirupsen/logrus"
+	"github.com/zalando-incubator/skrop/filters"
 	"github.com/zalando/skipper/eskip"
 	"github.com/zalando/skipper/eskipfile"
 	"github.com/zalando/skipper/routing"
@@ -18,11 +19,11 @@ func NewSkropDataClient(eskipFile string) routing.DataClient {
 	emptyArgs := make([]interface{}, 0)
 
 	pre := &eskip.Filter{
-		Name: "finalizeResponse",
+		Name: filters.NewFinalizeResponse().Name(),
 		Args: emptyArgs,
 	}
 	post := &eskip.Filter{
-		Name: "setupResponse",
+		Name: filters.NewSetupResponse().Name(),
 		Args: emptyArgs,
 	}
 	return skropDataClient{
