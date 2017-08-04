@@ -9,7 +9,6 @@ import (
 	"os"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/zalando-incubator/skrop"
 	"github.com/zalando/skipper/proxy"
 	"github.com/zalando/skipper/routing"
 	"github.com/zalando-incubator/skrop/dataclient"
