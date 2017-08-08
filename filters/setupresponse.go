@@ -7,6 +7,7 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 	"io/ioutil"
 	"net/http"
+	"github.com/zalando-incubator/skrop/messages"
 )
 
 // This filter is the default filter for every configuration of skrop
@@ -54,7 +55,7 @@ func (s *setupResponse) Response(ctx filters.FilterContext) {
 		log.Error("Failed to process image ", err.Error())
 		ctx.Serve(&http.Response{
 			StatusCode: http.StatusInternalServerError,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(err.Error())),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(messages.Error500)),
 		})
 		return
 	}
@@ -63,7 +64,7 @@ func (s *setupResponse) Response(ctx filters.FilterContext) {
 		log.Error("Original image is empty. Nothing to process")
 		ctx.Serve(&http.Response{
 			StatusCode: http.StatusInternalServerError,
-			Body:       ioutil.NopCloser(bytes.NewBufferString("Original image is empty. Nothing to process")),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(messages.Error404)),
 		})
 		return
 	}

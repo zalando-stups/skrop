@@ -19,11 +19,11 @@ func NewSkropDataClient(eskipFile string) routing.DataClient {
 	emptyArgs := make([]interface{}, 0)
 
 	pre := &eskip.Filter{
-		Name: filters.NewFinalizeResponse().Name(),
+		Name: filters.FinalizeResponseName,
 		Args: emptyArgs,
 	}
 	post := &eskip.Filter{
-		Name: filters.NewSetupResponse().Name(),
+		Name: filters.SetupResponseName,
 		Args: emptyArgs,
 	}
 	return skropDataClient{
@@ -36,23 +36,28 @@ func NewSkropDataClient(eskipFile string) routing.DataClient {
 func (s skropDataClient) LoadAll() ([]*eskip.Route, error) {
 	f, err := eskipfile.Open(s.fileName)
 	if err != nil {
-		log.Error("Error while opening eskip file", err)
+		log.Error("error while opening eskip file", err)
 		return nil, err
 	}
 
 	routes, err := f.LoadAll()
 	if err != nil {
-		log.Error("Error while loading eskip routes", err)
+		log.Error("error while loading eskip routes", err)
 		return nil, err
 	}
 
 	for _, route := range routes {
+
 		if route.BackendType != eskip.ShuntBackend {
 			route.Filters = append(append([]*eskip.Filter{s.prepend}, route.Filters...), s.append)
 		}
 	}
 
 	return routes, nil
+}
+
+func containsImageFilter(route *eskip.Route) {
+
 }
 
 func (s skropDataClient) LoadUpdate() ([]*eskip.Route, []string, error) {
