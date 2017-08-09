@@ -2,7 +2,6 @@ package dataclient
 
 import (
 	"github.com/stretchr/testify/assert"
-	"github.com/zalando/skipper/eskip"
 	"testing"
 )
 
@@ -11,7 +10,7 @@ func TestNewSkropDataClient(t *testing.T) {
 	assert.NotNil(t, s)
 }
 
-func TestSkropDataClient_LoadAll_NonShunt(t *testing.T) {
+func TestSkropDataClient_LoadAll(t *testing.T) {
 	//given
 	s := NewSkropDataClient("eskip_test.eskip")
 
@@ -20,25 +19,7 @@ func TestSkropDataClient_LoadAll_NonShunt(t *testing.T) {
 
 	//then
 	for _, route := range routes {
-		if route.BackendType != eskip.ShuntBackend {
-			assert.Equal(t, "finalizeResponse", route.Filters[0].Name)
-			assert.Equal(t, "setupResponse", route.Filters[len(route.Filters)-1].Name)
-		}
-	}
-}
-
-func TestSkropDataClient_LoadAll_Shunt(t *testing.T) {
-	//given
-	s := NewSkropDataClient("eskip_test.eskip")
-
-	//when
-	routes, _ := s.LoadAll()
-
-	//then
-	for _, route := range routes {
-		if route.BackendType == eskip.ShuntBackend {
-			assert.Equal(t, 1, len(route.Filters))
-		}
+		assert.Equal(t, "finalizeResponse", route.Filters[0].Name)
 	}
 }
 

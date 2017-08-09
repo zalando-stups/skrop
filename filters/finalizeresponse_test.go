@@ -48,6 +48,7 @@ func TestFinalizeResponse_Response(t *testing.T) {
 	opt := &bimg.Options{Width: 100, Height: 200, Force: true}
 	bag[SkropOptions] = opt
 	bag[SkropImage] = imagefiltertest.PortraitImage()
+	bag[SkropInit] = true
 
 	ctx := createContext(t, "GET", "url", imagefiltertest.PortraitImageFile, bag)
 

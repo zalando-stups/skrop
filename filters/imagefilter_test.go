@@ -47,16 +47,18 @@ func assertCorrectImageSize(r io.Reader, t *testing.T) {
 func TestFinalizeResponse(t *testing.T) {
 	fc := createDefaultContext(t, "doesNotMatter.com")
 	fc.FStateBag[SkropOptions] = &optionsTarget
+	fc.FStateBag[SkropInit] = true
 
 	FinalizeResponse(fc)
 
 	assertCorrectImageSize(fc.Response().Body, t)
 }
 
-func TestHandleResponseWithInvalidImage(t *testing.T) {
+func TestHandleResponse_InvalidImage(t *testing.T) {
 	fc := createDefaultContext(t, "doesNotMatter.com")
 	fc.FStateBag[SkropOptions] = &optionsTarget
 	fc.FStateBag[SkropImage] = bimg.NewImage([]byte("invalid image"))
+	fc.FStateBag[SkropInit] = true
 
 	FinalizeResponse(fc)
 
@@ -74,6 +76,37 @@ func TestHandleImageResponse(t *testing.T) {
 	HandleImageResponse(fc, &imageFilter)
 
 	assert.Equal(t, fc.FStateBag[SkropOptions], &optionsTarget)
+}
+
+func TestInitResponse_ok(t *testing.T) {
+	//given
+	emptyBag := make(map[string]interface{})
+	ctx := createContext(t, "GET", "zalando.de/image.jpg", imagefiltertest.PortraitImageFile, emptyBag)
+	buffer, _ := bimg.Read(imagefiltertest.PortraitImageFile)
+	original := bimg.NewImage(buffer)
+
+	//when
+	initResponse(ctx)
+
+	//then
+	image, ok := ctx.StateBag()[SkropImage].(*bimg.Image)
+	assert.True(t, ok)
+	oriSiz, _ := original.Size()
+	imgSiz, _ := image.Size()
+	assert.Equal(t, oriSiz, imgSiz)
+	_, ok = ctx.StateBag()[SkropOptions].(*bimg.Options)
+	assert.True(t, ok)
+}
+
+func TestInitResponse_ErrorReadingImg(t *testing.T) {
+	//given
+	emptyBag := make(map[string]interface{})
+	ctx := createContext(t, "GET", "zalando.de/image.jpg", "nonExisting.jpg", emptyBag)
+
+	//when
+	initResponse(ctx)
+
+	assert.Equal(t, http.StatusInternalServerError, ctx.Response().StatusCode)
 }
 
 func createDefaultContext(t *testing.T, url string) *filtertest.Context {

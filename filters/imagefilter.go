@@ -3,11 +3,11 @@ package filters
 import (
 	"bytes"
 	log "github.com/Sirupsen/logrus"
+	"github.com/zalando-incubator/skrop/messages"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	"io/ioutil"
 	"net/http"
-	"github.com/zalando-incubator/skrop/messages"
 )
 
 const (
@@ -18,6 +18,9 @@ const (
 	Center       = "center"
 	Quality      = 100
 	doNotEnlarge = "DO_NOT_ENLARGE"
+	SkropImage   = "skImage"
+	SkropOptions = "skOptions"
+	SkropInit    = "skInit"
 )
 
 var (
@@ -54,13 +57,20 @@ func errorResponse() *http.Response {
 }
 
 func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
-	//in case the response had an error fromt he backend or from a previous filter
+	//executed while processing the first filter
+	if _, ok := ctx.StateBag()[SkropInit]; !ok {
+		initResponse(ctx)
+		ctx.StateBag()[SkropInit] = true
+	}
+
+	//in case the response had an error from the backend or from a previous filter
 	if ctx.Response().StatusCode > 300 {
 		return
 	}
 
 	image, ok := ctx.StateBag()[SkropImage].(*bimg.Image)
 	if !ok {
+		//call the init func
 		log.Error("context state bag does not contains the key ", SkropImage)
 		ctx.Serve(errorResponse())
 		return
@@ -114,6 +124,10 @@ func FinalizeResponse(ctx filters.FilterContext) {
 		return
 	}
 
+	if _, ok := ctx.StateBag()[SkropInit]; !ok {
+		return
+	}
+
 	image := ctx.StateBag()[SkropImage].(*bimg.Image)
 	opts := ctx.StateBag()[SkropOptions].(*bimg.Options)
 
@@ -122,7 +136,7 @@ func FinalizeResponse(ctx filters.FilterContext) {
 		log.Error("failed to process image ", err.Error())
 		ctx.Serve(&http.Response{
 			StatusCode: http.StatusInternalServerError,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(err.Error())),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(messages.Error500)),
 		})
 		return
 	}
@@ -153,4 +167,38 @@ func applyDefaults(o *bimg.Options) *bimg.Options {
 		o.Quality = Quality
 	}
 	return o
+}
+
+func initResponse(ctx filters.FilterContext) {
+	rsp := ctx.Response()
+
+	defer rsp.Body.Close()
+
+	rsp.Header.Del("Content-Length")
+
+	buf, err := ioutil.ReadAll(rsp.Body)
+	imageBytesLength := len(buf)
+
+	log.Debug("Image bytes length: ", imageBytesLength)
+
+	if err != nil {
+		log.Error("failed to process image ", err.Error())
+		ctx.Serve(&http.Response{
+			StatusCode: http.StatusInternalServerError,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(messages.Error500)),
+		})
+		return
+	}
+
+	if imageBytesLength == 0 {
+		log.Error("original image is empty")
+		ctx.Serve(&http.Response{
+			StatusCode: http.StatusInternalServerError,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(messages.Error404)),
+		})
+		return
+	}
+
+	ctx.StateBag()[SkropImage] = bimg.NewImage(buf)
+	ctx.StateBag()[SkropOptions] = &bimg.Options{}
 }

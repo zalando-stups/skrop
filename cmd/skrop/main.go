@@ -119,7 +119,6 @@ func main() {
 			skropFilters.NewBlur(),
 			skropFilters.NewOverlayImage(),
 			skropFilters.NewSharpen(),
-			skropFilters.NewSetupResponse(),
 			skropFilters.NewFinalizeResponse(),
 		},
 		AccessLogDisabled:   true,

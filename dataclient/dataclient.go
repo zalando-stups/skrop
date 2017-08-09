@@ -11,7 +11,6 @@ import (
 type skropDataClient struct {
 	fileName string
 	prepend  *eskip.Filter
-	append   *eskip.Filter
 }
 
 func NewSkropDataClient(eskipFile string) routing.DataClient {
@@ -22,14 +21,9 @@ func NewSkropDataClient(eskipFile string) routing.DataClient {
 		Name: filters.FinalizeResponseName,
 		Args: emptyArgs,
 	}
-	post := &eskip.Filter{
-		Name: filters.SetupResponseName,
-		Args: emptyArgs,
-	}
 	return skropDataClient{
 		fileName: eskipFile,
 		prepend:  pre,
-		append:   post,
 	}
 }
 
@@ -47,17 +41,10 @@ func (s skropDataClient) LoadAll() ([]*eskip.Route, error) {
 	}
 
 	for _, route := range routes {
-
-		if route.BackendType != eskip.ShuntBackend {
-			route.Filters = append(append([]*eskip.Filter{s.prepend}, route.Filters...), s.append)
-		}
+		route.Filters = append([]*eskip.Filter{s.prepend}, route.Filters...)
 	}
 
 	return routes, nil
-}
-
-func containsImageFilter(route *eskip.Route) {
-
 }
 
 func (s skropDataClient) LoadUpdate() ([]*eskip.Route, []string, error) {
