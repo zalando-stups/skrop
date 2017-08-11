@@ -2,7 +2,7 @@ package filters
 
 import (
 	"bytes"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/zalando-incubator/skrop/messages"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
