@@ -166,6 +166,9 @@ func applyDefaults(o *bimg.Options) *bimg.Options {
 	if o.Quality == 0 {
 		o.Quality = Quality
 	}
+	if o.Background == bimg.ColorBlack {
+		o.Background = bimg.Color{R: 255, G: 255, B: 255}
+	}
 	return o
 }
 
