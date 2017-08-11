@@ -66,10 +66,6 @@ func TestHandleResponse_InvalidImage(t *testing.T) {
 }
 
 func TestHandleImageResponse(t *testing.T) {
-	imageReader := createSampleImageReader(t)
-	response := &http.Response{Body: imageReader}
-	response.Header = make(http.Header)
-	response.Header.Add("Content-Length", "100")
 	fc := createDefaultContext(t, "doesNotMatter.com")
 	imageFilter := imagefiltertest.FakeImageFilter(optionsTarget)
 
@@ -114,6 +110,7 @@ func createDefaultContext(t *testing.T, url string) *filtertest.Context {
 	bag := make(map[string]interface{})
 	bag[SkropImage] = bimg.NewImage(buffer)
 	bag[SkropOptions] = &bimg.Options{}
+	bag[SkropInit] = true
 	return createContext(t, "GET", url, imagefiltertest.PNGImageFile, bag)
 }
 

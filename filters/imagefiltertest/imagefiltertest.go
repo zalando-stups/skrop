@@ -35,6 +35,7 @@ func (s *FakeImageFilter) Merge(other *bimg.Options, self *bimg.Options) *bimg.O
 	other.Width = self.Width
 	other.Height = self.Height
 	other.Quality = self.Quality
+	other.Background = self.Background
 	return other
 }
 
