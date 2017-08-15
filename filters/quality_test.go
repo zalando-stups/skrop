@@ -3,6 +3,7 @@ package filters
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"gopkg.in/h2non/bimg.v1"
 	"testing"
 )
 
@@ -22,6 +23,31 @@ func TestNewQuality_CreateOptions(t *testing.T) {
 	options, _ := quality.CreateOptions(image)
 
 	assert.Equal(t, 75, options.Quality)
+}
+
+func TestNewQuality_CanBeMerged_True(t *testing.T) {
+	s := quality{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{Quality: 85}
+
+	assert.True(t, s.CanBeMerged(opt, self))
+}
+
+func TestNewQuality_CanBeMerged_False(t *testing.T) {
+	s := quality{}
+	opt := &bimg.Options{Quality: 27}
+	self := &bimg.Options{Quality: 85}
+
+	assert.False(t, s.CanBeMerged(opt, self))
+}
+
+func TestNewQuality_Merge(t *testing.T) {
+	s := quality{}
+	self := &bimg.Options{Quality: 85}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.Equal(t, self.Quality, opt.Quality)
 }
 
 func TestNewQuality_CreateFilter(t *testing.T) {

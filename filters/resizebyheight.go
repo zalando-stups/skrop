@@ -1,7 +1,7 @@
 package filters
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/zalando-incubator/skrop/parse"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
@@ -41,6 +41,15 @@ func (r *resizeByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error)
 
 	return &bimg.Options{
 		Height: r.height}, nil
+}
+
+func (s *resizeByHeight) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	return other.Height == 0 || other.Height == self.Height
+}
+
+func (s *resizeByHeight) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Height = self.Height
+	return other
 }
 
 func (r *resizeByHeight) CreateFilter(args []interface{}) (filters.Filter, error) {

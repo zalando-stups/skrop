@@ -106,7 +106,7 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 
 	// in case y overflows the image
 	if y < 0 || y+overSize.Height > origSize.Height {
-		return nil, errors.New("Error: the overlay image in placed outside the image area on the y axe")
+		return nil, errors.New("Error: the overlay image is placed outside the image area on the y axe")
 	}
 
 	switch r.horizontalGravity {
@@ -120,7 +120,7 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 
 	// in case x overflows the image
 	if x < 0 || x+overSize.Width > origSize.Width {
-		return nil, errors.New("Error: the overlay image in placed outside the image area on the x axe")
+		return nil, errors.New("Error: the overlay image is placed outside the image area on the x axe")
 	}
 
 	return &bimg.Options{WatermarkImage: bimg.WatermarkImage{Buf: overArr,
@@ -128,6 +128,25 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		Left:    x,
 		Top:     y,
 	}}, nil
+}
+
+func (s *overlay) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	zero := bimg.WatermarkImage{}
+
+	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
+	return equals(other.WatermarkImage, zero) || equals(other.WatermarkImage, self.WatermarkImage)
+}
+
+func equals(one bimg.WatermarkImage, two bimg.WatermarkImage) bool {
+	return one.Opacity == two.Opacity &&
+		one.Top == two.Top &&
+		one.Left == two.Left &&
+		len(one.Buf) == len(two.Buf)
+}
+
+func (s *overlay) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.WatermarkImage = self.WatermarkImage
+	return other
 }
 
 func readImage(file string) ([]byte, error) {

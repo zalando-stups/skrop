@@ -1,7 +1,7 @@
 package filters
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	"github.com/zalando-incubator/skrop/parse"
@@ -28,6 +28,18 @@ func (r *blur) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	blur := bimg.GaussianBlur{Sigma: r.Sigma, MinAmpl: r.MinAmpl}
 
 	return &bimg.Options{GaussianBlur: blur}, nil
+}
+
+func (r *blur) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	zero := bimg.GaussianBlur{}
+
+	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
+	return other.GaussianBlur == zero || other.GaussianBlur == self.GaussianBlur
+}
+
+func (r *blur) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.GaussianBlur = self.GaussianBlur
+	return other
 }
 
 func (r *blur) CreateFilter(args []interface{}) (filters.Filter, error) {

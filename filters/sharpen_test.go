@@ -4,6 +4,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
 	"testing"
+	"gopkg.in/h2non/bimg.v1"
 )
 
 func TestNewSharpen(t *testing.T) {
@@ -29,6 +30,31 @@ func TestSharpen_CreateOptions(t *testing.T) {
 	assert.Equal(t, float64(4), sha.Y3)
 	assert.Equal(t, float64(5), sha.M1)
 	assert.Equal(t, float64(6), sha.M2)
+}
+
+func TestSharpen_CanBeMerged_True(t *testing.T) {
+	s := sharpen{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{Sharpen: bimg.Sharpen{Radius: 1, X1: 2, Y2: 3, Y3: 4, M1: 5, M2: 6}}
+
+	assert.True(t, s.CanBeMerged(opt, self))
+}
+
+func TestSharpen_CanBeMerged_False(t *testing.T) {
+	s := sharpen{}
+	opt := &bimg.Options{Sharpen: bimg.Sharpen{Radius: 1, X1: 2, Y2: 3, Y3: 4, M1: 5, M2: 6}}
+	self := &bimg.Options{Sharpen: bimg.Sharpen{Radius: 9, X1: 8, Y2: 7, Y3: 6, M1: 5, M2: 4}}
+
+	assert.False(t, s.CanBeMerged(opt, self))
+}
+
+func TestSharpen_Merge(t *testing.T) {
+	s := sharpen{}
+	self := &bimg.Options{Sharpen: bimg.Sharpen{Radius: 1, X1: 2, Y2: 3, Y3: 4, M1: 5, M2: 6}}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.Equal(t, self.Sharpen, opt.Sharpen)
 }
 
 func TestSharpen_CreateFilter(t *testing.T) {
