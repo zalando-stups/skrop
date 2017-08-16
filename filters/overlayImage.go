@@ -134,7 +134,7 @@ func (s *overlay) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	zero := bimg.WatermarkImage{}
 
 	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
-	return equals(other.WatermarkImage, zero) || equals(other.WatermarkImage, self.WatermarkImage)
+	return other.Width == 0 && other.Height == 0 && (equals(other.WatermarkImage, zero) || equals(other.WatermarkImage, self.WatermarkImage))
 }
 
 func equals(one bimg.WatermarkImage, two bimg.WatermarkImage) bool {
