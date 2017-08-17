@@ -2,6 +2,8 @@ package filters
 
 import (
 	"bytes"
+	"errors"
+	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/zalando-incubator/skrop/messages"
 	"github.com/zalando/skipper/filters"
@@ -56,11 +58,11 @@ func errorResponse() *http.Response {
 	}
 }
 
-func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
+func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 
 	//in case the response had an error from the backend or from a previous filter
 	if ctx.Response().StatusCode > 300 {
-		return
+		return errors.New(fmt.Sprintf("processing skipped, as the backend/filter reported %d status code", ctx.Response().StatusCode))
 	}
 
 	//executed while processing the first filter
@@ -74,27 +76,27 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
 		//call the init func
 		log.Error("context state bag does not contains the key ", SkropImage)
 		ctx.Serve(errorResponse())
-		return
+		return errors.New("processing failed, image not exists in the state bag")
 	}
 
 	opt, err := f.CreateOptions(image)
 	if err != nil {
 		log.Error("Failed to create options ", err.Error())
 		ctx.Serve(errorResponse())
-		return
+		return err
 	}
 
 	opts, ok := ctx.StateBag()[SkropOptions].(*bimg.Options)
 	if !ok {
 		log.Error("context state bag does not contains the key ", SkropImage)
 		ctx.Serve(errorResponse())
-		return
+		return errors.New("processing failed, initialization of options not successful.")
 	}
 
 	if f.CanBeMerged(opts, opt) {
 		ctx.StateBag()[SkropOptions] = f.Merge(opts, opt)
 		log.Debug("Filter ", f, " merged in ", ctx.StateBag()[SkropOptions])
-		return
+		return nil
 	}
 
 	//transform the image
@@ -102,7 +104,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
 	if err != nil {
 		log.Error("Failed to process image ", err.Error())
 		ctx.Serve(errorResponse())
-		return
+		return err
 	}
 
 	// set opt in the stateBag
@@ -111,12 +113,12 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
 	if err != nil {
 		log.Error("Failed to create new options ", err.Error())
 		ctx.Serve(errorResponse())
-		return
+		return err
 	}
 
 	ctx.StateBag()[SkropImage] = newImage
 	ctx.StateBag()[SkropOptions] = newOption
-
+	return nil
 }
 
 func FinalizeResponse(ctx filters.FilterContext) {

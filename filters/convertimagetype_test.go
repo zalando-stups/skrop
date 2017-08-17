@@ -96,3 +96,17 @@ func TestConvertImageType_Response_WithOutExtension(t *testing.T) {
 	assert.Equal(t, rsp.Header.Get("Content-Disposition"), "inline;filename=bag.jpeg")
 	rsp.Body.Close()
 }
+
+func TestConvertImageType_Response_WithResponse304(t *testing.T) {
+	fc := createDefaultContext(t, "http://localhost:9090/images/bag.png")
+	fc.Request().RequestURI = "/images/bag.png"
+	fc.FResponse.StatusCode = 304
+	c := convertImageType{imageType: bimg.ImageType(1)}
+
+	c.Response(fc)
+	rsp := fc.FResponse
+	defer rsp.Body.Close()
+
+	assert.Equal(t, rsp.Header.Get("Content-Type"), "", "should not add header when the processing of image failed")
+	assert.Equal(t, rsp.Header.Get("Content-Disposition"), "", "should not add header when the processing of image failed")
+}

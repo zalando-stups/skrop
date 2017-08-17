@@ -69,9 +69,21 @@ func TestHandleImageResponse(t *testing.T) {
 	fc := createDefaultContext(t, "doesNotMatter.com")
 	imageFilter := imagefiltertest.FakeImageFilter(optionsTarget)
 
-	HandleImageResponse(fc, &imageFilter)
+	err := HandleImageResponse(fc, &imageFilter)
 
+	assert.Nil(t, err, "there should not be any error")
 	assert.Equal(t, fc.FStateBag[SkropOptions], &optionsTarget)
+}
+
+func TestHandleImageResponse_WithResponse304(t *testing.T) {
+	fc := createDefaultContext(t, "doesNotMatter.com")
+	imageFilter := imagefiltertest.FakeImageFilter(optionsTarget)
+
+	fc.FResponse.StatusCode = 304
+
+	err := HandleImageResponse(fc, &imageFilter)
+
+	assert.NotNil(t, err, "should not able to process when the backend response is 304")
 }
 
 func TestInitResponse_ok(t *testing.T) {

@@ -71,13 +71,14 @@ func (c *convertImageType) Request(ctx filters.FilterContext) {}
 
 func (c *convertImageType) Response(ctx filters.FilterContext) {
 
-	HandleImageResponse(ctx, c)
+	err := HandleImageResponse(ctx, c)
+
+	if err != nil {
+		return
+	}
 
 	resp := ctx.Response()
 
-	if resp.StatusCode > 300 {
-		return
-	}
 	fileType := bimg.ImageTypeName(c.imageType)
 
 	contentType := fmt.Sprintf("image/%s", fileType)
