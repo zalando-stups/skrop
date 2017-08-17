@@ -96,4 +96,3 @@ func TestConvertImageType_Response_WithOutExtension(t *testing.T) {
 	assert.Equal(t, rsp.Header.Get("Content-Disposition"), "inline;filename=bag.jpeg")
 	rsp.Body.Close()
 }
-

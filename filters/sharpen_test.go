@@ -3,8 +3,8 @@ package filters
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
-	"testing"
 	"gopkg.in/h2non/bimg.v1"
+	"testing"
 )
 
 func TestNewSharpen(t *testing.T) {

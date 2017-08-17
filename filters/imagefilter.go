@@ -57,15 +57,16 @@ func errorResponse() *http.Response {
 }
 
 func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) {
-	//executed while processing the first filter
-	if _, ok := ctx.StateBag()[SkropInit]; !ok {
-		initResponse(ctx)
-		ctx.StateBag()[SkropInit] = true
-	}
 
 	//in case the response had an error from the backend or from a previous filter
 	if ctx.Response().StatusCode > 300 {
 		return
+	}
+
+	//executed while processing the first filter
+	if _, ok := ctx.StateBag()[SkropInit]; !ok {
+		initResponse(ctx)
+		ctx.StateBag()[SkropInit] = true
 	}
 
 	image, ok := ctx.StateBag()[SkropImage].(*bimg.Image)

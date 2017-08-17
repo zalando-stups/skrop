@@ -9,9 +9,9 @@ import (
 	"os"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/zalando-incubator/skrop/dataclient"
 	"github.com/zalando/skipper/proxy"
 	"github.com/zalando/skipper/routing"
-	"github.com/zalando-incubator/skrop/dataclient"
 )
 
 const (

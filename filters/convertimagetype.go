@@ -75,6 +75,9 @@ func (c *convertImageType) Response(ctx filters.FilterContext) {
 
 	resp := ctx.Response()
 
+	if resp.StatusCode > 300 {
+		return
+	}
 	fileType := bimg.ImageTypeName(c.imageType)
 
 	contentType := fmt.Sprintf("image/%s", fileType)

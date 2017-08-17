@@ -1,11 +1,11 @@
 package filters
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
 	"gopkg.in/h2non/bimg.v1"
 	"io/ioutil"
+	"testing"
 )
 
 func TestNewFinalizeResponse(t *testing.T) {
