@@ -2,9 +2,9 @@ package filters
 
 import (
 	log "github.com/sirupsen/logrus"
+	"github.com/zalando-incubator/skrop/parse"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"github.com/zalando-incubator/skrop/parse"
 )
 
 // For infomations about the parameters meanings and default values have a look here:
@@ -51,7 +51,6 @@ func (s *sharpen) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.Sharpen = self.Sharpen
 	return other
 }
-
 
 func (r *sharpen) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error

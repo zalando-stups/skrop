@@ -2,9 +2,9 @@ package filters
 
 import (
 	log "github.com/sirupsen/logrus"
+	"github.com/zalando-incubator/skrop/parse"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"github.com/zalando-incubator/skrop/parse"
 )
 
 const BlurName = "blur"

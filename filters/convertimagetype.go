@@ -71,7 +71,11 @@ func (c *convertImageType) Request(ctx filters.FilterContext) {}
 
 func (c *convertImageType) Response(ctx filters.FilterContext) {
 
-	HandleImageResponse(ctx, c)
+	err := HandleImageResponse(ctx, c)
+
+	if err != nil {
+		return
+	}
 
 	resp := ctx.Response()
 
