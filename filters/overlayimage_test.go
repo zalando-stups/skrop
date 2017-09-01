@@ -89,42 +89,6 @@ func TestOverlay_CreateOptions_CC(t *testing.T) {
 	assert.Equal(t, int(size.Width/2)-int(overSize.Width/2), over.Left)
 }
 
-func TestOverlay_CreateOptions_OverflowY(t *testing.T) {
-	image := imagefiltertest.LandscapeImage()
-	size, _ := image.Size()
-	overlay := &overlay{file: "../images/star.png",
-		opacity:           0.9,
-		horizontalGravity: bimg.GravityCentre,
-		verticalGravity:   bimg.GravityCentre,
-		leftMargin:        0,
-		rightMargin:       0,
-		topMargin:         size.Height,
-		bottomMargin:      0,
-	}
-
-	options, _ := overlay.CreateOptions(image)
-
-	assert.Nil(t, options)
-}
-
-func TestOverlay_CreateOptions_OverflowX(t *testing.T) {
-	image := imagefiltertest.LandscapeImage()
-	size, _ := image.Size()
-	overlay := &overlay{file: "../images/star.png",
-		opacity:           0.9,
-		horizontalGravity: bimg.GravityCentre,
-		verticalGravity:   bimg.GravityCentre,
-		leftMargin:        size.Width - 5,
-		rightMargin:       0,
-		topMargin:         0,
-		bottomMargin:      0,
-	}
-
-	options, _ := overlay.CreateOptions(image)
-
-	assert.Nil(t, options)
-}
-
 func TestOverlay_CanBeMerged_True(t *testing.T) {
 	s := overlay{}
 	opt := &bimg.Options{}
