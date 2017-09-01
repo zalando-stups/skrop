@@ -1,7 +1,6 @@
 package filters
 
 import (
-	"errors"
 	"github.com/zalando-incubator/skrop/parse"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
@@ -104,11 +103,6 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		y = origSize.Height - r.bottomMargin - overSize.Height
 	}
 
-	// in case y overflows the image
-	if y < 0 || y+overSize.Height > origSize.Height {
-		return nil, errors.New("Error: the overlay image is placed outside the image area on the y axe")
-	}
-
 	switch r.horizontalGravity {
 	case bimg.GravityWest:
 		x = r.leftMargin
@@ -116,11 +110,6 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		x = r.leftMargin + int(float64(origSize.Width-r.leftMargin-r.rightMargin)/2) - int(float64(overSize.Width)/2)
 	case bimg.GravityEast:
 		x = origSize.Width - r.rightMargin - overSize.Width
-	}
-
-	// in case x overflows the image
-	if x < 0 || x+overSize.Width > origSize.Width {
-		return nil, errors.New("Error: the overlay image is placed outside the image area on the x axe")
 	}
 
 	return &bimg.Options{WatermarkImage: bimg.WatermarkImage{Buf: overArr,
