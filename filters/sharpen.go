@@ -1,10 +1,10 @@
 package filters
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	"github.com/zalando-incubator/skrop/parse"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"github.com/zalando-incubator/skrop/parse"
 )
 
 // For infomations about the parameters meanings and default values have a look here:
@@ -38,6 +38,18 @@ func (r *sharpen) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 
 	return &bimg.Options{
 		Sharpen: sha}, nil
+}
+
+func (s *sharpen) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	zero := bimg.Sharpen{}
+
+	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
+	return other.Sharpen == zero || other.Sharpen == self.Sharpen
+}
+
+func (s *sharpen) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Sharpen = self.Sharpen
+	return other
 }
 
 func (r *sharpen) CreateFilter(args []interface{}) (filters.Filter, error) {

@@ -8,8 +8,10 @@ import (
 	"github.com/zalando/skipper/filters"
 	"os"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	"github.com/zalando-incubator/skrop/dataclient"
 	"github.com/zalando/skipper/proxy"
+	"github.com/zalando/skipper/routing"
 )
 
 const (
@@ -99,8 +101,10 @@ func main() {
 	log.Debug(fmt.Sprintf("Using routes-file %s", routesFile))
 
 	o := skipper.Options{
-		Address:    address,
-		RoutesFile: routesFile,
+		Address: address,
+		CustomDataClients: []routing.DataClient{
+			dataclient.NewSkropDataClient(routesFile),
+		},
 		CustomFilters: []filters.Spec{
 			skropFilters.NewResize(),
 			skropFilters.NewCrop(),
@@ -114,7 +118,9 @@ func main() {
 			skropFilters.NewConvertImageType(),
 			skropFilters.NewBlur(),
 			skropFilters.NewOverlayImage(),
-			skropFilters.NewSharpen()},
+			skropFilters.NewSharpen(),
+			skropFilters.NewFinalizeResponse(),
+		},
 		AccessLogDisabled:   true,
 		ProxyOptions:        proxy.OptionsPreserveOriginal,
 		CertPathTLS:         certPathTLS,

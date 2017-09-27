@@ -29,6 +29,33 @@ func TestCropByWidth_CreateOptions(t *testing.T) {
 	assert.Equal(t, bimg.GravityNorth, options.Gravity)
 }
 
+func TestCropByWidth_CanBeMerged_True(t *testing.T) {
+	s := cropByWidth{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{Width: 100, Gravity: 2, Crop: true}
+
+	assert.True(t, s.CanBeMerged(opt, self))
+}
+
+func TestCropByWidth_CanBeMerged_False(t *testing.T) {
+	s := cropByWidth{}
+	opt := &bimg.Options{Width: 100, Gravity: 2, Crop: true}
+	self := &bimg.Options{Width: 225, Gravity: 2, Crop: true}
+
+	assert.False(t, s.CanBeMerged(opt, self))
+}
+
+func TestCropByWidth_Merge(t *testing.T) {
+	s := cropByWidth{}
+	self := &bimg.Options{Width: 100, Gravity: 2, Crop: true}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.Equal(t, self.Width, opt.Width)
+	assert.Equal(t, self.Gravity, opt.Gravity)
+	assert.Equal(t, self.Crop, opt.Crop)
+}
+
 func TestCropByWidth_CreateFilter(t *testing.T) {
 	imagefiltertest.TestCreate(t, NewCropByWidth, []imagefiltertest.CreateTestItem{{
 		Msg:  "no args",

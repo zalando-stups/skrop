@@ -1,9 +1,10 @@
 package filters
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"gopkg.in/h2non/bimg.v1"
+	"testing"
 )
 
 func TestNewBlur(t *testing.T) {
@@ -36,6 +37,31 @@ func TestBlur_CreateOptions_ImplicitParam(t *testing.T) {
 
 	assert.Equal(t, float64(19), blu.Sigma)
 	assert.Equal(t, float64(0), blu.MinAmpl)
+}
+
+func TestBlur_CanBeMerged_True(t *testing.T) {
+	s := blur{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{GaussianBlur: bimg.GaussianBlur{Sigma: 0.5, MinAmpl: 1.7}}
+
+	assert.True(t, s.CanBeMerged(opt, self))
+}
+
+func TestBlur_CanBeMerged_False(t *testing.T) {
+	s := blur{}
+	opt := &bimg.Options{GaussianBlur: bimg.GaussianBlur{Sigma: 0.7, MinAmpl: 7.3}}
+	self := &bimg.Options{GaussianBlur: bimg.GaussianBlur{Sigma: 0.5, MinAmpl: 1.7}}
+
+	assert.False(t, s.CanBeMerged(opt, self))
+}
+
+func TestBlur_Merge(t *testing.T) {
+	s := blur{}
+	self := &bimg.Options{GaussianBlur: bimg.GaussianBlur{Sigma: 0.5, MinAmpl: 1.7}}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.Equal(t, self.GaussianBlur, opt.GaussianBlur)
 }
 
 func TestBlur_CreateFilter(t *testing.T) {

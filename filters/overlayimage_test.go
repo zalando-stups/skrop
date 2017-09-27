@@ -38,8 +38,8 @@ func TestOverlay_CreateOptions_SE(t *testing.T) {
 
 	assert.Equal(t, overArr, over.Buf)
 	assert.Equal(t, float32(0.9), over.Opacity)
-	assert.Equal(t, size.Height - overSize.Height - 40, over.Top)
-	assert.Equal(t, size.Width - overSize.Width - 20, over.Left)
+	assert.Equal(t, size.Height-overSize.Height-40, over.Top)
+	assert.Equal(t, size.Width-overSize.Width-20, over.Left)
 }
 
 func TestOverlay_CreateOptions_NW(t *testing.T) {
@@ -85,44 +85,33 @@ func TestOverlay_CreateOptions_CC(t *testing.T) {
 
 	assert.Equal(t, overArr, over.Buf)
 	assert.Equal(t, float32(0.9), over.Opacity)
-	assert.Equal(t, int(size.Height / 2) - int(overSize.Height / 2), over.Top)
-	assert.Equal(t, int(size.Width / 2) - int(overSize.Width / 2), over.Left)
+	assert.Equal(t, int(size.Height/2)-int(overSize.Height/2), over.Top)
+	assert.Equal(t, int(size.Width/2)-int(overSize.Width/2), over.Left)
 }
 
-func TestOverlay_CreateOptions_OverflowY(t *testing.T) {
-	image := imagefiltertest.LandscapeImage()
-	size, _ := image.Size()
-	overlay := &overlay{file: "../images/star.png",
-		opacity:           0.9,
-		horizontalGravity: bimg.GravityCentre,
-		verticalGravity:   bimg.GravityCentre,
-		leftMargin:        0,
-		rightMargin:       0,
-		topMargin:         size.Height,
-		bottomMargin:      0,
-	}
+func TestOverlay_CanBeMerged_True(t *testing.T) {
+	s := overlay{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{WatermarkImage: bimg.WatermarkImage{Opacity: 3.4, Left: 10, Top: 20}}
 
-	options, _ := overlay.CreateOptions(image)
-
-	assert.Nil(t, options)
+	assert.True(t, s.CanBeMerged(opt, self))
 }
 
-func TestOverlay_CreateOptions_OverflowX(t *testing.T) {
-	image := imagefiltertest.LandscapeImage()
-	size, _ := image.Size()
-	overlay := &overlay{file: "../images/star.png",
-		opacity:           0.9,
-		horizontalGravity: bimg.GravityCentre,
-		verticalGravity:   bimg.GravityCentre,
-		leftMargin:        size.Width - 5,
-		rightMargin:       0,
-		topMargin:         0,
-		bottomMargin:      0,
-	}
+func TestOverlay_CanBeMerged_False(t *testing.T) {
+	s := overlay{}
+	opt := &bimg.Options{WatermarkImage: bimg.WatermarkImage{Opacity: 3.7, Left: 20, Top: 30}}
+	self := &bimg.Options{WatermarkImage: bimg.WatermarkImage{Opacity: 3.4, Left: 10, Top: 20}}
 
-	options, _ := overlay.CreateOptions(image)
+	assert.False(t, s.CanBeMerged(opt, self))
+}
 
-	assert.Nil(t, options)
+func TestOverlay_Merge(t *testing.T) {
+	s := overlay{}
+	self := &bimg.Options{WatermarkImage: bimg.WatermarkImage{Opacity: 3.4, Left: 10, Top: 20}}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.True(t, equals(opt.WatermarkImage, self.WatermarkImage))
 }
 
 func TestOverlay_CreateFilter(t *testing.T) {

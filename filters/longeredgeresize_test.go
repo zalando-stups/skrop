@@ -5,6 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"gopkg.in/h2non/bimg.v1"
 )
 
 func TestNewLongerEdgeResize(t *testing.T) {
@@ -33,6 +34,31 @@ func TestLongerEdgeResize_CreateOptions_Portrait(t *testing.T) {
 
 	assert.Equal(t, 0, options.Width)
 	assert.Equal(t, 800, options.Height)
+}
+
+func TestLongerEdgeResize_CanBeMerged_True(t *testing.T) {
+	s := longerEdgeResize{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{Width: 100}
+
+	assert.True(t, s.CanBeMerged(opt, self))
+}
+
+func TestLongerEdgeResize_CanBeMerged_False(t *testing.T) {
+	s := longerEdgeResize{}
+	opt := &bimg.Options{Height: 350}
+	self := &bimg.Options{Height: 365}
+
+	assert.False(t, s.CanBeMerged(opt, self))
+}
+
+func TestLongerEdgeResize_Merge(t *testing.T) {
+	s := longerEdgeResize{}
+	self := &bimg.Options{Width: 100}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.Equal(t, self.Width, opt.Width)
 }
 
 func TestLongerEdgeResize_CreateFilter(t *testing.T) {

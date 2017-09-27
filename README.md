@@ -48,7 +48,6 @@ the resized image back in the response.
 
 
 ## Filters
-
 Skrop provides a set of filters, which you can use within the routes:
 
 * **longerEdgeResize(size)** — resizes the image to have the longer edge as specified, while at the same time preserving the aspect ratio 
@@ -64,10 +63,19 @@ Skrop provides a set of filters, which you can use within the routes:
 * **blur(sigma, min_ampl)** — blurs the image (for info see [here](http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/libvips-convolution.html#vips-gaussblur))
 * **imageOverlay(filename, opacity, gravity, opt-top-margin, opt-right-margin, opt-bottom-margin, opt-left-margin)** — puts an image onverlay over the required image
 
+### About filters
+The eskip file defines a list of configuration. Every configuration is composed by a route and a list of filters to
+apply for that specific route. Skrop adds by default two filters (setupResponse() and finalizeResponse()).
+The filter setupResponse() initialize the response by adding in the context the image received from the backend.
+The finalizeResponse() needs to be added at the end, because it triggers the last transformation of the image.
+
+Because of performance, each filter does not trigger a transformation of the image, but if possible it is merged with
+the result of the previous filters. The image is actually transformed every time the filter cannot be merged with the
+previous one e.g. both edit the same attribute and also at the end of the filter chain by the finalizeResponse filter.
+
 ## Packaging
 In order to package skrop for production, you're going to need [Docker](https://docs.docker.com).
 To build a Docker image, just run the build script (the arguments are optional):
-
 
 ```
 make docker version=1.0.0 routes_file=eskip/sample.eskip docker_tag=zalando-incubator/skrop

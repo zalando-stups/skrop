@@ -1,10 +1,10 @@
 package filters
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	"github.com/zalando-incubator/skrop/parse"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
-	"github.com/zalando-incubator/skrop/parse"
 )
 
 const CropByHeightName = "cropByHeight"
@@ -36,6 +36,19 @@ func (c *cropByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		Height:  c.height,
 		Gravity: cropTypeToGravity[c.cropType],
 		Crop:    true}, nil
+}
+
+func (s *cropByHeight) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	return (other.Width == 0 && other.Height == 0 && !other.Crop) ||
+		(other.Width == self.Width && other.Height == self.Height && other.Crop == self.Crop)
+}
+
+func (s *cropByHeight) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Width = self.Width
+	other.Height = self.Height
+	other.Gravity = self.Gravity
+	other.Crop = self.Crop
+	return other
 }
 
 func (c *cropByHeight) CreateFilter(args []interface{}) (filters.Filter, error) {

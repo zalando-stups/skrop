@@ -1,7 +1,6 @@
 package filters
 
 import (
-	"errors"
 	"github.com/zalando-incubator/skrop/parse"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
@@ -104,11 +103,6 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		y = origSize.Height - r.bottomMargin - overSize.Height
 	}
 
-	// in case y overflows the image
-	if y < 0 || y+overSize.Height > origSize.Height {
-		return nil, errors.New("Error: the overlay image in placed outside the image area on the y axe")
-	}
-
 	switch r.horizontalGravity {
 	case bimg.GravityWest:
 		x = r.leftMargin
@@ -118,16 +112,30 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		x = origSize.Width - r.rightMargin - overSize.Width
 	}
 
-	// in case x overflows the image
-	if x < 0 || x+overSize.Width > origSize.Width {
-		return nil, errors.New("Error: the overlay image in placed outside the image area on the x axe")
-	}
-
 	return &bimg.Options{WatermarkImage: bimg.WatermarkImage{Buf: overArr,
 		Opacity: float32(r.opacity),
 		Left:    x,
 		Top:     y,
 	}}, nil
+}
+
+func (s *overlay) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	zero := bimg.WatermarkImage{}
+
+	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
+	return other.Width == 0 && other.Height == 0 && (equals(other.WatermarkImage, zero) || equals(other.WatermarkImage, self.WatermarkImage))
+}
+
+func equals(one bimg.WatermarkImage, two bimg.WatermarkImage) bool {
+	return one.Opacity == two.Opacity &&
+		one.Top == two.Top &&
+		one.Left == two.Left &&
+		len(one.Buf) == len(two.Buf)
+}
+
+func (s *overlay) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.WatermarkImage = self.WatermarkImage
+	return other
 }
 
 func readImage(file string) ([]byte, error) {
