@@ -4,6 +4,10 @@ version ?= latest
 routes_file ?= ./eskip/sample.eskip
 docker_tag ?= zalando-incubator/skrop
 
+update-deps:
+	go get -t github.com/...
+	godep update github.com/...
+
 godep:
 	godep restore
 
