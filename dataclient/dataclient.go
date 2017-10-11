@@ -2,7 +2,7 @@ package dataclient
 
 import (
 	log "github.com/sirupsen/logrus"
-	"github.com/zalando-incubator/skrop/filters"
+	"github.com/zalando-stups/skrop/filters"
 	"github.com/zalando/skipper/eskip"
 	"github.com/zalando/skipper/eskipfile"
 	"github.com/zalando/skipper/routing"

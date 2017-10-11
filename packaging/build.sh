@@ -2,9 +2,9 @@
 
 readonly DOCKER_IMAGE_VERSION=${1-"latest"}
 readonly ROUTES_FILE=${2-"eskip/sample.eskip"}
-readonly DOCKER_IMAGE_NAME=${3-"zalando-incubator/skrop"}
+readonly DOCKER_IMAGE_NAME=${3-"zalando-stups/skrop"}
 
-readonly GO_PROJECT_NAME="github.com/zalando-incubator/skrop"
+readonly GO_PROJECT_NAME="github.com/zalando-stups/skrop"
 
 function make_build_image() {
   docker build -t "$DOCKER_IMAGE_NAME-build" packaging/ \

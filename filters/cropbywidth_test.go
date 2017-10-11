@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"github.com/zalando-stups/skrop/filters/imagefiltertest"
 	"gopkg.in/h2non/bimg.v1"
 )
 
