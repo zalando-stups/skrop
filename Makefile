@@ -2,7 +2,11 @@
 
 version ?= latest
 routes_file ?= ./eskip/sample.eskip
-docker_tag ?= zalando-incubator/skrop
+docker_tag ?= zalando-stups/skrop
+
+update-deps:
+	go get -t github.com/...
+	godep update github.com/...
 
 godep:
 	godep restore
@@ -14,7 +18,7 @@ docker:
 	./packaging/build.sh $(version) $(routes_file) $(docker_tag)
 
 docker-run:
-	docker run --rm -p 9090:9090 zalando-incubator/skrop -verbose
+	docker run --rm -p 9090:9090 zalando-stups/skrop -verbose
 
 test:
 	go test ./...

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	log "github.com/sirupsen/logrus"
-	"github.com/zalando-incubator/skrop/messages"
+	"github.com/zalando-stups/skrop/messages"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	"io/ioutil"
