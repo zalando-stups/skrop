@@ -7,18 +7,18 @@ branches:
 
 language: go
 go:
-  - 1.9.x
+  - 1.9.2
 
 env:
-- VIPS_VERSION=8.5.9
+- VIPS_VERSION=8.6.0
 
 before_install:
 - ./packaging/install-vips.sh
 
 install:
-- go get github.com/tools/godep
+- go get github.com/Masterminds/glide
 - go get github.com/wadey/gocovmerge
-- godep restore
+- glide install
 script:
 - ./.travis/test.sh
 after_success:

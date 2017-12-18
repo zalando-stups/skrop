@@ -18,6 +18,9 @@ const (
 	heightTarget = 200
 )
 
+type FakeImageFilter bimg.Options
+
+
 var optionsTarget = bimg.Options{
 	Width:  widthTarget,
 	Height: heightTarget,
@@ -141,4 +144,22 @@ func createContext(t *testing.T, method string, url string, image string, stateB
 	}
 
 	return &filtertest.Context{FResponse: response, FRequest: req, FStateBag: stateBag}
+}
+
+func (f *FakeImageFilter) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
+	options := bimg.Options(*s)
+	return &options, nil
+}
+
+func (f *FakeImageFilter) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	return (other.Width == 0 && other.Height == 0) ||
+		(other.Width == self.Width && other.Height == self.Height)
+}
+
+func (f *FakeImageFilter) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Width = self.Width
+	other.Height = self.Height
+	other.Quality = self.Quality
+	other.Background = self.Background
+	return other
 }

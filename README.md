@@ -24,11 +24,37 @@ Get the Skrop sources:
     go get github.com/zalando-stups/skrop
 
 ### Install dependencies:
+
+#### System dependencies
+
+The [vips](https://github.com/jcupitt/libvips) library needs to be installed for Skrop to build.
+
+On macOS, that can be easily done using `brew`.
+
+```bash
+brew install vips
+```
+
+On a Linux machine, use the provided script.
+
+```bash
+run packaging/install-vips.sh
+```
+
+#### GO dependencies
+
+Only on macOS, you have to manually install _Glide_ using _Brew_.
+```bash
+brew install glide
+```
+
+Then, for all.
 ```
 ./packaging/build.sh
-go get github.com/tools/godep
+go get github.com/Masterminds/glide
 go get ./cmd/skrop/
 ```
+
 ### Run Skrop
 ```
 go run cmd/skrop/main.go -routes-file eskip/sample.eskip -verbose
@@ -49,7 +75,7 @@ http://localhost:9090/images/S/big-ben.jpg
 ```
 
 Here is how a route from the `sample.eskip` file would look like:
- 
+
 ```
 small: Path("/images/S/:image")
   -> modPath("^/images/S", "/images")
@@ -59,14 +85,14 @@ small: Path("/images/S/:image")
 
 What it means, is that when somebody does a `GET` to `http://skrop.url/images/S/myimage.jpg`,
 Skrop will call `http://localhost:9090/images/myimage.jpg` to retrieve
-the image from there, resize it, so that its longer edge is 800px and return 
+the image from there, resize it, so that its longer edge is 800px and return
 the resized image back in the response.
 
 
 ## Filters
 Skrop provides a set of filters, which you can use within the routes:
 
-* **longerEdgeResize(size)** — resizes the image to have the longer edge as specified, while at the same time preserving the aspect ratio 
+* **longerEdgeResize(size)** — resizes the image to have the longer edge as specified, while at the same time preserving the aspect ratio
 * **crop(width, height, type)** — crops the image to have the specified width and height the type can be "north", "south", "east" and "west"
 * **cropByHeight(height, type)** — crops the image to have the specified height
 * **cropByWidth(width, type)** — crops the image to have the specified width

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-readonly VIPS_VERSION="8.5.9"
+readonly VIPS_VERSION="8.6.0"
 readonly VIPS_SOURCE="https://github.com/jcupitt/libvips/releases/download"
 
 readonly IS_UBUNTU=$(cat /etc/*-release | grep -o -m 1 ubuntu)
