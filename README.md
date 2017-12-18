@@ -7,6 +7,22 @@ Skrop is a media service based on [Skipper](https://github.com/zalando/skipper) 
 In order to be able to use Skrop, you have to be familiar with how
 [Skipper](https://github.com/zalando/skipper) works.
 
+### Getting started
+
+Skrop is 'go get' compatible. If needed, create a Go workspace first:
+
+    mkdir ~/go-workspace
+    cd ~/go-workspace
+    export GOPATH=$(pwd)
+
+This can be set up in the BASH profile (`~/.bash_profile` or `~/.bashrc`)
+
+    export GOPATH=~/go-workspace
+
+Get the Skrop sources:
+
+    go get github.com/zalando-stups/skrop
+
 ### Install dependencies:
 ```
 ./packaging/build.sh
