@@ -26,22 +26,22 @@ func (f *resizeByHeight) Name() string {
 }
 
 func (f *resizeByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for resize by width ", r)
+	log.Debug("Create options for resize by width ", f)
 
-	if !r.enlarge {
+	if !f.enlarge {
 		size, err := image.Size()
 		if err != nil {
 			return nil, err
 		}
 
 		// enlargement not allowed here
-		if size.Height <= r.height {
+		if size.Height <= f.height {
 			return &bimg.Options{}, nil
 		}
 	}
 
 	return &bimg.Options{
-		Height: r.height}, nil
+		Height: f.height}, nil
 }
 
 func (f *resizeByHeight) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
@@ -60,14 +60,14 @@ func (f *resizeByHeight) CreateFilter(args []interface{}) (filters.Filter, error
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &resizeByHeight{}
+	c := &resizeByHeight{}
 
-	f.height, err = parse.EskipIntArg(args[0])
+	c.height, err = parse.EskipIntArg(args[0])
 	if err != nil {
 		return nil, err
 	}
 
-	f.enlarge = true
+	c.enlarge = true
 
 	if len(args) == 2 {
 		cons, err := parse.EskipStringArg(args[1])
@@ -75,14 +75,14 @@ func (f *resizeByHeight) CreateFilter(args []interface{}) (filters.Filter, error
 			return nil, err
 		}
 
-		f.enlarge = !(cons == doNotEnlarge)
+		c.enlarge = !(cons == doNotEnlarge)
 	}
 
-	return f, nil
+	return c, nil
 }
 
 func (f *resizeByHeight) Request(ctx filters.FilterContext) {}
 
 func (f *resizeByHeight) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, r)
+	HandleImageResponse(ctx, f)
 }

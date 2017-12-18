@@ -70,7 +70,7 @@ func TestHandleResponse_InvalidImage(t *testing.T) {
 
 func TestHandleImageResponse(t *testing.T) {
 	fc := createDefaultContext(t, "doesNotMatter.com")
-	imageFilter := imagefiltertest.FakeImageFilter(optionsTarget)
+	imageFilter := FakeImageFilter(optionsTarget)
 
 	err := HandleImageResponse(fc, &imageFilter)
 
@@ -80,7 +80,7 @@ func TestHandleImageResponse(t *testing.T) {
 
 func TestHandleImageResponse_WithResponse304(t *testing.T) {
 	fc := createDefaultContext(t, "doesNotMatter.com")
-	imageFilter := imagefiltertest.FakeImageFilter(optionsTarget)
+	imageFilter := FakeImageFilter(optionsTarget)
 
 	fc.FResponse.StatusCode = 304
 
@@ -147,7 +147,7 @@ func createContext(t *testing.T, method string, url string, image string, stateB
 }
 
 func (f *FakeImageFilter) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
-	options := bimg.Options(*s)
+	options := bimg.Options(*f)
 	return &options, nil
 }
 

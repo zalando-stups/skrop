@@ -25,7 +25,7 @@ func (f *longerEdgeResize) Name() string {
 }
 
 func (f *longerEdgeResize) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for longer edge resize ", r)
+	log.Debug("Create options for longer edge resize ", f)
 
 	imageSize, err := image.Size()
 
@@ -35,11 +35,11 @@ func (f *longerEdgeResize) CreateOptions(image *bimg.Image) (*bimg.Options, erro
 
 	if imageSize.Width > imageSize.Height {
 		return &bimg.Options{
-			Width: r.size}, nil
+			Width: f.size}, nil
 	}
 
 	return &bimg.Options{
-			Height: r.size}, nil
+			Height: f.size}, nil
 }
 
 func (f *longerEdgeResize) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
@@ -74,19 +74,19 @@ func (f *longerEdgeResize) CreateFilter(args []interface{}) (filters.Filter, err
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &longerEdgeResize{}
+	c := &longerEdgeResize{}
 
-	f.size, err = parse.EskipIntArg(args[0])
+	c.size, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
 	}
 
-	return f, nil
+	return c, nil
 }
 
 func (f *longerEdgeResize) Request(ctx filters.FilterContext) {}
 
 func (f *longerEdgeResize) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, r)
+	HandleImageResponse(ctx, f)
 }

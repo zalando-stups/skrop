@@ -30,12 +30,12 @@ func (f *resize) Name() string {
 }
 
 func (f *resize) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for resize ", r)
+	log.Debug("Create options for resize ", f)
 
-	if !r.keepAspectRatio {
+	if !f.keepAspectRatio {
 		return &bimg.Options{
-			Width:  r.width,
-			Height: r.height,
+			Width:  f.width,
+			Height: f.height,
 			Force:  true}, nil
 	}
 
@@ -45,16 +45,16 @@ func (f *resize) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	}
 
 	// calculate height keeping width
-	ht := int(math.Floor(float64(size.Height*r.width) / float64(size.Width)))
+	ht := int(math.Floor(float64(size.Height*f.width) / float64(size.Width)))
 
 	// if height is less or equal than desired, return transform by width
-	if ht <= r.height {
+	if ht <= f.height {
 		return &bimg.Options{
-			Width: r.width}, nil
+			Width: f.width}, nil
 	}
 	// otherwise transform by height
 	return &bimg.Options{
-		Height: r.height}, nil
+		Height: f.height}, nil
 
 }
 
@@ -76,15 +76,15 @@ func (f *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &resize{}
+	c := &resize{}
 
-	f.width, err = parse.EskipIntArg(args[0])
+	c.width, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
 	}
 
-	f.height, err = parse.EskipIntArg(args[1])
+	c.height, err = parse.EskipIntArg(args[1])
 
 	if err != nil {
 		return nil, err
@@ -96,17 +96,17 @@ func (f *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 			return nil, err
 		}
 
-		f.keepAspectRatio = !(ratio == ignoreAspectRatioStr)
+		c.keepAspectRatio = !(ratio == ignoreAspectRatioStr)
 
 	} else {
-		f.keepAspectRatio = true
+		c.keepAspectRatio = true
 	}
 
-	return f, nil
+	return c, nil
 }
 
 func (f *resize) Request(ctx filters.FilterContext) {}
 
 func (f *resize) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, r)
+	HandleImageResponse(ctx, f)
 }

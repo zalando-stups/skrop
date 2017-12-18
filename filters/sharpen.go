@@ -32,9 +32,9 @@ func (f *sharpen) Name() string {
 }
 
 func (f *sharpen) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for sharpen ", r)
+	log.Debug("Create options for sharpen ", f)
 
-	sha := bimg.Sharpen{Radius: r.Radius, X1: r.X1, Y2: r.Y2, Y3: r.Y3, M1: r.M1, M2: r.M2}
+	sha := bimg.Sharpen{Radius: f.Radius, X1: f.X1, Y2: f.Y2, Y3: f.Y3, M1: f.M1, M2: f.M2}
 
 	return &bimg.Options{
 		Sharpen: sha}, nil
@@ -59,43 +59,43 @@ func (f *sharpen) CreateFilter(args []interface{}) (filters.Filter, error) {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &sharpen{}
+	r := &sharpen{}
 
-	f.Radius, err = parse.EskipIntArg(args[0])
+	r.Radius, err = parse.EskipIntArg(args[0])
 	if err != nil {
 		return nil, err
 	}
 
-	f.X1, err = parse.EskipFloatArg(args[1])
+	r.X1, err = parse.EskipFloatArg(args[1])
 	if err != nil {
 		return nil, err
 	}
 
-	f.Y2, err = parse.EskipFloatArg(args[2])
+	r.Y2, err = parse.EskipFloatArg(args[2])
 	if err != nil {
 		return nil, err
 	}
 
-	f.Y3, err = parse.EskipFloatArg(args[3])
+	r.Y3, err = parse.EskipFloatArg(args[3])
 	if err != nil {
 		return nil, err
 	}
 
-	f.M1, err = parse.EskipFloatArg(args[4])
+	r.M1, err = parse.EskipFloatArg(args[4])
 	if err != nil {
 		return nil, err
 	}
 
-	f.M2, err = parse.EskipFloatArg(args[5])
+	r.M2, err = parse.EskipFloatArg(args[5])
 	if err != nil {
 		return nil, err
 	}
 
-	return f, nil
+	return r, nil
 }
 
 func (f *sharpen) Request(ctx filters.FilterContext) {}
 
 func (f *sharpen) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, r)
+	HandleImageResponse(ctx, f)
 }

@@ -25,7 +25,7 @@ func (f *cropByWidth) Name() string {
 }
 
 func (f *cropByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for crop by width ", c)
+	log.Debug("Create options for crop by width ", f)
 
 	imageSize, err := image.Size()
 
@@ -34,9 +34,9 @@ func (f *cropByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	}
 
 	return &bimg.Options{
-		Width:   c.width,
+		Width:   f.width,
 		Height:  imageSize.Height,
-		Gravity: cropTypeToGravity[c.cropType],
+		Gravity: cropTypeToGravity[f.cropType],
 		Crop:    true}, nil
 }
 
@@ -82,5 +82,5 @@ func (f *cropByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
 func (f *cropByWidth) Request(ctx filters.FilterContext) {}
 
 func (f *cropByWidth) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, c)
+	HandleImageResponse(ctx, f)
 }

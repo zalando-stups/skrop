@@ -93,7 +93,7 @@ func (f *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		return nil, err
 	}
 
-	overArr, err := readImage(r.file)
+	overArr, err := readImage(f.file)
 	if err != nil {
 		return nil, err
 	}
@@ -105,26 +105,27 @@ func (f *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	}
 
 	var x, y int
-	switch r.verticalGravity {
+	switch f.verticalGravity {
 	case bimg.GravityNorth:
-		y = r.topMargin
+		y = f.topMargin
 	case bimg.GravityCentre:
-		y = r.topMargin + int(float64(origSize.Height-r.topMargin-r.bottomMargin)/2) - int(float64(overSize.Height)/2)
+		y = f.topMargin + int(float64(origSize.Height-f.topMargin-f.bottomMargin)/2) - int(
+			float64(overSize.Height)/2)
 	case bimg.GravitySouth:
-		y = origSize.Height - r.bottomMargin - overSize.Height
+		y = origSize.Height - f.bottomMargin - overSize.Height
 	}
 
-	switch r.horizontalGravity {
+	switch f.horizontalGravity {
 	case bimg.GravityWest:
-		x = r.leftMargin
+		x = f.leftMargin
 	case bimg.GravityCentre:
-		x = r.leftMargin + int(float64(origSize.Width-r.leftMargin-r.rightMargin)/2) - int(float64(overSize.Width)/2)
+		x = f.leftMargin + int(float64(origSize.Width-f.leftMargin-f.rightMargin)/2) - int(float64(overSize.Width)/2)
 	case bimg.GravityEast:
-		x = origSize.Width - r.rightMargin - overSize.Width
+		x = origSize.Width - f.rightMargin - overSize.Width
 	}
 
 	return &bimg.Options{WatermarkImage: bimg.WatermarkImage{Buf: overArr,
-		Opacity: float32(r.opacity),
+		Opacity: float32(f.opacity),
 		Left:    x,
 		Top:     y,
 	}}, nil
@@ -233,5 +234,5 @@ func (f *overlay) CreateFilter(args []interface{}) (filters.Filter, error) {
 func (f *overlay) Request(ctx filters.FilterContext) {}
 
 func (f *overlay) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, r)
+	HandleImageResponse(ctx, f)
 }

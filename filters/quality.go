@@ -24,10 +24,10 @@ func (f *quality) Name() string {
 }
 
 func (f *quality) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for quality ", r)
+	log.Debug("Create options for quality ", f)
 
 	return &bimg.Options{
-		Quality: r.percentage}, nil
+		Quality: f.percentage}, nil
 }
 
 func (f *quality) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
@@ -46,21 +46,21 @@ func (f *quality) CreateFilter(args []interface{}) (filters.Filter, error) {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &quality{}
+	c := &quality{}
 
-	f.percentage, err = parse.EskipIntArg(args[0])
+	c.percentage, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
-	} else if f.percentage > 100 {
+	} else if c.percentage > 100 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	return f, nil
+	return c, nil
 }
 
 func (f *quality) Request(ctx filters.FilterContext) {}
 
 func (f *quality) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, r)
+	HandleImageResponse(ctx, f)
 }
