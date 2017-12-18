@@ -43,6 +43,12 @@ run packaging/install-vips.sh
 
 #### GO dependencies
 
+Only on macOS, you have to manually install _Glide_ using _Brew_.
+```bash
+brew install glide
+```
+
+Then, for all.
 ```
 ./packaging/build.sh
 go get github.com/Masterminds/glide
