@@ -19,6 +19,12 @@ On macOS, that can be easily done using `brew`.
 brew install vips
 ```
 
+On a Linux machine, use the provided script.
+
+```bash
+run packaging/install-vips.sh
+```
+
 #### GO dependencies
 
 ```
