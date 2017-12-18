@@ -7,24 +7,25 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 )
 
-const (
-	ResizeByHeightName = "height"
-)
+// ResizeByHeightName is the name of the filter
+const ResizeByHeightName = "height"
+
 
 type resizeByHeight struct {
 	height  int
 	enlarge bool
 }
 
+// NewResizeByHeight creates a new filter of this type
 func NewResizeByHeight() filters.Spec {
 	return &resizeByHeight{}
 }
 
-func (r *resizeByHeight) Name() string {
+func (f *resizeByHeight) Name() string {
 	return ResizeByHeightName
 }
 
-func (r *resizeByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+func (f *resizeByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	log.Debug("Create options for resize by width ", r)
 
 	if !r.enlarge {
@@ -43,16 +44,16 @@ func (r *resizeByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error)
 		Height: r.height}, nil
 }
 
-func (s *resizeByHeight) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+func (f *resizeByHeight) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	return other.Height == 0 || other.Height == self.Height
 }
 
-func (s *resizeByHeight) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+func (f *resizeByHeight) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.Height = self.Height
 	return other
 }
 
-func (r *resizeByHeight) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *resizeByHeight) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
 	if len(args) != 1 && len(args) != 2 {
@@ -80,8 +81,8 @@ func (r *resizeByHeight) CreateFilter(args []interface{}) (filters.Filter, error
 	return f, nil
 }
 
-func (r *resizeByHeight) Request(ctx filters.FilterContext) {}
+func (f *resizeByHeight) Request(ctx filters.FilterContext) {}
 
-func (r *resizeByHeight) Response(ctx filters.FilterContext) {
+func (f *resizeByHeight) Response(ctx filters.FilterContext) {
 	HandleImageResponse(ctx, r)
 }

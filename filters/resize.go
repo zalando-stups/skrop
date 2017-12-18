@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	// ResizeName is the name of the filter
 	ResizeName           = "resize"
 	ignoreAspectRatioStr = "ignoreAspectRatio"
 )
@@ -19,15 +20,16 @@ type resize struct {
 	keepAspectRatio bool
 }
 
+// NewResize creates a new filter of this type
 func NewResize() filters.Spec {
 	return &resize{}
 }
 
-func (r *resize) Name() string {
+func (f *resize) Name() string {
 	return ResizeName
 }
 
-func (r *resize) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+func (f *resize) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	log.Debug("Create options for resize ", r)
 
 	if !r.keepAspectRatio {
@@ -49,25 +51,25 @@ func (r *resize) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	if ht <= r.height {
 		return &bimg.Options{
 			Width: r.width}, nil
-	} else {
-		// otherwise transform by height
-		return &bimg.Options{
-			Height: r.height}, nil
 	}
+	// otherwise transform by height
+	return &bimg.Options{
+		Height: r.height}, nil
+
 }
 
-func (s *resize) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+func (f *resize) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	return (other.Width == 0 && other.Height == 0) ||
 		(self.Width == other.Width && self.Height == other.Height)
 }
 
-func (s *resize) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+func (f *resize) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.Width = self.Width
 	other.Height = self.Height
 	return other
 }
 
-func (r *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
 	if len(args) != 2 && len(args) != 3 {
@@ -103,8 +105,8 @@ func (r *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 	return f, nil
 }
 
-func (r *resize) Request(ctx filters.FilterContext) {}
+func (f *resize) Request(ctx filters.FilterContext) {}
 
-func (r *resize) Response(ctx filters.FilterContext) {
+func (f *resize) Response(ctx filters.FilterContext) {
 	HandleImageResponse(ctx, r)
 }

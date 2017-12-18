@@ -10,9 +10,8 @@ import (
 // For infomations about the parameters meanings and default values have a look here:
 // http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/libvips-convolution.html#vips-sharpen
 
-const (
-	SharpenName = "sharpen"
-)
+// SharpenName is the name of the filter
+const SharpenName = "sharpen"
 
 type sharpen struct {
 	Radius int
@@ -23,15 +22,16 @@ type sharpen struct {
 	M2     float64
 }
 
+// NewSharpen creates a new filter of this type
 func NewSharpen() filters.Spec {
 	return &sharpen{}
 }
 
-func (r *sharpen) Name() string {
+func (f *sharpen) Name() string {
 	return SharpenName
 }
 
-func (r *sharpen) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+func (f *sharpen) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	log.Debug("Create options for sharpen ", r)
 
 	sha := bimg.Sharpen{Radius: r.Radius, X1: r.X1, Y2: r.Y2, Y3: r.Y3, M1: r.M1, M2: r.M2}
@@ -40,19 +40,19 @@ func (r *sharpen) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		Sharpen: sha}, nil
 }
 
-func (s *sharpen) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+func (f *sharpen) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	zero := bimg.Sharpen{}
 
 	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
 	return other.Sharpen == zero || other.Sharpen == self.Sharpen
 }
 
-func (s *sharpen) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+func (f *sharpen) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.Sharpen = self.Sharpen
 	return other
 }
 
-func (r *sharpen) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *sharpen) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
 	if len(args) != 6 {
@@ -94,8 +94,8 @@ func (r *sharpen) CreateFilter(args []interface{}) (filters.Filter, error) {
 	return f, nil
 }
 
-func (r *sharpen) Request(ctx filters.FilterContext) {}
+func (f *sharpen) Request(ctx filters.FilterContext) {}
 
-func (r *sharpen) Response(ctx filters.FilterContext) {
+func (f *sharpen) Response(ctx filters.FilterContext) {
 	HandleImageResponse(ctx, r)
 }

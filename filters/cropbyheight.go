@@ -7,6 +7,7 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 )
 
+// CropByHeightName is the name of the filter
 const CropByHeightName = "cropByHeight"
 
 type cropByHeight struct {
@@ -14,15 +15,16 @@ type cropByHeight struct {
 	cropType string
 }
 
+// NewCropByHeight creates a new filter of this type
 func NewCropByHeight() filters.Spec {
 	return &cropByHeight{}
 }
 
-func (c *cropByHeight) Name() string {
+func (f *cropByHeight) Name() string {
 	return CropByHeightName
 }
 
-func (c *cropByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+func (f *cropByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	log.Debug("Create options for crop by height ", c)
 
 	imageSize, err := image.Size()
@@ -38,12 +40,12 @@ func (c *cropByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 		Crop:    true}, nil
 }
 
-func (s *cropByHeight) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+func (f *cropByHeight) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	return (other.Width == 0 && other.Height == 0 && !other.Crop) ||
 		(other.Width == self.Width && other.Height == self.Height && other.Crop == self.Crop)
 }
 
-func (s *cropByHeight) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+func (f *cropByHeight) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.Width = self.Width
 	other.Height = self.Height
 	other.Gravity = self.Gravity
@@ -51,7 +53,7 @@ func (s *cropByHeight) Merge(other *bimg.Options, self *bimg.Options) *bimg.Opti
 	return other
 }
 
-func (c *cropByHeight) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *cropByHeight) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
 	if len(args) < 1 || len(args) > 2 {
@@ -77,8 +79,8 @@ func (c *cropByHeight) CreateFilter(args []interface{}) (filters.Filter, error) 
 	return f, nil
 }
 
-func (c *cropByHeight) Request(ctx filters.FilterContext) {}
+func (f *cropByHeight) Request(ctx filters.FilterContext) {}
 
-func (c *cropByHeight) Response(ctx filters.FilterContext) {
+func (f *cropByHeight) Response(ctx filters.FilterContext) {
 	HandleImageResponse(ctx, c)
 }

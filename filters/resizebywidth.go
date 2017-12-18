@@ -7,24 +7,24 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 )
 
-const (
-	ResizeByWidthName = "width"
-)
+// ResizeByWidthName is the name of the filter
+const ResizeByWidthName = "width"
 
 type resizeByWidth struct {
 	width   int
 	enlarge bool
 }
 
+// NewResizeByWidth creates a new filter of this type
 func NewResizeByWidth() filters.Spec {
 	return &resizeByWidth{}
 }
 
-func (r *resizeByWidth) Name() string {
+func (f *resizeByWidth) Name() string {
 	return ResizeByWidthName
 }
 
-func (r *resizeByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+func (f *resizeByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	log.Debug("Create options for resize by width ", r)
 
 	if !r.enlarge {
@@ -43,16 +43,16 @@ func (r *resizeByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) 
 		Width: r.width}, nil
 }
 
-func (s *resizeByWidth) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+func (f *resizeByWidth) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	return other.Width == 0 || other.Width == self.Width
 }
 
-func (s *resizeByWidth) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+func (f *resizeByWidth) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.Width = self.Width
 	return other
 }
 
-func (r *resizeByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *resizeByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
 	if len(args) != 1 && len(args) != 2 {
@@ -80,8 +80,8 @@ func (r *resizeByWidth) CreateFilter(args []interface{}) (filters.Filter, error)
 	return f, nil
 }
 
-func (r *resizeByWidth) Request(ctx filters.FilterContext) {}
+func (f *resizeByWidth) Request(ctx filters.FilterContext) {}
 
-func (r *resizeByWidth) Response(ctx filters.FilterContext) {
+func (f *resizeByWidth) Response(ctx filters.FilterContext) {
 	HandleImageResponse(ctx, r)
 }

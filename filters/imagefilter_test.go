@@ -46,8 +46,8 @@ func assertCorrectImageSize(r io.Reader, t *testing.T) {
 
 func TestFinalizeResponse(t *testing.T) {
 	fc := createDefaultContext(t, "doesNotMatter.com")
-	fc.FStateBag[SkropOptions] = &optionsTarget
-	fc.FStateBag[SkropInit] = true
+	fc.FStateBag[skropOptions] = &optionsTarget
+	fc.FStateBag[skropInit] = true
 
 	FinalizeResponse(fc)
 
@@ -56,9 +56,9 @@ func TestFinalizeResponse(t *testing.T) {
 
 func TestHandleResponse_InvalidImage(t *testing.T) {
 	fc := createDefaultContext(t, "doesNotMatter.com")
-	fc.FStateBag[SkropOptions] = &optionsTarget
-	fc.FStateBag[SkropImage] = bimg.NewImage([]byte("invalid image"))
-	fc.FStateBag[SkropInit] = true
+	fc.FStateBag[skropOptions] = &optionsTarget
+	fc.FStateBag[skropImage] = bimg.NewImage([]byte("invalid image"))
+	fc.FStateBag[skropInit] = true
 
 	FinalizeResponse(fc)
 
@@ -72,7 +72,7 @@ func TestHandleImageResponse(t *testing.T) {
 	err := HandleImageResponse(fc, &imageFilter)
 
 	assert.Nil(t, err, "there should not be any error")
-	assert.Equal(t, fc.FStateBag[SkropOptions], &optionsTarget)
+	assert.Equal(t, fc.FStateBag[skropOptions], &optionsTarget)
 }
 
 func TestHandleImageResponse_WithResponse304(t *testing.T) {
@@ -97,12 +97,12 @@ func TestInitResponse_ok(t *testing.T) {
 	initResponse(ctx)
 
 	//then
-	image, ok := ctx.StateBag()[SkropImage].(*bimg.Image)
+	image, ok := ctx.StateBag()[skropImage].(*bimg.Image)
 	assert.True(t, ok)
 	oriSiz, _ := original.Size()
 	imgSiz, _ := image.Size()
 	assert.Equal(t, oriSiz, imgSiz)
-	_, ok = ctx.StateBag()[SkropOptions].(*bimg.Options)
+	_, ok = ctx.StateBag()[skropOptions].(*bimg.Options)
 	assert.True(t, ok)
 }
 
@@ -120,9 +120,9 @@ func TestInitResponse_ErrorReadingImg(t *testing.T) {
 func createDefaultContext(t *testing.T, url string) *filtertest.Context {
 	buffer, _ := bimg.Read(imagefiltertest.PNGImageFile)
 	bag := make(map[string]interface{})
-	bag[SkropImage] = bimg.NewImage(buffer)
-	bag[SkropOptions] = &bimg.Options{}
-	bag[SkropInit] = true
+	bag[skropImage] = bimg.NewImage(buffer)
+	bag[skropOptions] = &bimg.Options{}
+	bag[skropInit] = true
 	return createContext(t, "GET", url, imagefiltertest.PNGImageFile, bag)
 }
 

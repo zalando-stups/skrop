@@ -9,21 +9,23 @@ import (
 	"strings"
 )
 
+// ConvertImageType is the name of the filter
 const ConvertImageType = "convertImageType"
 
 type convertImageType struct {
 	imageType bimg.ImageType
 }
 
+// NewConvertImageType creates a new filter of this type
 func NewConvertImageType() filters.Spec {
 	return &convertImageType{}
 }
 
-func (c *convertImageType) Name() string {
+func (f *convertImageType) Name() string {
 	return ConvertImageType
 }
 
-func (c *convertImageType) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
+func (f *convertImageType) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
 	log.Debug("Create options for convert image type", c)
 
 	return &bimg.Options{
@@ -31,19 +33,19 @@ func (c *convertImageType) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
 	}, nil
 }
 
-func (r *convertImageType) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
-	var zero bimg.ImageType = 0
+func (f *convertImageType) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	var zero bimg.ImageType
 
 	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
 	return other.Type == zero || other.Type == self.Type
 }
 
-func (r *convertImageType) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+func (f *convertImageType) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.Type = self.Type
 	return other
 }
 
-func (c *convertImageType) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *convertImageType) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 	if len(args) != 1 {
 		return nil, filters.ErrInvalidFilterParameters
@@ -67,9 +69,9 @@ func (c *convertImageType) CreateFilter(args []interface{}) (filters.Filter, err
 	return f, err
 }
 
-func (c *convertImageType) Request(ctx filters.FilterContext) {}
+func (f *convertImageType) Request(ctx filters.FilterContext) {}
 
-func (c *convertImageType) Response(ctx filters.FilterContext) {
+func (f *convertImageType) Response(ctx filters.FilterContext) {
 
 	err := HandleImageResponse(ctx, c)
 
