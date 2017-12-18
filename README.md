@@ -8,11 +8,25 @@ In order to be able to use Skrop, you have to be familiar with how
 [Skipper](https://github.com/zalando/skipper) works.
 
 ### Install dependencies:
+
+#### System dependencies
+
+The [vips](https://github.com/jcupitt/libvips) library needs to be installed for Skrop to build.
+
+On macOS, that can be easily done using `brew`.
+
+```bash
+brew install vips
+```
+
+#### GO dependencies
+
 ```
 ./packaging/build.sh
 go get github.com/tools/godep
 go get ./cmd/skrop/
 ```
+
 ### Run Skrop
 ```
 go run cmd/skrop/main.go -routes-file eskip/sample.eskip -verbose
