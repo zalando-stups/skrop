@@ -14,7 +14,7 @@ docker:
 	./packaging/build.sh $(version) $(routes_file) $(docker_tag)
 
 docker-run:
-	docker run --rm -p 9090:9090 zalando-stups/skrop -verbose
+	docker run --rm -v "$$(pwd)"/images:/images -p 9090:9090 zalando-stups/skrop -verbose
 
 test:
 	go test ./...
