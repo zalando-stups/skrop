@@ -24,11 +24,31 @@ Get the Skrop sources:
     go get github.com/zalando-stups/skrop
 
 ### Install dependencies:
+
+#### System dependencies
+
+The [vips](https://github.com/jcupitt/libvips) library needs to be installed for Skrop to build.
+
+On macOS, that can be easily done using `brew`.
+
+```bash
+brew install vips
+```
+
+On a Linux machine, use the provided script.
+
+```bash
+run packaging/install-vips.sh
+```
+
+#### GO dependencies
+
 ```
 ./packaging/build.sh
 go get github.com/tools/godep
 go get ./cmd/skrop/
 ```
+
 ### Run Skrop
 ```
 go run cmd/skrop/main.go -routes-file eskip/sample.eskip -verbose
