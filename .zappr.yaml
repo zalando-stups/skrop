@@ -1,13 +1,9 @@
-approvals:
-  groups:
-    zalando:
-      minimum: 2
-      from:
-        orgs:
-          - "zalando"
+# Zappr configuration.
+# https://zappr.readthedocs.io/en/latest/
 
-  # Allow last committer / PR creator to approve as well.
-  # This will probably become the default in zappr.
-  ignore: none
-  
-X-Zalando-Team: "Hollywood"
+approvals:
+  pattern: "(:\\+1:|👍|:ship:|:shipit:|:rocket:|LGTM)"
+  minimum: 1
+  ignore: pr_opener
+  from:
+    collaborators: true
