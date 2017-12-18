@@ -18,7 +18,7 @@ function make_binary() {
     -e "GOOS=linux" \
     -w /go/src/${GO_PROJECT_NAME} \
     "$DOCKER_IMAGE_NAME-build" sh \
-    -c 'godep restore && go build ./cmd/skrop' \
+    -c 'glide install && go build ./cmd/skrop' \
   && return 0
 }
 
