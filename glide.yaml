@@ -1,0 +1,116 @@
+package: github.com/zalando-stups/skrop
+import:
+- package: github.com/sirupsen/logrus
+  version: ~1.0.4
+- package: github.com/abbot/go-http-auth
+  version: cb4372376e1e00e9f6ab9ec142e029302c9e7140
+- package: github.com/davecgh/go-spew
+  version: ~1.1.0
+  subpackages:
+  - spew
+- package: github.com/dimfeld/httppath
+  version: c8e499c3ef3c3e272ed8bdcc1ccf39f73c88debc
+- package: github.com/oklog/ulid
+  version: 66bb6560562feca7045b23db1ae85b01260f87c5
+- package: github.com/opentracing/opentracing-go
+  version: 1361b9cd60be79c4c3a7fa9841b3c132e40066a7
+  subpackages:
+  - ext
+  - log
+- package: github.com/pmezard/go-difflib
+  version: ~1.0.0
+  subpackages:
+  - difflib
+- package: github.com/rcrowley/go-metrics
+  version: cfa5a85e9f0abbdf1701b59082c36fc7bff10759
+- package: github.com/sony/gobreaker
+  version: ~0.3.0
+- package: github.com/stretchr/testify
+  version: d77da356e56a7428ad25149ca77381849a6a5232
+  subpackages:
+  - assert
+  - vendor/github.com/davecgh/go-spew/spew
+  - vendor/github.com/pmezard/go-difflib/difflib
+- package: github.com/szuecs/rate-limit-buffer
+  version: ~0.2.0
+- package: github.com/tj/go-debug
+  version: ~2.0.0
+- package: github.com/zalando/skipper
+  version: ~0.9.133
+  subpackages:
+  - circuit
+  - dataclients/kubernetes
+  - eskip
+  - eskipfile
+  - etcd
+  - filters
+  - filters/auth
+  - filters/builtin
+  - filters/circuit
+  - filters/cookie
+  - filters/diag
+  - filters/filtertest
+  - filters/flowid
+  - filters/ratelimit
+  - filters/serve
+  - filters/tee
+  - innkeeper
+  - logging
+  - metrics
+  - net
+  - oauth
+  - pathmux
+  - predicates
+  - predicates/cookie
+  - predicates/interval
+  - predicates/query
+  - predicates/source
+  - predicates/traffic
+  - proxy
+  - ratelimit
+  - routing
+  - tracing
+  - vendor/github.com/sirupsen/logrus
+  - vendor/golang.org/x/crypto/ssh/terminal
+  - vendor/golang.org/x/sys/unix
+  - vendor/github.com/sony/gobreaker
+  - vendor/github.com/opentracing/opentracing-go
+  - vendor/github.com/rcrowley/go-metrics
+  - vendor/github.com/opentracing/opentracing-go/ext
+  - vendor/github.com/szuecs/rate-limit-buffer
+  - vendor/github.com/dimfeld/httppath
+  - vendor/golang.org/x/sys/windows
+  - vendor/github.com/opentracing/opentracing-go/log
+  - vendor/golang.org/x/net/context
+  - vendor/github.com/abbot/go-http-auth
+  - vendor/github.com/oklog/ulid
+  - vendor/golang.org/x/crypto/bcrypt
+  - vendor/golang.org/x/crypto/blowfish
+  - dataclients/routestring
+  - vendor/github.com/prometheus/client_golang/prometheus
+  - vendor/github.com/prometheus/client_golang/prometheus/promhttp
+  - vendor/github.com/beorn7/perks/quantile
+  - vendor/github.com/golang/protobuf/proto
+  - vendor/github.com/prometheus/client_model/go
+  - vendor/github.com/prometheus/common/expfmt
+  - vendor/github.com/prometheus/common/model
+  - vendor/github.com/prometheus/procfs
+  - vendor/github.com/matttproud/golang_protobuf_extensions/pbutil
+  - vendor/github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
+  - vendor/github.com/prometheus/procfs/xfs
+- package: golang.org/x/crypto
+  version: f3241ce8505855877cc8a9717bd61a0f7c4ea83c
+  subpackages:
+  - bcrypt
+  - blowfish
+  - ssh/terminal
+- package: golang.org/x/net
+  version: 45e771701b814666a7eb299e6c7a57d0b1799e91
+  subpackages:
+  - context
+- package: golang.org/x/sys
+  version: dbc2be9168a660ef302e04b6ff6406de6f967473
+  subpackages:
+  - unix
+- package: gopkg.in/h2non/bimg.v1
+  version: ~1.0.15

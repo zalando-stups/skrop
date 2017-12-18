@@ -4,14 +4,10 @@ version ?= latest
 routes_file ?= ./eskip/sample.eskip
 docker_tag ?= zalando-stups/skrop
 
-update-deps:
-	go get -t github.com/...
-	godep update github.com/...
+glide:
+	glide install
 
-godep:
-	godep restore
-
-build: godep
+build: glide
 	go build ./cmd/skrop
 
 docker:
@@ -22,5 +18,8 @@ docker-run:
 
 test:
 	go test ./...
+
+update-deps:
+	glide update
 
 all: build test
