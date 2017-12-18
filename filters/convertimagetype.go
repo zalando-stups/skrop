@@ -26,10 +26,10 @@ func (f *convertImageType) Name() string {
 }
 
 func (f *convertImageType) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for convert image type", c)
+	log.Debug("Create options for convert image type", f)
 
 	return &bimg.Options{
-		Type: c.imageType,
+		Type: f.imageType,
 	}, nil
 }
 
@@ -51,7 +51,7 @@ func (f *convertImageType) CreateFilter(args []interface{}) (filters.Filter, err
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &convertImageType{}
+	c := &convertImageType{}
 
 	imgType, err := parse.EskipStringArg(args[0])
 
@@ -66,14 +66,14 @@ func (f *convertImageType) CreateFilter(args []interface{}) (filters.Filter, err
 		}
 	}
 
-	return f, err
+	return c, err
 }
 
 func (f *convertImageType) Request(ctx filters.FilterContext) {}
 
 func (f *convertImageType) Response(ctx filters.FilterContext) {
 
-	err := HandleImageResponse(ctx, c)
+	err := HandleImageResponse(ctx, f)
 
 	if err != nil {
 		return
@@ -81,7 +81,7 @@ func (f *convertImageType) Response(ctx filters.FilterContext) {
 
 	resp := ctx.Response()
 
-	fileType := bimg.ImageTypeName(c.imageType)
+	fileType := bimg.ImageTypeName(f.imageType)
 
 	contentType := fmt.Sprintf("image/%s", fileType)
 	contentDisp := fmt.Sprintf("inline;filename=%s.%s", extractFileName(ctx), fileType)

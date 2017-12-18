@@ -60,9 +60,9 @@ func (f *cropByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &cropByWidth{cropType: Center}
+	c := &cropByWidth{cropType: Center}
 
-	f.width, err = parse.EskipIntArg(args[0])
+	c.width, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
@@ -70,13 +70,13 @@ func (f *cropByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
 
 	if len(args) == 2 {
 		if cropType, ok := args[1].(string); ok && cropTypes[cropType] {
-			f.cropType = cropType
+			c.cropType = cropType
 		} else {
 			return nil, filters.ErrInvalidFilterParameters
 		}
 	}
 
-	return f, nil
+	return c, nil
 }
 
 func (f *cropByWidth) Request(ctx filters.FilterContext) {}

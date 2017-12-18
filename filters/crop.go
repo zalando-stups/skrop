@@ -21,26 +21,26 @@ func NewCrop() filters.Spec {
 	return &crop{}
 }
 
-func (r *crop) Name() string {
+func (f *crop) Name() string {
 	return CropName
 }
 
-func (r *crop) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for crop ", c)
+func (f *crop) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
+	log.Debug("Create options for crop ", f)
 
 	return &bimg.Options{
-		Width:   c.width,
-		Height:  c.height,
-		Gravity: cropTypeToGravity[c.cropType],
+		Width:   f.width,
+		Height:  f.height,
+		Gravity: cropTypeToGravity[f.cropType],
 		Crop:    true}, nil
 }
 
-func (r *crop) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+func (f *crop) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	return (other.Width == 0 && other.Height == 0 && !other.Crop) ||
 		(other.Width == self.Width && other.Height == self.Height && other.Crop == self.Crop)
 }
 
-func (r *crop) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+func (f *crop) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.Width = self.Width
 	other.Height = self.Height
 	other.Gravity = self.Gravity
@@ -48,22 +48,22 @@ func (r *crop) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	return other
 }
 
-func (r *crop) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *crop) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
 	if len(args) < 2 || len(args) > 3 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &crop{cropType: Center}
+	c := &crop{cropType: Center}
 
-	f.width, err = parse.EskipIntArg(args[0])
+	c.width, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
 	}
 
-	f.height, err = parse.EskipIntArg(args[1])
+	c.height, err = parse.EskipIntArg(args[1])
 
 	if err != nil {
 		return nil, err
@@ -71,17 +71,17 @@ func (r *crop) CreateFilter(args []interface{}) (filters.Filter, error) {
 
 	if len(args) == 3 {
 		if cropType, ok := args[2].(string); ok && cropTypes[cropType] {
-			f.cropType = cropType
+			c.cropType = cropType
 		} else {
 			return nil, filters.ErrInvalidFilterParameters
 		}
 	}
 
-	return f, nil
+	return c, nil
 }
 
-func (r *crop) Request(ctx filters.FilterContext) {}
+func (f *crop) Request(ctx filters.FilterContext) {}
 
-func (r *crop) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, c)
+func (f *crop) Response(ctx filters.FilterContext) {
+	HandleImageResponse(ctx, f)
 }
