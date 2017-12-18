@@ -9,7 +9,7 @@ In order to be able to use Skrop, you have to be familiar with how
 
 ### Getting started
 
-Skipper is 'go get' compatible. If needed, create a Go workspace first:
+Skrop is 'go get' compatible. If needed, create a Go workspace first:
 
     mkdir ~/go-workspace
     cd ~/go-workspace
@@ -19,7 +19,7 @@ This can be set up in the BASH profile (`~/.bash_profile` or `~/.bashrc`)
 
     export GOPATH=~/go-workspace
 
-Get the Skipper packages:
+Get the Skrop sources:
 
     go get github.com/zalando-stups/skrop
 
