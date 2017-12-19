@@ -7,6 +7,7 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 )
 
+// BlurName is the name of the filter
 const BlurName = "blur"
 
 type blur struct {
@@ -14,6 +15,7 @@ type blur struct {
 	MinAmpl float64
 }
 
+// NewBlur creates a new filter of this type
 func NewBlur() filters.Spec {
 	return &blur{}
 }

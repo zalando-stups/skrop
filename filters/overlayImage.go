@@ -9,15 +9,25 @@ import (
 )
 
 const (
+	// OverlayImageName is the name of the filter
 	OverlayImageName = "overlayImage"
+	// NE North East
 	NE               = "NE"
+	// NC North Center
 	NC               = "NC"
+	// NW North West
 	NW               = "NW"
+	// CE Centre East
 	CE               = "CE"
+	// CC Centre Center
 	CC               = "CC"
+	// CW Centre West
 	CW               = "CW"
+	// SE South East
 	SE               = "SE"
+	// SC South Center
 	SC               = "SC"
+	// SW South West
 	SW               = "SW"
 )
 
@@ -68,21 +78,22 @@ type overlay struct {
 	bottomMargin      int
 }
 
+// NewOverlayImage creates a new filter of this type
 func NewOverlayImage() filters.Spec {
 	return &overlay{}
 }
 
-func (r *overlay) Name() string {
+func (f *overlay) Name() string {
 	return OverlayImageName
 }
 
-func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+func (f *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	origSize, err := image.Size()
 	if err != nil {
 		return nil, err
 	}
 
-	overArr, err := readImage(r.file)
+	overArr, err := readImage(f.file)
 	if err != nil {
 		return nil, err
 	}
@@ -94,32 +105,33 @@ func (r *overlay) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	}
 
 	var x, y int
-	switch r.verticalGravity {
+	switch f.verticalGravity {
 	case bimg.GravityNorth:
-		y = r.topMargin
+		y = f.topMargin
 	case bimg.GravityCentre:
-		y = r.topMargin + int(float64(origSize.Height-r.topMargin-r.bottomMargin)/2) - int(float64(overSize.Height)/2)
+		y = f.topMargin + int(float64(origSize.Height-f.topMargin-f.bottomMargin)/2) - int(
+			float64(overSize.Height)/2)
 	case bimg.GravitySouth:
-		y = origSize.Height - r.bottomMargin - overSize.Height
+		y = origSize.Height - f.bottomMargin - overSize.Height
 	}
 
-	switch r.horizontalGravity {
+	switch f.horizontalGravity {
 	case bimg.GravityWest:
-		x = r.leftMargin
+		x = f.leftMargin
 	case bimg.GravityCentre:
-		x = r.leftMargin + int(float64(origSize.Width-r.leftMargin-r.rightMargin)/2) - int(float64(overSize.Width)/2)
+		x = f.leftMargin + int(float64(origSize.Width-f.leftMargin-f.rightMargin)/2) - int(float64(overSize.Width)/2)
 	case bimg.GravityEast:
-		x = origSize.Width - r.rightMargin - overSize.Width
+		x = origSize.Width - f.rightMargin - overSize.Width
 	}
 
 	return &bimg.Options{WatermarkImage: bimg.WatermarkImage{Buf: overArr,
-		Opacity: float32(r.opacity),
+		Opacity: float32(f.opacity),
 		Left:    x,
 		Top:     y,
 	}}, nil
 }
 
-func (s *overlay) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+func (f *overlay) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	zero := bimg.WatermarkImage{}
 
 	//it can be merged if the background was not set (in options or in self) or if they are set to the same value
@@ -133,7 +145,7 @@ func equals(one bimg.WatermarkImage, two bimg.WatermarkImage) bool {
 		len(one.Buf) == len(two.Buf)
 }
 
-func (s *overlay) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+func (f *overlay) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.WatermarkImage = self.WatermarkImage
 	return other
 }
@@ -153,7 +165,7 @@ func readImage(file string) ([]byte, error) {
 	return buf, nil
 }
 
-func (r *overlay) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *overlay) CreateFilter(args []interface{}) (filters.Filter, error) {
 	//imageOverlay(<filename>, <opacity>, <gravity>, <right_margin>, <left_margin>, <top_margin>, <bottom_margin>)
 	//imageOverlay("filename", 1.0, NE, 0, 0, 0, 0)
 	//imageOverlay("filename", 1.0, NE)
@@ -219,8 +231,8 @@ func (r *overlay) CreateFilter(args []interface{}) (filters.Filter, error) {
 
 }
 
-func (r *overlay) Request(ctx filters.FilterContext) {}
+func (f *overlay) Request(ctx filters.FilterContext) {}
 
-func (r *overlay) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, r)
+func (f *overlay) Response(ctx filters.FilterContext) {
+	HandleImageResponse(ctx, f)
 }
