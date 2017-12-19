@@ -128,3 +128,7 @@ Now you can start Skrop in a Docker container:
 ```
 make docker-run
 ```
+
+## License
+
+[MIT](LICENSE)
