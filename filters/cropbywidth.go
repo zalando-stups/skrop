@@ -7,6 +7,7 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 )
 
+// CropByWidthName is the name of the filter
 const CropByWidthName = "cropByWidth"
 
 type cropByWidth struct {
@@ -14,16 +15,17 @@ type cropByWidth struct {
 	cropType string
 }
 
+// NewCropByWidth creates a new filter of this type
 func NewCropByWidth() filters.Spec {
 	return &cropByWidth{}
 }
 
-func (c *cropByWidth) Name() string {
+func (f *cropByWidth) Name() string {
 	return CropByWidthName
 }
 
-func (c *cropByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for crop by width ", c)
+func (f *cropByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+	log.Debug("Create options for crop by width ", f)
 
 	imageSize, err := image.Size()
 
@@ -32,18 +34,18 @@ func (c *cropByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 	}
 
 	return &bimg.Options{
-		Width:   c.width,
+		Width:   f.width,
 		Height:  imageSize.Height,
-		Gravity: cropTypeToGravity[c.cropType],
+		Gravity: cropTypeToGravity[f.cropType],
 		Crop:    true}, nil
 }
 
-func (s *cropByWidth) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+func (f *cropByWidth) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	return (other.Width == 0 && other.Height == 0 && !other.Crop) ||
 		(other.Width == self.Width && other.Height == self.Height && other.Crop == self.Crop)
 }
 
-func (s *cropByWidth) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+func (f *cropByWidth) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.Width = self.Width
 	other.Height = self.Height
 	other.Gravity = self.Gravity
@@ -51,16 +53,16 @@ func (s *cropByWidth) Merge(other *bimg.Options, self *bimg.Options) *bimg.Optio
 	return other
 }
 
-func (c *cropByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *cropByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
 	if len(args) < 1 || len(args) > 2 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &cropByWidth{cropType: Center}
+	c := &cropByWidth{cropType: Center}
 
-	f.width, err = parse.EskipIntArg(args[0])
+	c.width, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
@@ -68,17 +70,17 @@ func (c *cropByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
 
 	if len(args) == 2 {
 		if cropType, ok := args[1].(string); ok && cropTypes[cropType] {
-			f.cropType = cropType
+			c.cropType = cropType
 		} else {
 			return nil, filters.ErrInvalidFilterParameters
 		}
 	}
 
-	return f, nil
+	return c, nil
 }
 
-func (c *cropByWidth) Request(ctx filters.FilterContext) {}
+func (f *cropByWidth) Request(ctx filters.FilterContext) {}
 
-func (c *cropByWidth) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, c)
+func (f *cropByWidth) Response(ctx filters.FilterContext) {
+	HandleImageResponse(ctx, f)
 }

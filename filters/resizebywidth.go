@@ -7,66 +7,66 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 )
 
-const (
-	ResizeByWidthName = "width"
-)
+// ResizeByWidthName is the name of the filter
+const ResizeByWidthName = "width"
 
 type resizeByWidth struct {
 	width   int
 	enlarge bool
 }
 
+// NewResizeByWidth creates a new filter of this type
 func NewResizeByWidth() filters.Spec {
 	return &resizeByWidth{}
 }
 
-func (r *resizeByWidth) Name() string {
+func (f *resizeByWidth) Name() string {
 	return ResizeByWidthName
 }
 
-func (r *resizeByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for resize by width ", r)
+func (f *resizeByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+	log.Debug("Create options for resize by width ", f)
 
-	if !r.enlarge {
+	if !f.enlarge {
 		size, err := image.Size()
 		if err != nil {
 			return nil, err
 		}
 
 		// enlargement not allowed here
-		if size.Width <= r.width {
+		if size.Width <= f.width {
 			return &bimg.Options{}, nil
 		}
 	}
 
 	return &bimg.Options{
-		Width: r.width}, nil
+		Width: f.width}, nil
 }
 
-func (s *resizeByWidth) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+func (f *resizeByWidth) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	return other.Width == 0 || other.Width == self.Width
 }
 
-func (s *resizeByWidth) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+func (f *resizeByWidth) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
 	other.Width = self.Width
 	return other
 }
 
-func (r *resizeByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *resizeByWidth) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
 	if len(args) != 1 && len(args) != 2 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &resizeByWidth{}
+	r := &resizeByWidth{}
 
-	f.width, err = parse.EskipIntArg(args[0])
+	r.width, err = parse.EskipIntArg(args[0])
 	if err != nil {
 		return nil, err
 	}
 
-	f.enlarge = true
+	r.enlarge = true
 
 	if len(args) == 2 {
 		cons, err := parse.EskipStringArg(args[1])
@@ -74,14 +74,14 @@ func (r *resizeByWidth) CreateFilter(args []interface{}) (filters.Filter, error)
 			return nil, err
 		}
 
-		f.enlarge = !(cons == doNotEnlarge)
+		r.enlarge = !(cons == doNotEnlarge)
 	}
 
-	return f, nil
+	return r, nil
 }
 
-func (r *resizeByWidth) Request(ctx filters.FilterContext) {}
+func (f *resizeByWidth) Request(ctx filters.FilterContext) {}
 
-func (r *resizeByWidth) Response(ctx filters.FilterContext) {
-	HandleImageResponse(ctx, r)
+func (f *resizeByWidth) Response(ctx filters.FilterContext) {
+	HandleImageResponse(ctx, f)
 }

@@ -13,6 +13,7 @@ type skropDataClient struct {
 	prepend  *eskip.Filter
 }
 
+// NewSkropDataClient creates a new dataclient specific for skrop
 func NewSkropDataClient(eskipFile string) routing.DataClient {
 
 	emptyArgs := make([]interface{}, 0)

@@ -3,13 +3,12 @@ package filters
 import "github.com/zalando/skipper/filters"
 
 // This filter is the default filter for every configuration of skrop
-// It
 type finalizeResponse struct{}
 
-const (
-	FinalizeResponseName = "finalizeResponse"
-)
+// FinalizeResponseName is the name of the filter
+const FinalizeResponseName = "finalizeResponse"
 
+// NewFinalizeResponse creates a new filter of this type
 func NewFinalizeResponse() filters.Spec {
 	return &finalizeResponse{}
 }

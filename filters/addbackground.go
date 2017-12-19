@@ -8,11 +8,13 @@ import (
 )
 
 const (
+	// AddBackgroundName is the name of the filter
 	AddBackgroundName = "addBackground"
 )
 
 type addBackground bimg.Color
 
+// NewAddBackground creates a new add backgroud filter
 func NewAddBackground() filters.Spec {
 	return &addBackground{}
 }
