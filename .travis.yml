@@ -19,7 +19,9 @@ install:
 - go get github.com/Masterminds/glide
 - go get github.com/wadey/gocovmerge
 - glide install
+
 script:
-- ./.travis/test.sh
+- make ci-trigger
+
 after_success:
 - bash <(curl -s https://codecov.io/bash)
