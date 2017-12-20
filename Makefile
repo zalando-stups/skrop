@@ -35,7 +35,7 @@ tag:
 	git tag $(VERSION)
 
 push-tags:
-	git push --tags https://$(GITHUB_AUTH)@github.com/zalando/skipper
+	git push --tags https://$(GITHUB_AUTH)@github.com/zalando-stups/skrop
 
 release-major:
 	make VERSION=$(NEXT_MAJOR) tag push-tags
