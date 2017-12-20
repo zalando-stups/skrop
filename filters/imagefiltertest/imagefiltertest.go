@@ -8,37 +8,23 @@ import (
 )
 
 const (
+	// LandscapeImageFile  is the path to the sample image landscape
 	LandscapeImageFile = "../images/lisbon-tram.jpg"
+	// PortraitImageFile   is the path to the sample image portrait
 	PortraitImageFile  = "../images/big-ben.jpg"
+	// PNGImageFile        is the path to the sample PNG image
 	PNGImageFile       = "../images/bag.png"
 )
 
-type FakeImageFilter bimg.Options
 
+// CreateTestItem is a utility to test arguments in eskip files
 type CreateTestItem struct {
 	Msg  string
 	Args []interface{}
 	Err  bool
 }
 
-func (s *FakeImageFilter) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
-	options := bimg.Options(*s)
-	return &options, nil
-}
-
-func (s *FakeImageFilter) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
-	return (other.Width == 0 && other.Height == 0) ||
-		(other.Width == self.Width && other.Height == self.Height)
-}
-
-func (s *FakeImageFilter) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
-	other.Width = self.Width
-	other.Height = self.Height
-	other.Quality = self.Quality
-	other.Background = self.Background
-	return other
-}
-
+// TestCreate autonmatically creates a test for the CreateTestItem
 func TestCreate(t *testing.T, spec func() filters.Spec, items []CreateTestItem) {
 	for _, ti := range items {
 		func() {
@@ -55,16 +41,19 @@ func TestCreate(t *testing.T, spec func() filters.Spec, items []CreateTestItem) 
 	}
 }
 
+// LandscapeImage returns a landscape test image
 func LandscapeImage() *bimg.Image {
 	buffer, _ := bimg.Read(LandscapeImageFile)
 	return bimg.NewImage(buffer)
 }
 
+// PortraitImage returns a portrait test image
 func PortraitImage() *bimg.Image {
 	buffer, _ := bimg.Read(PortraitImageFile)
 	return bimg.NewImage(buffer)
 }
 
+// PNGImage returns a PNG test image
 func PNGImage() *bimg.Image {
 	buffer, _ := bimg.Read(PNGImageFile)
 	return bimg.NewImage(buffer)
