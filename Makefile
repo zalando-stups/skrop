@@ -1,8 +1,14 @@
 .DEFAULT_GOAL := all
 
-version ?= latest
 routes_file ?= ./eskip/sample.eskip
 docker_tag ?= zalando-stups/skrop
+
+CURRENT_VERSION    = $(shell git describe --tags --always --dirty)
+VERSION           ?= $(CURRENT_VERSION)
+NEXT_MAJOR         = $(shell go run packaging/version/version.go major $(CURRENT_VERSION))
+NEXT_MINOR         = $(shell go run packaging/version/version.go minor $(CURRENT_VERSION))
+NEXT_PATCH         = $(shell go run packaging/version/version.go patch $(CURRENT_VERSION))
+COMMIT_HASH        = $(shell git rev-parse --short HEAD)
 
 glide:
 	glide install
@@ -11,7 +17,7 @@ build: glide
 	go build ./cmd/skrop
 
 docker:
-	./packaging/build.sh $(version) $(routes_file) $(docker_tag)
+	./packaging/build.sh $(VERSION) $(routes_file) $(docker_tag)
 
 docker-run:
 	docker run --rm -v "$$(pwd)"/images:/images -p 9090:9090 zalando-stups/skrop -verbose
