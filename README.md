@@ -168,6 +168,18 @@ env:
 - secure: "someBASE64value"
 ```
 
+### Versioning
+
+This project uses [semantic versioning](https://semver.org/). The version is bumped up automatically at
+every merge to master (by [_Travis CI_](/.travis.yml)).
+
+To control which part of the version is bumped up, the commit message of the merge commit (including the first line
+of the commit message of all commits it consist of) has to include a special part.
+- `major-release`: the first digit (the major version) will be incremented. Example: from `3.23.291` to `4.0.0`.
+- `minor-release`: the second digit (the minor version) will be incremented. Example: from `3.23.291` to `3.24.0`.
+- anything else not including one of the text above will result in the third digit (the patch version) to be incremented.
+  Example: `3.23.291` to `3.23.292`.
+
 
 ## License
 
