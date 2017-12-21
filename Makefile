@@ -44,12 +44,15 @@ push-tags:
 	git push --tags https://$(GITHUB_AUTH)@github.com/zalando-stups/skrop
 
 release-major:
+	echo Incrementing major version
 	make VERSION=$(NEXT_MAJOR) tag push-tags
 
 release-minor:
+	echo Incrementing minor version
 	make VERSION=$(NEXT_MINOR) tag push-tags
 
 release-patch:
+	echo Incrementing patch version
 	make VERSION=$(NEXT_PATCH) tag push-tags
 
 ci-user:
@@ -71,5 +74,5 @@ else ifeq ($(TRAVIS_BRANCH)_$(TRAVIS_PULL_REQUEST)_$(findstring minor-release,$(
 else ifeq ($(TRAVIS_BRANCH)_$(TRAVIS_PULL_REQUEST), master_false)
 	make ci-release-patch
 else
-	echo Not versionning this merge.
+	echo Not a merge to 'master'. Not versionning this merge.
 endif
