@@ -1,5 +1,6 @@
-# Skrop &nbsp; [![Build Status](https://travis-ci.org/zalando-stups/skrop.svg?branch=master)](https://travis-ci.org/zalando-stups/skrop) [![codecov](https://codecov.io/gh/zalando-stups/skrop/branch/master/graph/badge.svg)](https://codecov.io/gh/zalando-stups/skrop) [![Go Report Card](https://goreportcard.com/badge/github.com/zalando-stups/skrop)](https://goreportcard.com/report/github.com/zalando-stups/skrop) [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/zalando-stups/skrop/master/LICENSE)
+<img src="https://raw.githubusercontent.com/kolja/skrop/skropodile/skropodile.svg" alt="skropodile" />
 
+# Skrop &nbsp; [![Build Status](https://travis-ci.org/zalando-stups/skrop.svg?branch=master)](https://travis-ci.org/zalando-stups/skrop) [![codecov](https://codecov.io/gh/zalando-stups/skrop/branch/master/graph/badge.svg)](https://codecov.io/gh/zalando-stups/skrop) [![Go Report Card](https://goreportcard.com/badge/github.com/zalando-stups/skrop)](https://goreportcard.com/report/github.com/zalando-stups/skrop) [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/zalando-stups/skrop/master/LICENSE)
 Skrop is a media service based on [Skipper](https://github.com/zalando/skipper) and the [vips](https://github.com/jcupitt/libvips) library.
 
 ## Usage
