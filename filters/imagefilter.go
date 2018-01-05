@@ -14,15 +14,15 @@ import (
 
 const (
 	// North Gravity
-	North        = "north"
+	North = "north"
 	// South Gravity
-	South        = "south"
+	South = "south"
 	// East Gravity
-	East         = "east"
+	East = "east"
 	// West Gravity
-	West         = "west"
+	West = "west"
 	// Center Gravity
-	Center       = "center"
+	Center = "center"
 	// Quality used by default if not specified
 	Quality      = 100
 	doNotEnlarge = "DO_NOT_ENLARGE"

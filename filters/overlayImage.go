@@ -12,23 +12,23 @@ const (
 	// OverlayImageName is the name of the filter
 	OverlayImageName = "overlayImage"
 	// NE North East
-	NE               = "NE"
+	NE = "NE"
 	// NC North Center
-	NC               = "NC"
+	NC = "NC"
 	// NW North West
-	NW               = "NW"
+	NW = "NW"
 	// CE Centre East
-	CE               = "CE"
+	CE = "CE"
 	// CC Centre Center
-	CC               = "CC"
+	CC = "CC"
 	// CW Centre West
-	CW               = "CW"
+	CW = "CW"
 	// SE South East
-	SE               = "SE"
+	SE = "SE"
 	// SC South Center
-	SC               = "SC"
+	SC = "SC"
 	// SW South West
-	SW               = "SW"
+	SW = "SW"
 )
 
 var (
