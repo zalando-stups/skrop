@@ -10,7 +10,6 @@ import (
 // ResizeByHeightName is the name of the filter
 const ResizeByHeightName = "height"
 
-
 type resizeByHeight struct {
 	height  int
 	enlarge bool
