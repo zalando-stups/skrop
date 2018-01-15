@@ -61,7 +61,7 @@ func (f *convertImageType) CreateFilter(args []interface{}) (filters.Filter, err
 
 	for ImageType, value := range bimg.ImageTypes {
 		if value == imgType {
-			f.imageType = ImageType
+			c.imageType = ImageType
 			break
 		}
 	}
