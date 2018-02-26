@@ -10,7 +10,6 @@ import (
 // ResizeByHeightName is the name of the filter
 const ResizeByHeightName = "height"
 
-
 type resizeByHeight struct {
 	height  int
 	enlarge bool
@@ -25,7 +24,7 @@ func (f *resizeByHeight) Name() string {
 	return ResizeByHeightName
 }
 
-func (f *resizeByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+func (f *resizeByHeight) CreateOptions(image *bimg.Image, _ map[string][]string) (*bimg.Options, error) {
 	log.Debug("Create options for resize by width ", f)
 
 	if !f.enlarge {

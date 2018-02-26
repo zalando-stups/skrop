@@ -14,15 +14,15 @@ import (
 
 const (
 	// North Gravity
-	North        = "north"
+	North = "north"
 	// South Gravity
-	South        = "south"
+	South = "south"
 	// East Gravity
-	East         = "east"
+	East = "east"
 	// West Gravity
-	West         = "west"
+	West = "west"
 	// Center Gravity
-	Center       = "center"
+	Center = "center"
 	// Quality used by default if not specified
 	Quality      = 100
 	doNotEnlarge = "DO_NOT_ENLARGE"
@@ -53,7 +53,7 @@ func init() {
 
 // ImageFilter defines what a filter should implement
 type ImageFilter interface {
-	CreateOptions(image *bimg.Image) (*bimg.Options, error)
+	CreateOptions(image *bimg.Image, options map[string][]string) (*bimg.Options, error)
 	CanBeMerged(other *bimg.Options, self *bimg.Options) bool
 	Merge(other *bimg.Options, self *bimg.Options) *bimg.Options
 }
@@ -87,7 +87,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 		return errors.New("processing failed, image not exists in the state bag")
 	}
 
-	opt, err := f.CreateOptions(image)
+	opt, err := f.CreateOptions(image, ctx.Request().URL.Query())
 	if err != nil {
 		log.Error("Failed to create options ", err.Error())
 		ctx.Serve(errorResponse())
@@ -117,7 +117,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 
 	// set opt in the stateBag
 	newImage := bimg.NewImage(buf)
-	newOption, err := f.CreateOptions(newImage)
+	newOption, err := f.CreateOptions(newImage, ctx.Request().URL.Query())
 	if err != nil {
 		log.Error("Failed to create new options ", err.Error())
 		ctx.Serve(errorResponse())

@@ -20,7 +20,7 @@ func TestNewQuality_Name(t *testing.T) {
 func TestNewQuality_CreateOptions(t *testing.T) {
 	quality := quality{percentage: 75}
 	image := imagefiltertest.LandscapeImage()
-	options, _ := quality.CreateOptions(image)
+	options, _ := quality.CreateOptions(image, make(map[string][]string))
 
 	assert.Equal(t, 75, options.Quality)
 }

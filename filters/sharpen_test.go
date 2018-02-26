@@ -20,7 +20,7 @@ func TestSharpen_Name(t *testing.T) {
 func TestSharpen_CreateOptions(t *testing.T) {
 	image := imagefiltertest.LandscapeImage()
 	sharpen := sharpen{Radius: 1, X1: 2, Y2: 3, Y3: 4, M1: 5, M2: 6}
-	options, _ := sharpen.CreateOptions(image)
+	options, _ := sharpen.CreateOptions(image, make(map[string][]string))
 
 	sha := options.Sharpen
 

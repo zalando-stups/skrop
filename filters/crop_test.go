@@ -22,7 +22,7 @@ func TestCrop_Name(t *testing.T) {
 
 func TestCrop_CreateOptions(t *testing.T) {
 	c := crop{width: 800, height: 600, cropType: North}
-	options, _ := c.CreateOptions(nil)
+	options, _ := c.CreateOptions(nil, make(map[string][]string))
 
 	assert.Equal(t, 800, options.Width)
 	assert.Equal(t, 600, options.Height)

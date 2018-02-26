@@ -120,6 +120,7 @@ func main() {
 			skropFilters.NewOverlayImage(),
 			skropFilters.NewSharpen(),
 			skropFilters.NewFinalizeResponse(),
+			skropFilters.NewExtractArea(),
 		},
 		AccessLogDisabled:   true,
 		ProxyOptions:        proxy.OptionsPreserveOriginal,

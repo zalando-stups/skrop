@@ -10,7 +10,6 @@ import (
 // LongerEdgeResizeName is the name of the filter
 const LongerEdgeResizeName = "longerEdgeResize"
 
-
 type longerEdgeResize struct {
 	size int
 }
@@ -24,7 +23,7 @@ func (f *longerEdgeResize) Name() string {
 	return LongerEdgeResizeName
 }
 
-func (f *longerEdgeResize) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+func (f *longerEdgeResize) CreateOptions(image *bimg.Image, _ map[string][]string) (*bimg.Options, error) {
 	log.Debug("Create options for longer edge resize ", f)
 
 	imageSize, err := image.Size()
@@ -39,7 +38,7 @@ func (f *longerEdgeResize) CreateOptions(image *bimg.Image) (*bimg.Options, erro
 	}
 
 	return &bimg.Options{
-			Height: f.size}, nil
+		Height: f.size}, nil
 }
 
 func (f *longerEdgeResize) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {

@@ -24,7 +24,7 @@ func (f *cropByWidth) Name() string {
 	return CropByWidthName
 }
 
-func (f *cropByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+func (f *cropByWidth) CreateOptions(image *bimg.Image, _ map[string][]string) (*bimg.Options, error) {
 	log.Debug("Create options for crop by width ", f)
 
 	imageSize, err := image.Size()

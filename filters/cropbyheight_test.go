@@ -21,7 +21,7 @@ func TestCropByHeight_Name(t *testing.T) {
 func TestCropByHeight_CreateOptions(t *testing.T) {
 	c := cropByHeight{height: 400, cropType: North}
 	image := imagefiltertest.LandscapeImage()
-	options, _ := c.CreateOptions(image)
+	options, _ := c.CreateOptions(image, make(map[string][]string))
 
 	assert.Equal(t, 1000, options.Width)
 	assert.Equal(t, 400, options.Height)

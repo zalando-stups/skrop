@@ -21,7 +21,7 @@ func TestConvertImageType_Name(t *testing.T) {
 
 func TestConvertImageType_CreateOptions(t *testing.T) {
 	c := &convertImageType{imageType: bimg.JPEG}
-	options, _ := c.CreateOptions(nil)
+	options, _ := c.CreateOptions(nil, make(map[string][]string))
 	assert.Equal(t, bimg.JPEG, options.Type)
 }
 

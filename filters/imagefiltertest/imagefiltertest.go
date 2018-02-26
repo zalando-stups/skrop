@@ -11,11 +11,10 @@ const (
 	// LandscapeImageFile  is the path to the sample image landscape
 	LandscapeImageFile = "../images/lisbon-tram.jpg"
 	// PortraitImageFile   is the path to the sample image portrait
-	PortraitImageFile  = "../images/big-ben.jpg"
+	PortraitImageFile = "../images/big-ben.jpg"
 	// PNGImageFile        is the path to the sample PNG image
-	PNGImageFile       = "../images/bag.png"
+	PNGImageFile = "../images/bag.png"
 )
-
 
 // CreateTestItem is a utility to test arguments in eskip files
 type CreateTestItem struct {
