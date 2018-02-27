@@ -24,11 +24,11 @@ func (f *resizeByWidth) Name() string {
 	return ResizeByWidthName
 }
 
-func (f *resizeByWidth) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
+func (f *resizeByWidth) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for resize by width ", f)
 
 	if !f.enlarge {
-		size, err := image.Size()
+		size, err := imageContext.Image.Size()
 		if err != nil {
 			return nil, err
 		}

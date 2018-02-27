@@ -25,7 +25,7 @@ func (f *crop) Name() string {
 	return CropName
 }
 
-func (f *crop) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
+func (f *crop) CreateOptions(_ *ImageFilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for crop ", f)
 
 	return &bimg.Options{

@@ -33,7 +33,7 @@ func TestOverlay_CreateOptions_SE(t *testing.T) {
 		bottomMargin:      40,
 	}
 
-	options, _ := overlay.CreateOptions(image)
+	options, _ := overlay.CreateOptions(buildParameters(nil, image))
 	over := options.WatermarkImage
 
 	assert.Equal(t, overArr, over.Buf)
@@ -55,7 +55,7 @@ func TestOverlay_CreateOptions_NW(t *testing.T) {
 		bottomMargin:      40,
 	}
 
-	options, _ := overlay.CreateOptions(image)
+	options, _ := overlay.CreateOptions(buildParameters(nil, image))
 	over := options.WatermarkImage
 
 	assert.Equal(t, overArr, over.Buf)
@@ -80,7 +80,7 @@ func TestOverlay_CreateOptions_CC(t *testing.T) {
 		bottomMargin:      0,
 	}
 
-	options, _ := overlay.CreateOptions(image)
+	options, _ := overlay.CreateOptions(buildParameters(nil, image))
 	over := options.WatermarkImage
 
 	assert.Equal(t, overArr, over.Buf)
