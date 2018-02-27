@@ -53,15 +53,31 @@ func init() {
 
 // ImageFilter defines what a filter should implement
 type ImageFilter interface {
-	CreateOptions(image *bimg.Image) (*bimg.Options, error)
+	CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error)
 	CanBeMerged(other *bimg.Options, self *bimg.Options) bool
 	Merge(other *bimg.Options, self *bimg.Options) *bimg.Options
+}
+
+type ImageFilterContext struct {
+	Image      *bimg.Image
+	Parameters map[string][]string
 }
 
 func errorResponse() *http.Response {
 	return &http.Response{
 		StatusCode: http.StatusInternalServerError,
 		Body:       ioutil.NopCloser(bytes.NewBufferString(messages.Error500)),
+	}
+}
+
+func buildParameters(ctx filters.FilterContext, image *bimg.Image) *ImageFilterContext {
+	parameters := map[string][]string(nil)
+	if ctx != nil {
+		parameters = ctx.Request().URL.Query()
+	}
+	return  &ImageFilterContext{
+		Image:      image,
+		Parameters: parameters,
 	}
 }
 
@@ -87,7 +103,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 		return errors.New("processing failed, image not exists in the state bag")
 	}
 
-	opt, err := f.CreateOptions(image)
+	opt, err := f.CreateOptions(buildParameters(ctx,image))
 	if err != nil {
 		log.Error("Failed to create options ", err.Error())
 		ctx.Serve(errorResponse())
@@ -117,7 +133,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 
 	// set opt in the stateBag
 	newImage := bimg.NewImage(buf)
-	newOption, err := f.CreateOptions(newImage)
+	newOption, err := f.CreateOptions(buildParameters(ctx,newImage))
 	if err != nil {
 		log.Error("Failed to create new options ", err.Error())
 		ctx.Serve(errorResponse())

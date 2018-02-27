@@ -22,7 +22,7 @@ func TestResizeByWidth_CreateOptions_Shrink_EnlargeAllowed(t *testing.T) {
 	size, _ := image.Size()
 	newSize := size.Width / 2
 	resizeByWidth := resizeByWidth{width: newSize, enlarge: true}
-	options, _ := resizeByWidth.CreateOptions(image)
+	options, _ := resizeByWidth.CreateOptions(buildParameters(nil, image))
 
 	assert.Equal(t, newSize, options.Width)
 }
@@ -32,7 +32,7 @@ func TestResizeByWidth_CreateOptions_Enlarge_EnlargeAllowed(t *testing.T) {
 	size, _ := image.Size()
 	newSize := size.Width * 2
 	resizeByWidth := resizeByWidth{width: newSize, enlarge: true}
-	options, _ := resizeByWidth.CreateOptions(image)
+	options, _ := resizeByWidth.CreateOptions(buildParameters(nil, image))
 
 	assert.Equal(t, newSize, options.Width)
 }
@@ -42,7 +42,7 @@ func TestResizeByWidth_CreateOptions_Shrink_EnlargeNotAllowed(t *testing.T) {
 	size, _ := image.Size()
 	newSize := size.Width / 2
 	resizeByWidth := resizeByWidth{width: newSize, enlarge: false}
-	options, _ := resizeByWidth.CreateOptions(image)
+	options, _ := resizeByWidth.CreateOptions(buildParameters(nil, image))
 
 	assert.Equal(t, newSize, options.Width)
 }
@@ -52,7 +52,7 @@ func TestResizeByWidth_CreateOptions_Enlarge_EnlargeNotAllowed(t *testing.T) {
 	size, _ := image.Size()
 	newSize := size.Width * 2
 	resizeByWidth := resizeByWidth{width: newSize, enlarge: false}
-	options, _ := resizeByWidth.CreateOptions(image)
+	options, _ := resizeByWidth.CreateOptions(buildParameters(nil, image))
 
 	assert.Equal(t, 0, options.Width)
 }

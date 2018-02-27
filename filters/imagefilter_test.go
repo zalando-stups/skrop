@@ -146,7 +146,7 @@ func createContext(t *testing.T, method string, url string, image string, stateB
 	return &filtertest.Context{FResponse: response, FRequest: req, FStateBag: stateBag}
 }
 
-func (f *FakeImageFilter) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
+func (f *FakeImageFilter) CreateOptions(_ *ImageFilterContext) (*bimg.Options, error) {
 	options := bimg.Options(*f)
 	return &options, nil
 }
