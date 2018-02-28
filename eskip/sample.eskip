@@ -3,8 +3,12 @@
 small: Path("/images/S/:image")
   -> modPath("^/images/S", "/images")
   -> longerEdgeResize(800)
-  -> extractArea()
   -> "http://localhost:9090";
+
+dynamic: Path("/images/dynamic/:image")
+     -> modPath("^/images/dynamic", "/images")
+     -> transformFromQueryParams()
+     -> "http://localhost:9090";
 
 smallAndSharp: Path("/images/Ss/:image")
   -> modPath("^/images/Ss", "/images")

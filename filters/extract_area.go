@@ -27,7 +27,6 @@ func (t *transformFromQueryParams) CreateFilter(config []interface{}) (filters.F
 }
 
 func (t *transformFromQueryParams) CreateOptions(ctx *ImageFilterContext) (*bimg.Options, error) {
-
 	// Get crop prams from the request
 	params, ok := ctx.Parameters[cropParameters]
 	if !ok {
@@ -68,11 +67,19 @@ func (t *transformFromQueryParams) CreateOptions(ctx *ImageFilterContext) (*bimg
 		width = imgSize.Width
 	}
 
+	if y+height > imgSize.Height {
+		height = imgSize.Height - y
+	}
+
+	if x+width > imgSize.Width {
+		width = imgSize.Width - x
+	}
+
 	return &bimg.Options{
 		Top:        y,
 		Left:       x,
-		AreaHeight: min(imgSize.Height, height),
-		AreaWidth:  min(imgSize.Width, width),
+		AreaHeight: height,
+		AreaWidth:  width,
 	}, nil
 }
 

@@ -41,4 +41,19 @@ func TestExtractArea_CreateOptions(t *testing.T) {
 	assert.Equal(t, 0, opts.Top)
 	assert.Equal(t, imgSize.Width, opts.AreaWidth)
 	assert.Equal(t, imgSize.Height, opts.AreaHeight)
+
+	//When given values exceed image size
+	ea = transformFromQueryParams{}
+	img = imagefiltertest.LandscapeImage()
+	imgSize, _ = img.Size()
+	options = make(map[string][]string)
+	options[cropParameters] = []string{"100,100,10000,10000"}
+	ctx = &ImageFilterContext{
+		Image:      img,
+		Parameters: options,
 	}
+	opts, err = ea.CreateOptions(ctx)
+	assert.Nil(t, err, "error should be nil")
+	assert.Equal(t, imgSize.Height-100, opts.AreaHeight)
+	assert.Equal(t, imgSize.Width-100, opts.AreaWidth)
+}
