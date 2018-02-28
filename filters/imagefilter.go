@@ -14,15 +14,15 @@ import (
 
 const (
 	// North Gravity
-	North        = "north"
+	North = "north"
 	// South Gravity
-	South        = "south"
+	South = "south"
 	// East Gravity
-	East         = "east"
+	East = "east"
 	// West Gravity
-	West         = "west"
+	West = "west"
 	// Center Gravity
-	Center       = "center"
+	Center = "center"
 	// Quality used by default if not specified
 	Quality      = 100
 	doNotEnlarge = "DO_NOT_ENLARGE"
@@ -75,7 +75,7 @@ func buildParameters(ctx filters.FilterContext, image *bimg.Image) *ImageFilterC
 	if ctx != nil {
 		parameters = ctx.Request().URL.Query()
 	}
-	return  &ImageFilterContext{
+	return &ImageFilterContext{
 		Image:      image,
 		Parameters: parameters,
 	}
@@ -103,7 +103,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 		return errors.New("processing failed, image not exists in the state bag")
 	}
 
-	opt, err := f.CreateOptions(buildParameters(ctx,image))
+	opt, err := f.CreateOptions(buildParameters(ctx, image))
 	if err != nil {
 		log.Error("Failed to create options ", err.Error())
 		ctx.Serve(errorResponse())
@@ -133,7 +133,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 
 	// set opt in the stateBag
 	newImage := bimg.NewImage(buf)
-	newOption, err := f.CreateOptions(buildParameters(ctx,newImage))
+	newOption, err := f.CreateOptions(buildParameters(ctx, newImage))
 	if err != nil {
 		log.Error("Failed to create new options ", err.Error())
 		ctx.Serve(errorResponse())

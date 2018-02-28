@@ -12,36 +12,33 @@ func TestNewExtractArea(t *testing.T) {
 }
 
 func TestExtractArea_CanBeMerged(t *testing.T) {
-	ea := extractArea{}
+	ea := transformFromQueryParams{}
 	assert.Equal(t, false, ea.CanBeMerged(nil, nil))
 }
 
 func TestExtractArea_CreateOptions(t *testing.T) {
-	ea := extractArea{}
+	ea := transformFromQueryParams{}
 	img := imagefiltertest.LandscapeImage()
 	options := make(map[string][]string)
-	options[cropFrom] = []string{"10,10"}
-	options[cropHeight] = []string{"100"}
-	options[cropWidth] = []string{"100"}
-	_, err := ea.CreateOptions(img, options)
+	options[cropParameters] = []string{"10,10,100,100"}
+	ctx := &ImageFilterContext{
+		Image:      img,
+		Parameters: options,
+	}
+	opts, err := ea.CreateOptions(ctx)
 	assert.Nil(t, err, "error should be nil")
+	assert.Equal(t, 10, opts.Top)
+	assert.Equal(t, 10, opts.Left)
+	assert.Equal(t, 100, opts.AreaHeight)
+	assert.Equal(t, 100, opts.AreaWidth)
 
-	options[cropFrom] = []string{"a,10"}
-	options[cropHeight] = []string{"100"}
-	options[cropWidth] = []string{"100"}
-	_, err = ea.CreateOptions(img, options)
-	assert.NotNil(t, err, "error should not be nil when point has invalid value")
-
-	options[cropFrom] = []string{"a,10"}
-	options[cropHeight] = []string{"a"}
-	options[cropWidth] = []string{"100"}
-	_, err = ea.CreateOptions(img, options)
-	assert.NotNil(t, err, "error should not be nil when height has invalid value")
-
-	options[cropFrom] = []string{"a,10"}
-	options[cropHeight] = []string{"100"}
-	options[cropWidth] = []string{"a"}
-	_, err = ea.CreateOptions(img, options)
-	assert.NotNil(t, err, "error should not be nil when width has invalid value")
-
-}
+	//set defaults if not a valid value
+	options[cropParameters] = []string{"a,b, c, d"}
+	imgSize, _ := img.Size()
+	opts, err = ea.CreateOptions(ctx)
+	assert.Nil(t, err, "error should be nil")
+	assert.Equal(t, 0, opts.Left)
+	assert.Equal(t, 0, opts.Top)
+	assert.Equal(t, imgSize.Width, opts.AreaWidth)
+	assert.Equal(t, imgSize.Height, opts.AreaHeight)
+	}
