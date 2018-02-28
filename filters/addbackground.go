@@ -23,10 +23,10 @@ func (s *addBackground) Name() string {
 	return AddBackgroundName
 }
 
-func (s *addBackground) CreateOptions(image *bimg.Image, _ map[string][]string) (*bimg.Options, error) {
+func (s *addBackground) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for adding background ", s)
 
-	if image.Type() != "png" {
+	if imageContext.Image.Type() != "png" {
 		return &bimg.Options{}, nil
 	}
 

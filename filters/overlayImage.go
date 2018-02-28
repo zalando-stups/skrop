@@ -12,23 +12,23 @@ const (
 	// OverlayImageName is the name of the filter
 	OverlayImageName = "overlayImage"
 	// NE North East
-	NE = "NE"
+	NE               = "NE"
 	// NC North Center
-	NC = "NC"
+	NC               = "NC"
 	// NW North West
-	NW = "NW"
+	NW               = "NW"
 	// CE Centre East
-	CE = "CE"
+	CE               = "CE"
 	// CC Centre Center
-	CC = "CC"
+	CC               = "CC"
 	// CW Centre West
-	CW = "CW"
+	CW               = "CW"
 	// SE South East
-	SE = "SE"
+	SE               = "SE"
 	// SC South Center
-	SC = "SC"
+	SC               = "SC"
 	// SW South West
-	SW = "SW"
+	SW               = "SW"
 )
 
 var (
@@ -87,8 +87,8 @@ func (f *overlay) Name() string {
 	return OverlayImageName
 }
 
-func (f *overlay) CreateOptions(image *bimg.Image, _ map[string][]string) (*bimg.Options, error) {
-	origSize, err := image.Size()
+func (f *overlay) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
+	origSize, err := imageContext.Image.Size()
 	if err != nil {
 		return nil, err
 	}

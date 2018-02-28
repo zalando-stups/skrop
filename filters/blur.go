@@ -24,7 +24,7 @@ func (r *blur) Name() string {
 	return BlurName
 }
 
-func (r *blur) CreateOptions(image *bimg.Image, _ map[string][]string) (*bimg.Options, error) {
+func (r *blur) CreateOptions(_ *ImageFilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for blurring ", r)
 
 	blur := bimg.GaussianBlur{Sigma: r.Sigma, MinAmpl: r.MinAmpl}

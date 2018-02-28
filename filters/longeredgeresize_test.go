@@ -21,7 +21,7 @@ func TestLongerEdgeResize_Name(t *testing.T) {
 func TestLongerEdgeResize_CreateOptions_Landscape(t *testing.T) {
 	resize := longerEdgeResize{size: 800}
 	image := imagefiltertest.LandscapeImage()
-	options, _ := resize.CreateOptions(image, make(map[string][]string))
+	options, _ := resize.CreateOptions(buildParameters(nil, image))
 
 	assert.Equal(t, 800, options.Width)
 	assert.Equal(t, 0, options.Height)
@@ -30,7 +30,7 @@ func TestLongerEdgeResize_CreateOptions_Landscape(t *testing.T) {
 func TestLongerEdgeResize_CreateOptions_Portrait(t *testing.T) {
 	resize := longerEdgeResize{size: 800}
 	image := imagefiltertest.PortraitImage()
-	options, _ := resize.CreateOptions(image, make(map[string][]string))
+	options, _ := resize.CreateOptions(buildParameters(nil, image))
 
 	assert.Equal(t, 0, options.Width)
 	assert.Equal(t, 800, options.Height)
