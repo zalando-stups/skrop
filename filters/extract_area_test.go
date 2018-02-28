@@ -54,6 +54,6 @@ func TestExtractArea_CreateOptions(t *testing.T) {
 	}
 	opts, err = ea.CreateOptions(ctx)
 	assert.Nil(t, err, "error should be nil")
-	assert.Equal(t, imgSize.Height-100, opts.AreaHeight)
-	assert.Equal(t, imgSize.Width-100, opts.AreaWidth)
+	assert.Equal(t, imgSize.Height, opts.AreaHeight+opts.Top)
+	assert.Equal(t, imgSize.Width, opts.AreaWidth+opts.Left)
 }
