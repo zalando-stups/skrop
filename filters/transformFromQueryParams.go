@@ -14,7 +14,7 @@ const (
 
 type transformFromQueryParams struct{}
 
-func NewExtractArea() filters.Spec {
+func NewtransformFromQueryParams() filters.Spec {
 	return &transformFromQueryParams{}
 }
 
