@@ -108,6 +108,7 @@ Skrop provides a set of filters, which you can use within the routes:
 * **height(size, opt-enlarge)** — resizes the image to the specified height keeping the ratio. If the second arg is specified and it is equals to "DO_NOT_ENLARGE", the image will not be enlarged
 * **blur(sigma, min_ampl)** — blurs the image (for info see [here](http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/libvips-convolution.html#vips-gaussblur))
 * **imageOverlay(filename, opacity, gravity, opt-top-margin, opt-right-margin, opt-bottom-margin, opt-left-margin)** — puts an image onverlay over the required image
+* **transformFromQueryParams()** - transforms the image based on the request query parameters (supports only crop for now) e.g: localhost:9090/images/S/big-ben.jpg?crop=120,300,500,300.
 
 ### About filters
 The eskip file defines a list of configuration. Every configuration is composed by a route and a list of filters to

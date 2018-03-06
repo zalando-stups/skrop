@@ -20,7 +20,6 @@ const (
 
 type FakeImageFilter bimg.Options
 
-
 var optionsTarget = bimg.Options{
 	Width:  widthTarget,
 	Height: heightTarget,
