@@ -14,7 +14,7 @@ const (
 
 type transformFromQueryParams struct{}
 
-func NewtransformFromQueryParams() filters.Spec {
+func NewTransformFromQueryParams() filters.Spec {
 	return &transformFromQueryParams{}
 }
 

@@ -7,7 +7,7 @@ import (
 )
 
 func TestNewtransformFromQueryParams(t *testing.T) {
-	name := NewtransformFromQueryParams().Name()
+	name := NewTransformFromQueryParams().Name()
 	assert.Equal(t, ExtractArea, name)
 }
 
