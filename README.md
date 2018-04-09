@@ -120,6 +120,15 @@ Because of performance, each filter does not trigger a transformation of the ima
 the result of the previous filters. The image is actually transformed every time the filter cannot be merged with the
 previous one e.g. both edit the same attribute and also at the end of the filter chain by the finalizeResponse filter.
 
+## Metadata
+By default metadata are kept in the processed images. If you are not interested in metadata and 
+you want them stripped from all the images that are processed, you can add the following 
+environment variable to the running system:
+
+```
+STRIP_METADATA=TRUE
+``` 
+
 ## Packaging
 In order to package skrop for production, you're going to need [Docker](https://docs.docker.com).
 To build a Docker image, just run the build script (the arguments are optional):

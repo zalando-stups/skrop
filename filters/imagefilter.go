@@ -10,6 +10,8 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"strings"
 )
 
 const (
@@ -192,6 +194,10 @@ func transformImage(image *bimg.Image, opts *bimg.Options) ([]byte, error) {
 }
 
 func applyDefaults(o *bimg.Options) *bimg.Options {
+	val, exists := os.LookupEnv("STRIP_METADATA")
+	if (exists && strings.ToUpper(val) == "TRUE") {
+		o.StripMetadata = true
+	}
 	if o.Quality == 0 {
 		o.Quality = Quality
 	}
