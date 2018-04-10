@@ -10,6 +10,8 @@ import (
 	"gopkg.in/h2non/bimg.v1"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"strings"
 )
 
 const (
@@ -34,6 +36,7 @@ const (
 var (
 	cropTypeToGravity map[string]bimg.Gravity
 	cropTypes         map[string]bool
+	stripMetadata bool
 )
 
 func init() {
@@ -49,6 +52,11 @@ func init() {
 		East:   bimg.GravityEast,
 		West:   bimg.GravityWest,
 		Center: bimg.GravityCentre}
+
+	val, exists := os.LookupEnv("STRIP_METADATA")
+	if (exists && strings.ToUpper(val) == "TRUE") {
+		stripMetadata = true
+	}
 }
 
 // ImageFilter defines what a filter should implement
@@ -192,6 +200,9 @@ func transformImage(image *bimg.Image, opts *bimg.Options) ([]byte, error) {
 }
 
 func applyDefaults(o *bimg.Options) *bimg.Options {
+	if (stripMetadata) {
+		o.StripMetadata = true
+	}
 	if o.Quality == 0 {
 		o.Quality = Quality
 	}
