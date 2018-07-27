@@ -23,7 +23,7 @@ func (f *quality) Name() string {
 	return QualityName
 }
 
-func (f *quality) CreateOptions(_ *ImageFilterContext, _ filters.FilterContext) (*bimg.Options, error) {
+func (f *quality) CreateOptions(_ *ImageFilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for quality ", f)
 
 	return &bimg.Options{

@@ -24,7 +24,7 @@ func (f *cropByWidth) Name() string {
 	return CropByWidthName
 }
 
-func (f *cropByWidth) CreateOptions(imageContext *ImageFilterContext, _ filters.FilterContext) (*bimg.Options, error) {
+func (f *cropByWidth) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for crop by width ", f)
 
 	imageSize, err := imageContext.Image.Size()

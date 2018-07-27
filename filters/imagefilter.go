@@ -61,7 +61,7 @@ func init() {
 
 // ImageFilter defines what a filter should implement
 type ImageFilter interface {
-	CreateOptions(imageContext *ImageFilterContext, filterContext filters.FilterContext) (*bimg.Options, error)
+	CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error)
 	CanBeMerged(other *bimg.Options, self *bimg.Options) bool
 	Merge(other *bimg.Options, self *bimg.Options) *bimg.Options
 }
@@ -80,8 +80,17 @@ func errorResponse() *http.Response {
 
 func buildParameters(ctx filters.FilterContext, image *bimg.Image) *ImageFilterContext {
 	parameters := map[string][]string(nil)
+
 	if ctx != nil {
 		parameters = ctx.Request().URL.Query()
+
+		focalPointX := ctx.PathParam("focalPointX");
+		focalPointY := ctx.PathParam("focalPointY");
+
+		if len(focalPointX) > 0 && len(focalPointY) > 0 {
+			log.Debug("Adding Focal Point Crop parameter")
+			parameters["focal_point_crop"] = []string{strings.Join([]string{focalPointX,focalPointY}, ",")}
+		}
 	}
 	return &ImageFilterContext{
 		Image:      image,
@@ -111,7 +120,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 		return errors.New("processing failed, image not exists in the state bag")
 	}
 
-	opt, err := f.CreateOptions(buildParameters(ctx, image), ctx)
+	opt, err := f.CreateOptions(buildParameters(ctx, image))
 	if err != nil {
 		log.Error("Failed to create options ", err.Error())
 		ctx.Serve(errorResponse())
@@ -141,7 +150,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 
 	// set opt in the stateBag
 	newImage := bimg.NewImage(buf)
-	newOption, err := f.CreateOptions(buildParameters(ctx, newImage), ctx)
+	newOption, err := f.CreateOptions(buildParameters(ctx, newImage))
 	if err != nil {
 		log.Error("Failed to create new options ", err.Error())
 		ctx.Serve(errorResponse())

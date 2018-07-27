@@ -6,6 +6,7 @@ import (
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	"strconv"
+	"strings"
 )
 
 // CropByFocalPointName is the name of the filter
@@ -26,7 +27,7 @@ func (f *cropByFocalPoint) Name() string {
 	return CropByFocalPointName
 }
 
-func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext, filterContext filters.FilterContext) (*bimg.Options, error) {
+func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for crop by focal point ", f)
 
 	imageSize, err := imageContext.Image.Size()
@@ -35,13 +36,19 @@ func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext, filte
 		return nil, err
 	}
 
-	sourceX, err := strconv.Atoi(filterContext.PathParam("x"))
+	focalPoint := strings.Split(imageContext.Parameters["focal_point_crop"][0], ",")
+
+	if len(focalPoint) != 2 {
+		return nil, filters.ErrInvalidFilterParameters
+	}
+
+	sourceX, err := strconv.Atoi(focalPoint[0])
 
 	if err != nil {
 		return nil, err
 	}
 
-	sourceY, err := strconv.Atoi(filterContext.PathParam("y"))
+	sourceY, err := strconv.Atoi(focalPoint[1])
 
 	if err != nil {
 		return nil, err
@@ -75,8 +82,6 @@ func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext, filte
 	} else {
 		width = int(float64(height) / f.aspectRatio)
 	}
-
-	log.Debug("sourceX, sourceY, width, height ", sourceX- int(float64(width) * f.targetX), sourceY- int(float64(height) * f.targetY), width, height)
 
 	return &bimg.Options{
 		AreaWidth:  width,

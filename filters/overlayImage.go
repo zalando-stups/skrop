@@ -87,7 +87,7 @@ func (f *overlay) Name() string {
 	return OverlayImageName
 }
 
-func (f *overlay) CreateOptions(imageContext *ImageFilterContext, _ filters.FilterContext) (*bimg.Options, error) {
+func (f *overlay) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
 	origSize, err := imageContext.Image.Size()
 	if err != nil {
 		return nil, err

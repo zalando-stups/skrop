@@ -31,7 +31,7 @@ func (f *sharpen) Name() string {
 	return SharpenName
 }
 
-func (f *sharpen) CreateOptions(imageCo_ntext *ImageFilterContext, _ filters.FilterContext) (*bimg.Options, error) {
+func (f *sharpen) CreateOptions(imageCo_ntext *ImageFilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for sharpen ", f)
 
 	sha := bimg.Sharpen{Radius: f.Radius, X1: f.X1, Y2: f.Y2, Y3: f.Y3, M1: f.M1, M2: f.M2}

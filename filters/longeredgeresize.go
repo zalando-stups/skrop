@@ -23,7 +23,7 @@ func (f *longerEdgeResize) Name() string {
 	return LongerEdgeResizeName
 }
 
-func (f *longerEdgeResize) CreateOptions(imageContext *ImageFilterContext, _ filters.FilterContext) (*bimg.Options, error) {
+func (f *longerEdgeResize) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for longer edge resize ", f)
 
 	imageSize, err := imageContext.Image.Size()
