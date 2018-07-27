@@ -61,7 +61,7 @@ func init() {
 
 // ImageFilter defines what a filter should implement
 type ImageFilter interface {
-	CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error)
+	CreateOptions(imageContext *ImageFilterContext, filterContext filters.FilterContext) (*bimg.Options, error)
 	CanBeMerged(other *bimg.Options, self *bimg.Options) bool
 	Merge(other *bimg.Options, self *bimg.Options) *bimg.Options
 }
@@ -111,7 +111,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 		return errors.New("processing failed, image not exists in the state bag")
 	}
 
-	opt, err := f.CreateOptions(buildParameters(ctx, image))
+	opt, err := f.CreateOptions(buildParameters(ctx, image), ctx)
 	if err != nil {
 		log.Error("Failed to create options ", err.Error())
 		ctx.Serve(errorResponse())
@@ -141,7 +141,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 
 	// set opt in the stateBag
 	newImage := bimg.NewImage(buf)
-	newOption, err := f.CreateOptions(buildParameters(ctx, newImage))
+	newOption, err := f.CreateOptions(buildParameters(ctx, newImage), ctx)
 	if err != nil {
 		log.Error("Failed to create new options ", err.Error())
 		ctx.Serve(errorResponse())

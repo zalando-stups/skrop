@@ -29,7 +29,7 @@ func (f *resize) Name() string {
 	return ResizeName
 }
 
-func (f *resize) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
+func (f *resize) CreateOptions(imageContext *ImageFilterContext, _ filters.FilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for resize ", f)
 
 	if !f.keepAspectRatio {

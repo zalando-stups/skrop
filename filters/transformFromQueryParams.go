@@ -26,7 +26,7 @@ func (t *transformFromQueryParams) CreateFilter(config []interface{}) (filters.F
 	return t, nil
 }
 
-func (t *transformFromQueryParams) CreateOptions(ctx *ImageFilterContext) (*bimg.Options, error) {
+func (t *transformFromQueryParams) CreateOptions(ctx *ImageFilterContext, _ filters.FilterContext) (*bimg.Options, error) {
 	// Get crop prams from the request
 	params, ok := ctx.Parameters[cropParameters]
 	if !ok {

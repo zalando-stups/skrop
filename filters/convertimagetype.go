@@ -25,7 +25,7 @@ func (f *convertImageType) Name() string {
 	return ConvertImageType
 }
 
-func (f *convertImageType) CreateOptions(_ *ImageFilterContext) (*bimg.Options, error) {
+func (f *convertImageType) CreateOptions(_ *ImageFilterContext, _ filters.FilterContext) (*bimg.Options, error) {
 	log.Debug("Create options for convert image type", f)
 
 	return &bimg.Options{
