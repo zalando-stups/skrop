@@ -1,5 +1,5 @@
-hash: 37fdce0af81141dd7bb3382da227b489fcffce2d0868302fa1412686f6dd4028
-updated: 2018-01-05T13:27:44.005120694+01:00
+hash: 3371785b21f72cea1c9166e16e9cdea49d2ab79bc024370e2834fee8d9da1581
+updated: 2018-07-27T15:53:56.772624659+02:00
 imports:
 - name: github.com/abbot/go-http-auth
   version: efc9484eee77263a11f158ef4f30fcc30298a942
@@ -62,7 +62,7 @@ imports:
   - parse
   - pm
 - name: github.com/zalando/skipper
-  version: 6bfba8444807cfde9faca5b076b83c333fb5362c
+  version: e6d8e2d92854be951edee327814f1c4a1be43974
   subpackages:
   - circuit
   - dataclients/kubernetes
@@ -75,19 +75,24 @@ imports:
   - filters/builtin
   - filters/circuit
   - filters/cookie
+  - filters/cors
   - filters/diag
   - filters/filtertest
   - filters/flowid
+  - filters/log
   - filters/ratelimit
   - filters/serve
   - filters/tee
+  - filters/tracing
   - innkeeper
+  - loadbalancer
   - logging
   - metrics
   - net
   - oauth
   - pathmux
   - predicates
+  - predicates/auth
   - predicates/cookie
   - predicates/interval
   - predicates/query
