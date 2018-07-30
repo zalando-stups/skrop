@@ -75,7 +75,7 @@ func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bim
 		height = int(float64(sourceY) / f.targetY)
 	}
 
-	ratio := float64(width) / float64(height)
+	ratio := float64(height) / float64(width)
 
 	if ratio > f.aspectRatio {
 		height = int(float64(width) * f.aspectRatio)
