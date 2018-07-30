@@ -36,7 +36,7 @@ const (
 var (
 	cropTypeToGravity map[string]bimg.Gravity
 	cropTypes         map[string]bool
-	stripMetadata bool
+	stripMetadata     bool
 )
 
 func init() {
@@ -67,10 +67,12 @@ type ImageFilter interface {
 }
 
 type ImageFilterContext struct {
-	Image      *bimg.Image
-	Parameters map[string][]string
-	PathParams map[string]string
+	Image         *bimg.Image
+	Parameters    map[string][]string
+	filterContext *filters.FilterContext
 }
+
+func (c *ImageFilterContext) PathParam(key string) string { return (*c.filterContext).PathParam(key) }
 
 func errorResponse() *http.Response {
 	return &http.Response{
@@ -81,25 +83,11 @@ func errorResponse() *http.Response {
 
 func buildParameters(ctx filters.FilterContext, image *bimg.Image) *ImageFilterContext {
 	parameters := map[string][]string(nil)
-	pathParams := map[string]string(nil)
 
-	if ctx != nil {
-		parameters = ctx.Request().URL.Query()
-
-		focalPointX := ctx.PathParam("focalPointX");
-		if len(focalPointX) > 0 {
-			pathParams["focalPointX"] = focalPointX
-		}
-
-		focalPointY := ctx.PathParam("focalPointY");
-		if len(focalPointY) > 0 {
-			pathParams["focalPointY"] = focalPointY
-		}
-	}
 	return &ImageFilterContext{
-		Image:      image,
-		Parameters: parameters,
-		PathParams: pathParams,
+		Image:         image,
+		Parameters:    parameters,
+		filterContext: &ctx,
 	}
 }
 
