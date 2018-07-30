@@ -69,6 +69,7 @@ type ImageFilter interface {
 type ImageFilterContext struct {
 	Image      *bimg.Image
 	Parameters map[string][]string
+	PathParams map[string]string
 }
 
 func errorResponse() *http.Response {
@@ -80,21 +81,25 @@ func errorResponse() *http.Response {
 
 func buildParameters(ctx filters.FilterContext, image *bimg.Image) *ImageFilterContext {
 	parameters := map[string][]string(nil)
+	pathParams := map[string]string(nil)
 
 	if ctx != nil {
 		parameters = ctx.Request().URL.Query()
 
 		focalPointX := ctx.PathParam("focalPointX");
-		focalPointY := ctx.PathParam("focalPointY");
+		if len(focalPointX) > 0 {
+			pathParams["focalPointX"] = focalPointX
+		}
 
-		if len(focalPointX) > 0 && len(focalPointY) > 0 {
-			log.Debug("Adding Focal Point Crop parameter")
-			parameters["focal_point_crop"] = []string{strings.Join([]string{focalPointX,focalPointY}, ",")}
+		focalPointY := ctx.PathParam("focalPointY");
+		if len(focalPointY) > 0 {
+			pathParams["focalPointY"] = focalPointY
 		}
 	}
 	return &ImageFilterContext{
 		Image:      image,
 		Parameters: parameters,
+		PathParams: pathParams,
 	}
 }
 

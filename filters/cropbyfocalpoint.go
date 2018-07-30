@@ -6,8 +6,7 @@ import (
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	"strconv"
-	"strings"
-)
+	)
 
 // CropByFocalPointName is the name of the filter
 const CropByFocalPointName = "cropByFocalPoint"
@@ -36,19 +35,20 @@ func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bim
 		return nil, err
 	}
 
-	focalPoint := strings.Split(imageContext.Parameters["focal_point_crop"][0], ",")
+	focalPointX, focalPointXOK := imageContext.PathParams["focalPointX"]
+	focalPointY, focalPointYOK := imageContext.PathParams["focalPointY"]
 
-	if len(focalPoint) != 2 {
+	if !focalPointXOK || !focalPointYOK {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	sourceX, err := strconv.Atoi(focalPoint[0])
+	sourceX, err := strconv.Atoi(focalPointX)
 
 	if err != nil {
 		return nil, err
 	}
 
-	sourceY, err := strconv.Atoi(focalPoint[1])
+	sourceY, err := strconv.Atoi(focalPointY)
 
 	if err != nil {
 		return nil, err
