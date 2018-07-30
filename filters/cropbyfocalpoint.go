@@ -35,10 +35,10 @@ func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bim
 		return nil, err
 	}
 
-	focalPointX, focalPointXOK := imageContext.PathParams["focalPointX"]
-	focalPointY, focalPointYOK := imageContext.PathParams["focalPointY"]
+	focalPointX := imageContext.PathParam("focalPointX")
+	focalPointY := imageContext.PathParam("focalPointY")
 
-	if !focalPointXOK || !focalPointYOK {
+	if focalPointX == "" || focalPointY == "" {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
