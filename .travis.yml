@@ -7,11 +7,11 @@ branches:
 
 language: go
 go:
-  - 1.9.2
+  - 1.10.3
 
 env:
   global:
-    - VIPS_VERSION=8.6.0
+    - VIPS_VERSION=8.6.5
     - secure: gwkrGzB65bWhvyuVrXaWOuAXAtRc94gBIj3dZ+HAO0+v9TwPksgiapa0w4AE/yLRap0F/l1MAvhJ4VqAZp4hhSMofR+lOdRcJo2paKZhNWYrPdJRt9kj+LunUJ2z5aOC7tsKfTUTSJPqoW3v5OGZ+ou7aWT6InA+qk4pSqiPzmxlBlGQkk/l3eRc8wHKSUfCRG9kkoGGT42ZZxCPK/lk47F7aA7Oi0M07SwOs7UwygCHiel4SiWmQJ93fb9PDbue9PFqGtEJ+J7YM78oWntfi/OHO2UH8vZMp7/I7PjQiQ8WFt2ASHzHBQ3+mv1Jy/ZzfIx2wuP2irc1bWAqM8dCI4YHz/K+IIJbRNnZbhV0l2OEZ96fSdzKuNfjwfzMAMKaJ+ZlHpwkhJtvUgzSpeX+VPrnh1WjfZosZq7DDVrfmQwoDrP7e0S/0yokiekCCvZCqUQjYMUMckGrodhFjTfwsLgFQUPBzsch+d0uXrySxJbgWL3cL+h5S85sQtyoVuATHR162cxJIrzG0rMFkP3k3zwXdEj0dSLT7xLqr4e+WV6JILPs3Y5AE/yQFPS/glF45latyyUgsIds+SJkteL8MmLozpqckhFYooFlEzU9Lw7hhqsHVRVc+d1Y7mWS6cIP5D6dk7AQAPrzmiwRHfCFoGJaEyxTpZ+UrLETlYKyZj0=
 
 before_install:

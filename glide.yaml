@@ -2,6 +2,7 @@ package: github.com/zalando-stups/skrop
 import:
 - package: github.com/sirupsen/logrus
 - package: github.com/zalando/skipper
+  version: ^0.10.48
   subpackages:
   - eskip
   - eskipfile
@@ -9,6 +10,7 @@ import:
   - proxy
   - routing
 - package: gopkg.in/h2non/bimg.v1
+  version: ^1.0.18
 testImport:
 - package: github.com/stretchr/testify
   subpackages:
