@@ -10,6 +10,7 @@ import (
 const (
 	ExtractArea    = "transformFromQueryParams"
 	cropParameters = "crop"
+	focalPointCropParameters = "focal_point_crop"
 )
 
 type transformFromQueryParams struct{}
@@ -30,6 +31,19 @@ func (t *transformFromQueryParams) CreateOptions(ctx *ImageFilterContext) (*bimg
 	// Get crop prams from the request
 	params, ok := ctx.Parameters[cropParameters]
 	if !ok {
+
+		params, ok = ctx.Parameters[focalPointCropParameters]
+
+		if !ok {
+			return &bimg.Options{}, nil
+		}
+
+		params = strings.Split(params[0], ",")
+		if len(params) != 5 {
+			return &bimg.Options{}, nil
+		}
+
+		// TODO do focal point crop
 		return &bimg.Options{}, nil
 	}
 

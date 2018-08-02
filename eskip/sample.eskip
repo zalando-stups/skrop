@@ -49,6 +49,11 @@ cropByHeight: Path("/images/cropbyheight/:image")
   -> cropByHeight(1000, "south")
   -> "http://localhost:9090";
 
+cropByFocalPoint: Path("/images/cropbyfocalpoint/:focalPointX/:focalPointY/:image")
+  -> modPath("^/images/cropbyfocalpoint/\\d+/\\d+", "/images")
+  -> cropByFocalPoint(0.25,0.25,0.5)
+  -> "http://localhost:9090";
+
 widthAndQuality: Path("/images/waq/:image")
   -> modPath("^/images/waq", "/images")
   -> width(1000)
