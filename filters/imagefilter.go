@@ -83,6 +83,9 @@ func errorResponse() *http.Response {
 
 func buildParameters(ctx filters.FilterContext, image *bimg.Image) *ImageFilterContext {
 	parameters := map[string][]string(nil)
+	if ctx != nil {
+		parameters = ctx.Request().URL.Query()
+	}
 
 	return &ImageFilterContext{
 		Image:         image,
