@@ -118,8 +118,12 @@ func TestCropByFocalPoint_CreateFilter(t *testing.T) {
 		Args: []interface{}{0.5, 0.5, 1.5},
 		Err:  false,
 	}, {
-		Msg:  "more than 3 args",
-		Args: []interface{}{0.5, 0.5, 1.5, 1.0},
+		Msg:  "4 args",
+		Args: []interface{}{0.5, 0.5, 1.5, 200.0},
+		Err:  false,
+	}, {
+		Msg:  "more than 4 args",
+		Args: []interface{}{0.5, 0.5, 1.5, 200.0, 1.0},
 		Err:  true,
 	}})
 }
