@@ -14,6 +14,7 @@ type cropByFocalPoint struct {
 	targetX     float64
 	targetY     float64
 	aspectRatio float64
+	minWidth	int
 }
 
 // NewCropByFocalPoint creates a new filter of this type
@@ -51,10 +52,34 @@ func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bim
 		return nil, err
 	}
 
-	right := imageSize.Width - sourceX
-	bottom := imageSize.Height - sourceY
+	x := sourceX
+	y := sourceY
+	if f.minWidth != -1 {
+		minHeight := int(f.aspectRatio * float64(f.minWidth))
 
-	cropLeftWidth := int(float64(sourceX) / f.targetX)
+		minX := int(float64(f.minWidth) * f.targetX)
+		maxX := imageSize.Width - int(float64(f.minWidth) * (1 - f.targetX))
+		minY := int(float64(minHeight) * f.targetY)
+		maxY := imageSize.Height - int(float64(minHeight) * (1 - f.targetY))
+
+		if x < minX {
+			x = minX
+		}
+		if x > maxX {
+			x = maxX
+		}
+		if y < minY {
+			y = minY
+		}
+		if y > maxY {
+			y = maxY
+		}
+	}
+
+	right := imageSize.Width - x
+	bottom := imageSize.Height - y
+
+	cropLeftWidth := int(float64(x) / f.targetX)
 	cropRightWidth := int(float64(right) / (float64(1) - f.targetX))
 
 	width := cropRightWidth
@@ -63,13 +88,13 @@ func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bim
 		width = cropLeftWidth
 	}
 
-	cropTopHeight := int(float64(sourceY) / f.targetY)
+	cropTopHeight := int(float64(y) / f.targetY)
 	cropBottomHeight := int(float64(bottom) / (float64(1) - f.targetY))
 
 	height := cropBottomHeight
 
 	if cropTopHeight < cropBottomHeight {
-		height = int(float64(sourceY) / f.targetY)
+		height = int(float64(y) / f.targetY)
 	}
 
 	ratio := float64(height) / float64(width)
@@ -83,8 +108,8 @@ func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bim
 	return &bimg.Options{
 		AreaWidth:  width,
 		AreaHeight: height,
-		Top:    sourceY - int(float64(height) * f.targetY),
-		Left:   sourceX - int(float64(width) * f.targetX)}, nil
+		Top:    y - int(float64(height) * f.targetY),
+		Left:   x - int(float64(width) * f.targetX)}, nil
 }
 
 func (f *cropByFocalPoint) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
@@ -98,7 +123,7 @@ func (f *cropByFocalPoint) Merge(other *bimg.Options, self *bimg.Options) *bimg.
 func (f *cropByFocalPoint) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
-	if len(args) < 3 || len(args) > 3 {
+	if len(args) < 3 || len(args) > 4 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
@@ -120,6 +145,16 @@ func (f *cropByFocalPoint) CreateFilter(args []interface{}) (filters.Filter, err
 
 	if err != nil {
 		return nil, err
+	}
+
+	if len(args)  == 4 {
+		c.minWidth, err = parse.EskipIntArg(args[3])
+
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		c.minWidth = -1
 	}
 
 	return c, nil

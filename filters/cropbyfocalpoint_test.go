@@ -47,6 +47,31 @@ func TestCropByFocalPoint_CreateOptions(t *testing.T) {
 	assert.Equal(t, 352, options.Left)
 }
 
+func TestCropByFocalPoint_CreateOptions_MinWidth(t *testing.T) {
+	c := cropByFocalPoint{targetX: 0.5, targetY: 0.5, aspectRatio: 0.5}
+	image := imagefiltertest.LandscapeImage()
+	fc := createDefaultContext(t, "doesnotmatter.com")
+	fc.FParams = make(map[string]string)
+	fc.FParams["focalPointX"] = "125";
+	fc.FParams["focalPointY"] = "334";
+
+	options, _ := c.CreateOptions(buildParameters(fc, image))
+
+	assert.Equal(t, 250, options.AreaWidth)
+	assert.Equal(t, 125, options.AreaHeight)
+	assert.Equal(t, 272, options.Top)
+	assert.Equal(t, 0, options.Left)
+
+	c = cropByFocalPoint{targetX: 0.5, targetY: 0.5, aspectRatio: 0.5, minWidth: 500.0}
+
+	options, _ = c.CreateOptions(buildParameters(fc, image))
+
+	assert.Equal(t, 500, options.AreaWidth)
+	assert.Equal(t, 250, options.AreaHeight)
+	assert.Equal(t, 209, options.Top)
+	assert.Equal(t, 0, options.Left)
+}
+
 func TestCropByFocalPoint_CreateOptions_MissingPathParam(t *testing.T) {
 	c := cropByFocalPoint{targetX: 0.5, targetY: 0.5, aspectRatio: 1.5}
 	image := imagefiltertest.LandscapeImage()
@@ -118,8 +143,12 @@ func TestCropByFocalPoint_CreateFilter(t *testing.T) {
 		Args: []interface{}{0.5, 0.5, 1.5},
 		Err:  false,
 	}, {
-		Msg:  "more than 3 args",
-		Args: []interface{}{0.5, 0.5, 1.5, 1.0},
+		Msg:  "4 args",
+		Args: []interface{}{0.5, 0.5, 1.5, 200.0},
+		Err:  false,
+	}, {
+		Msg:  "more than 4 args",
+		Args: []interface{}{0.5, 0.5, 1.5, 200.0, 1.0},
 		Err:  true,
 	}})
 }
