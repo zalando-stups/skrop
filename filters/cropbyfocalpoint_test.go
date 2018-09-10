@@ -70,6 +70,24 @@ func TestCropByFocalPoint_CreateOptions_MinWidth(t *testing.T) {
 	assert.Equal(t, 250, options.AreaHeight)
 	assert.Equal(t, 209, options.Top)
 	assert.Equal(t, 0, options.Left)
+
+	c = cropByFocalPoint{targetX: 0.5, targetY: 0.5, aspectRatio: 0.5, minWidth: 1500.0}
+
+	options, _ = c.CreateOptions(buildParameters(fc, image))
+
+	assert.Equal(t, 1000, options.AreaWidth)
+	assert.Equal(t, 500, options.AreaHeight)
+	assert.Equal(t, 84, options.Top)
+	assert.Equal(t, 0, options.Left)
+
+	c = cropByFocalPoint{targetX: 0.5, targetY: 0.5, aspectRatio: 1.0, minWidth: 1500.0}
+
+	options, _ = c.CreateOptions(buildParameters(fc, image))
+
+	assert.Equal(t, 668, options.AreaWidth)
+	assert.Equal(t, 668, options.AreaHeight)
+	assert.Equal(t, 0, options.Top)
+	assert.Equal(t, 166, options.Left)
 }
 
 func TestCropByFocalPoint_CreateOptions_MissingPathParam(t *testing.T) {
