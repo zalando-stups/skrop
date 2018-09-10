@@ -17,6 +17,13 @@ type cropByFocalPoint struct {
 	minWidth	int
 }
 
+func Min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}
+
 // NewCropByFocalPoint creates a new filter of this type
 func NewCropByFocalPoint() filters.Spec {
 	return &cropByFocalPoint{}
@@ -57,10 +64,10 @@ func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bim
 	if f.minWidth != -1 {
 		minHeight := int(f.aspectRatio * float64(f.minWidth))
 
-		minX := int(float64(f.minWidth) * f.targetX)
-		maxX := imageSize.Width - int(float64(f.minWidth) * (1 - f.targetX))
-		minY := int(float64(minHeight) * f.targetY)
-		maxY := imageSize.Height - int(float64(minHeight) * (1 - f.targetY))
+		minX := int(float64(Min(f.minWidth, imageSize.Width)) * f.targetX)
+		maxX := imageSize.Width - int(float64(Min(f.minWidth, imageSize.Width)) * (1 - f.targetX))
+		minY := int(float64(Min(minHeight, imageSize.Height)) * f.targetY)
+		maxY := imageSize.Height - int(float64(Min(minHeight, imageSize.Height)) * (1 - f.targetY))
 
 		if x < minX {
 			x = minX
