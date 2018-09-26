@@ -17,12 +17,21 @@ type cropByFocalPoint struct {
 }
 
 // NewCropByFocalPoint creates a new filter of this type
-func NewCropByFocalPoint() filters.Spec {
-	return &cropByFocalPoint{}
+func (f *cropByFocalPoint) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	return (other.AreaWidth == 0 || other.AreaWidth == self.AreaWidth) &&
+			(other.AreaHeight == 0 || other.AreaHeight == self.AreaHeight) &&
+			(other.Top == 0 || other.Top == self.Top) &&
+			(other.Left == 0 || other.Left == self.Left) &&
+			(other.Width == 0) &&
+			(other.Height == 0)
 }
 
-func (f *cropByFocalPoint) Name() string {
-	return CropByFocalPointName
+func (f *cropByFocalPoint) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.AreaWidth = self.AreaWidth
+	other.AreaHeight = self.AreaHeight
+	other.Top = self.Top
+	other.Left = self.Left
+	return other
 }
 
 func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
