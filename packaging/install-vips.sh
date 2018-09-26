@@ -20,8 +20,8 @@ function install_on_alpine {
     libpng-dev \
     expat-dev \
   && wget ${VIPS_SOURCE}/v${VIPS_VERSION}.tar.gz \
-  && tar -zxf vips-${VIPS_VERSION}.tar.gz \
-  && cd vips-${VIPS_VERSION}/ \
+  && tar -zxf v${VIPS_VERSION}.tar.gz \
+  && cd v${VIPS_VERSION}/ \
   && ./configure \
     --prefix=/usr \
     --disable-debug \
@@ -35,8 +35,8 @@ function install_on_alpine {
   && make -s \
   && make install \
   && cd ../ \
-  && rm -rf vips-${VIPS_VERSION}/ \
-  && rm vips-${VIPS_VERSION}.tar.gz
+  && rm -rf v${VIPS_VERSION}/ \
+  && rm v${VIPS_VERSION}.tar.gz
 }
 
 function install_on_ubuntu {
@@ -54,8 +54,8 @@ function install_on_ubuntu {
     libpng-dev \
     libexpat-dev \
   && wget ${VIPS_SOURCE}/v${VIPS_VERSION}.tar.gz \
-  && tar -zxf vips-${VIPS_VERSION}.tar.gz \
-  && cd vips-${VIPS_VERSION}/ \
+  && tar -zxf v${VIPS_VERSION}.tar.gz \
+  && cd v${VIPS_VERSION}/ \
   && ./configure \
     --prefix=/usr \
     --disable-debug \
@@ -69,8 +69,8 @@ function install_on_ubuntu {
   && make -s \
   && sudo make install \
   && cd ../ \
-  && rm -rf vips-${VIPS_VERSION}/ \
-  && rm vips-${VIPS_VERSION}.tar.gz
+  && rm -rf v${VIPS_VERSION}/ \
+  && rm v${VIPS_VERSION}.tar.gz
 }
 
 if [[ ! -z "$IS_UBUNTU" ]]; then
