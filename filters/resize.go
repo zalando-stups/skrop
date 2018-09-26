@@ -59,8 +59,8 @@ func (f *resize) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options,
 }
 
 func (f *resize) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
-	return (other.Width == 0 && other.Height == 0) ||
-		(self.Width == other.Width && self.Height == other.Height)
+	return (other.AreaWidth == 0 && other.AreaHeight == 0 ) && ((other.Width == 0 && other.Height == 0) ||
+		(self.Width == other.Width && self.Height == other.Height))
 }
 
 func (f *resize) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {

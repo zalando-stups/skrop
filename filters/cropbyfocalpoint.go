@@ -1,7 +1,8 @@
 package filters
 
 import (
-		"github.com/zalando-stups/skrop/parse"
+	log "github.com/sirupsen/logrus"
+	"github.com/zalando-stups/skrop/parse"
 	"github.com/zalando/skipper/filters"
 	"gopkg.in/h2non/bimg.v1"
 	"strconv"
@@ -34,6 +35,8 @@ func (f *cropByFocalPoint) Name() string {
 }
 
 func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
+	log.Debug("Create options for crop by focal point ", f)
+
 	imageSize, err := imageContext.Image.Size()
 
 	if err != nil {
@@ -120,11 +123,20 @@ func (f *cropByFocalPoint) CreateOptions(imageContext *ImageFilterContext) (*bim
 }
 
 func (f *cropByFocalPoint) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
-	return false
+	return (other.AreaWidth == 0 || other.AreaWidth == self.AreaWidth) &&
+			(other.AreaHeight == 0 || other.AreaHeight == self.AreaHeight) &&
+			(other.Top == 0 || other.Top == self.Top) &&
+			(other.Left == 0 || other.Left == self.Left) &&
+			(other.Width == 0) &&
+			(other.Height == 0)
 }
 
 func (f *cropByFocalPoint) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
-	return self
+	other.AreaWidth = self.AreaWidth
+	other.AreaHeight = self.AreaHeight
+	other.Top = self.Top
+	other.Left = self.Left
+	return other
 }
 
 func (f *cropByFocalPoint) CreateFilter(args []interface{}) (filters.Filter, error) {

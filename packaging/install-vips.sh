@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 readonly VIPS_VERSION="8.6.5"
-readonly VIPS_SOURCE="https://github.com/jcupitt/libvips/releases/download"
+readonly VIPS_SOURCE="https://github.com/libvips/libvips/releases/download"
 
 readonly IS_UBUNTU=$(cat /etc/*-release | grep -o -m 1 ubuntu)
 readonly IS_ALPINE=$(cat /etc/*-release | grep -o -m 1 alpine)
