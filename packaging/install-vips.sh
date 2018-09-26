@@ -21,7 +21,7 @@ function install_on_alpine {
     expat-dev \
   && wget ${VIPS_SOURCE}/v${VIPS_VERSION}.tar.gz \
   && tar -zxf v${VIPS_VERSION}.tar.gz \
-  && cd v${VIPS_VERSION}/ \
+  && cd libvips-${VIPS_VERSION}/ \
   && ./configure \
     --prefix=/usr \
     --disable-debug \
@@ -35,7 +35,7 @@ function install_on_alpine {
   && make -s \
   && make install \
   && cd ../ \
-  && rm -rf v${VIPS_VERSION}/ \
+  && rm -rf libvips-${VIPS_VERSION}/ \
   && rm v${VIPS_VERSION}.tar.gz
 }
 
@@ -55,7 +55,7 @@ function install_on_ubuntu {
     libexpat-dev \
   && wget ${VIPS_SOURCE}/v${VIPS_VERSION}.tar.gz \
   && tar -zxf v${VIPS_VERSION}.tar.gz \
-  && cd v${VIPS_VERSION}/ \
+  && cd libvips-${VIPS_VERSION}/ \
   && ./configure \
     --prefix=/usr \
     --disable-debug \
@@ -69,7 +69,7 @@ function install_on_ubuntu {
   && make -s \
   && sudo make install \
   && cd ../ \
-  && rm -rf v${VIPS_VERSION}/ \
+  && rm -rf libvips-${VIPS_VERSION}/ \
   && rm v${VIPS_VERSION}.tar.gz
 }
 
