@@ -18,7 +18,9 @@ docker:
 	./packaging/build.sh $(VERSION) $(routes_file) $(docker_tag)
 
 docker-run:
-	docker run --rm -v "$$(pwd)"/images:/images -p 9090:9090 zalando-stups/skrop -verbose
+	rm -rf "$$(pwd)"/mylocalfilecache
+	mkdir "$$(pwd)"/mylocalfilecache
+	docker run --rm -v "$$(pwd)"/images:/images -v "$$(pwd)"/mylocalfilecache:/mylocalfilecache -p 9090:9090 zalando-stups/skrop -verbose
 
 test: build test-only
 

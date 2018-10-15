@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zalando-stups/skrop/cache"
 	skropFilters "github.com/zalando-stups/skrop/filters"
 	"github.com/zalando/skipper"
 	"github.com/zalando/skipper/filters"
@@ -122,6 +123,7 @@ func main() {
 			skropFilters.NewSharpen(),
 			skropFilters.NewFinalizeResponse(),
 			skropFilters.NewTransformFromQueryParams(),
+			skropFilters.NewLocalFileCache(cache.NewFileSystemCache()),
 		},
 		AccessLogDisabled:   true,
 		ProxyOptions:        proxy.OptionsPreserveOriginal,
