@@ -63,3 +63,7 @@ ifeq ($(TRAVIS_BRANCH)_$(TRAVIS_PULL_REQUEST), master_false)
 else
 	echo "Not a merge to 'master'. Not versionning this merge."
 endif
+
+build-docker-vips:
+	docker build -f Dockerfile-Vips -t danpersa/alpine-vips:8.6.5 .
+	docker push danpersa/alpine-vips:8.6.5
