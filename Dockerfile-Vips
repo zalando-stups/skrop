@@ -1,0 +1,12 @@
+FROM alpine:3.8
+
+ADD packaging/install-vips.sh install-vips.sh
+RUN apk add --update \
+    bash \
+  && ./install-vips.sh \
+  && apk del --purge \
+    build-base \
+    wget \
+    bash \
+  && rm -rf /var/cache/apk/* \
+  && rm install-vips.sh

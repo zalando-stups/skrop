@@ -157,7 +157,7 @@ If this token needs to change, here is how to set it up:
 - Log on to _GitHub_ on the account you want _Travis CI_ to impersonate when performing operation on the repository
 - Go to _GitHub_, in your [Personal access tokens](https://github.com/settings/tokens) configuration
 - Click on _Generate new token_
-- Keep the default (nothing checked)
+- Check the `public_repo` scope
 - Click _Generate token_
 
 We will now encrypt that token with the [_travis CLI_](https://docs.travis-ci.com/user/encryption-keys/). Make sure it
