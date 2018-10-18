@@ -38,10 +38,11 @@ update-deps:
 all: init-deps build test
 
 tag:
-	git tag $(VERSION)
+    export GIT_TAG=$VERSION
+	git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
 
 push-tags:
-	git push -q --tags https://$(TAGPERM)@github.com/zalando-stups/skrop
+	git push -q --tags https://$TAGPERM@github.com/zalando-stups/skrop
 
 release-patch:
 	echo "Incrementing patch version"
