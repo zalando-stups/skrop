@@ -41,7 +41,7 @@ tag:
 	git tag $(VERSION)
 
 push-tags:
-	git push --tags https://$(GITHUB_AUTH)@github.com/zalando-stups/skrop
+	git push -q --tags https://$(TAGPERM)@github.com/zalando-stups/skrop
 
 release-patch:
 	echo "Incrementing patch version"
