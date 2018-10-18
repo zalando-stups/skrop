@@ -73,8 +73,33 @@ function install_on_ubuntu {
   && rm vips-${VIPS_VERSION}.tar.gz
 }
 
+function install_on_travis_ubuntu {
+  wget ${VIPS_SOURCE}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
+  && tar -zxf vips-${VIPS_VERSION}.tar.gz \
+  && cd vips-${VIPS_VERSION}/ \
+  && ./configure \
+    --prefix=/usr \
+    --disable-debug \
+    --disable-static \
+    --disable-introspection \
+    --disable-dependency-tracking \
+    --enable-silent-rules \
+    --without-python \
+    --without-orc \
+    --without-fftw \
+  && make -s \
+  && sudo make install \
+  && cd ../ \
+  && rm -rf vips-${VIPS_VERSION}/ \
+  && rm vips-${VIPS_VERSION}.tar.gz
+}
+
 if [[ ! -z "$IS_UBUNTU" ]]; then
-  install_on_ubuntu
+  if [[ ! -z "$TRAVIS" ]]; then
+    install_on_travis_ubuntu
+  else
+    install_on_ubuntu
+  fi
 elif [[ ! -z "$IS_ALPINE" ]]; then
   install_on_alpine
 else
