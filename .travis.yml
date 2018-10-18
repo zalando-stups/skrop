@@ -7,15 +7,15 @@ branches:
 
 language: go
 go:
-  - 1.10.3
+- 1.10.3
 
 env:
   global:
-    - VIPS_VERSION=8.6.5
-    - secure: dUUIGIfGeWn/Fp4m+0rAj1d2BNr3BZ/qQFDyHJ6z2bskX+Khl8qs5wTqcBiuf+a9DYK2CKjpftiqYNz0TMxeR2zQY7vg+2QgU+r/cSvP1SnURAidmoIzKJyCYoYbMQQZI+/1DihJp/unGu7n6dM716lGqbJFWwbKx1lgKi0eN2a3Mkj5l+cAp1rPLsszpPjX1O9dd5L5ytkwtFC5YV9eUlYTJrg6UPlqmMMJcCGg1clzEB/7V7Ac5ijl0O9Q48xhhzTXsQfs+UGdKEB45WEUgfZ/bjAYHCQzr8MotqGELJTPIXmbUfzcP2RTcp0tfbX5NoKDAl+riaSCZvZkkaE9+z4L4hUG1ZRonQsHtyROzkJd/xM2UFv876XnFCG+fwNy/7SxuP8idWT+PWPvSAbiO1eA942gZXo5KApBD8i21z4hSkVuhHdZLdPwLJwGPG1ngEjbQpMVCh2iuEbnQnEccffnlUIzS7KtxoQ5dfuTfJ63lkBCJgbunylSy0vpE268KJfLaDrCvY0EuXg3H+3/sJ8ty5NXwpW5mZFvwVlnZ1rDw9pea6UwUlkEddWkLpc7rJ/bSyIGrEuN5CVIfgW4ycNq7y4qScraH1Hd6ni+tnjZCPbLct6dLHwHwpXdCqPLAuXN6cKJG/SEWqt6kEe6uw9WMEvYT9zE/VBHdbkcOLY=
+  - VIPS_VERSION=8.6.5
+  - secure: iOfz4tQ/0pV+BTnnzzh0cxVHJfw6cgO+O5Gc/48rZIt0LjjIZByvMnatUv2wWlWCM01RhFy0blMAeY7twDSNzqu39voJCZzt4HL1YW8JH9/o4veEMo6MdEpJRQczlJnHpLDRXyW+EcrSunHSE1BQwbEDCBqlISlWBnVuLrvI9en+kQIQjGylazADYkwt0Dljaz73OqEhqqW6obnz7tO4OnTtRZr+lAyQxOCRsEy7Drnc19HWIfORvsAsRnjDboof2WtDoNYYiDEnD89bpiu012OZYI+wik4p2g9fyCLUOpizTI+rLYU0a3M0D6JDmL3fehF+I/s27Hh2uh9QtU8YD2FZ4LthfqkeF1uUyuikMTWI6r1N2EZiKLhFcYezB9R8H+XcsLRwZoxWHHM6OVmkeX7v7LaJYzsNWzPU7YL3Ja1Upn+f9EsK4/mi7uupOLyNUxmOBLa6Anll+IMYor5qmo8S2ahzenREURPuBdZ1OgpheFYK9+9QkkjSCzXm1NjWp1B39a3VtQ1ZVldu7NE7PVRJSWPrfi3YBlcs8qxz54GoAo2yCyPTka12iissVULWQF+fr2NuE2YEPBBZdmi+wHTCZ18V7ts3W8ww7o9ZkAPT9vDKsWVzqe1RmR6Dv+0ocYNVIpyOyL0exHFqujRtbMg4STY6zPaaibcs3bafIq8=
 
 before_install:
-- ./packaging/install-vips.sh
+- "./packaging/install-vips.sh"
 
 install:
 - go get github.com/Masterminds/glide
