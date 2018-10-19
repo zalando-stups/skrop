@@ -7,7 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/zalando-stups/skrop/messages"
 	"github.com/zalando/skipper/filters"
-	"gopkg.in/h2non/bimg.v1"
+	"github.com/danpersa/bimg"
 	"io/ioutil"
 	"net/http"
 	"os"

@@ -1,4 +1,4 @@
-FROM danpersa/alpine-vips:8.6.5
+FROM danpersa/alpine-vips:8.7.0
 
 ARG ROUTES_FILE
 

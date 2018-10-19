@@ -32,9 +32,6 @@ init-deps:
 	go get github.com/Masterminds/glide
 	go get ./cmd/skrop/
 
-update-deps:
-	glide update
-
 all: init-deps build test
 
 tag:
@@ -66,5 +63,5 @@ else
 endif
 
 build-docker-vips:
-	docker build -f Dockerfile-Vips -t danpersa/alpine-vips:8.6.5 .
-	docker push danpersa/alpine-vips:8.6.5
+	docker build -f Dockerfile-Vips -t danpersa/alpine-vips:8.7.0 .
+	docker push danpersa/alpine-vips:8.7.0
