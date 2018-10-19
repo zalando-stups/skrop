@@ -4,7 +4,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/zalando-stups/skrop/parse"
 	"github.com/zalando/skipper/filters"
-	"gopkg.in/h2non/bimg.v1"
+	"github.com/danpersa/bimg"
 )
 
 // CropByHeightName is the name of the filter

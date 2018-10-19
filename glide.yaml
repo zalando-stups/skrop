@@ -2,15 +2,15 @@ package: github.com/zalando-stups/skrop
 import:
 - package: github.com/sirupsen/logrus
 - package: github.com/zalando/skipper
-  version: ^0.10.48
+  version: ^0.10.94
   subpackages:
   - eskip
   - eskipfile
   - filters
   - proxy
   - routing
-- package: gopkg.in/h2non/bimg.v1
-  version: ^1.0.18
+- package: github.com/danpersa/bimg
+  version: ^1.0.19
 testImport:
 - package: github.com/stretchr/testify
   subpackages:

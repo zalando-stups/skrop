@@ -2,7 +2,7 @@ package filters
 
 import (
 	"github.com/zalando/skipper/filters"
-	"gopkg.in/h2non/bimg.v1"
+	"github.com/danpersa/bimg"
 	"strconv"
 	"strings"
 )
