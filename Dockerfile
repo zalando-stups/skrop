@@ -1,4 +1,4 @@
-FROM danpersa/alpine-vips:8.7.0
+FROM danpersa/alpine-mozjpeg-vips:3.3.1-8.7.0
 
 ARG ROUTES_FILE
 

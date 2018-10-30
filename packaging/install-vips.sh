@@ -1,39 +1,60 @@
 #!/usr/bin/env bash
 
 readonly VIPS_VERSION="8.7.0"
+readonly MOZJPEG_VERSION="3.3.1"
 readonly VIPS_SOURCE="https://github.com/libvips/libvips/releases/download"
+readonly MOZJPEG_SOURCE="https://github.com/mozilla/mozjpeg/archive"
 
 readonly IS_UBUNTU=$(cat /etc/*-release | grep -o -m 1 ubuntu)
 readonly IS_ALPINE=$(cat /etc/*-release | grep -o -m 1 alpine)
 
 function install_on_alpine {
   apk add --update \
+    automake \
+    autoconf \
+    libtool \
+    nasm \
     ca-certificates \
     wget \
     build-base \
     glib-dev \
     libxml2-dev \
-    libjpeg-turbo-dev \
     libexif-dev \
-    tiff-dev \
     libgsf-dev \
     libpng-dev \
     expat-dev \
+  && wget ${MOZJPEG_SOURCE}/v${MOZJPEG_VERSION}.tar.gz \
+  && tar -zxf v${MOZJPEG_VERSION}.tar.gz \
   && wget ${VIPS_SOURCE}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
+  && ls \
+  && cd mozjpeg-${MOZJPEG_VERSION} \
+  && autoreconf -fiv \
+  && ./configure --prefix=/usr/local/opt/mozjpeg \
+  && make install \
+  && cd ../ \
+  && rm -rf mozjpeg-${MOZJPEG_VERSION}/ \
+  && rm v${MOZJPEG_VERSION}.tar.gz \
   && tar -zxf vips-${VIPS_VERSION}.tar.gz \
   && cd vips-${VIPS_VERSION}/ \
   && ./configure \
-    --prefix=/usr \
+    --enable-shared \
     --disable-debug \
     --disable-static \
     --disable-introspection \
     --disable-dependency-tracking \
     --enable-silent-rules \
-    --without-python \
+    --enable-shared \
     --without-orc \
     --without-fftw \
-  && make -s \
-  && make install \
+    --without-pangoft2 \
+    --without-ppm \
+    --without-analyze \
+    --without-radiance \
+    --without-magick \
+    --with-jpeg-includes=/usr/local/opt/mozjpeg/include --with-jpeg-libraries=/usr/local/opt/mozjpeg/lib \
+  && make \
+  && make install-strip \
+  && ldd `which vips` | grep jpeg \
   && cd ../ \
   && rm -rf vips-${VIPS_VERSION}/ \
   && rm vips-${VIPS_VERSION}.tar.gz

@@ -3,6 +3,14 @@
 small: Path("/images/S/:image")
   -> modPath("^/images/S", "/images")
   -> finalizeResponse()
+  -> quality(67)
+  -> longerEdgeResize(800)
+  -> "http://localhost:9090";
+
+small90: Path("/images/S90/:image")
+  -> modPath("^/images/S90", "/images")
+  -> finalizeResponse()
+  -> quality(90)
   -> longerEdgeResize(800)
   -> "http://localhost:9090";
 
@@ -42,6 +50,7 @@ medium: Path("/images/M/:image")
 large: Path("/images/L/:image")
   -> modPath("^/images/L", "/images")
   -> finalizeResponse()
+  -> quality(67)
   -> longerEdgeResize(1920)
   -> "http://localhost:9090";
 
