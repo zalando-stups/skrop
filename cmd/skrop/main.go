@@ -112,6 +112,7 @@ func main() {
 			skropFilters.NewCropByWidth(),
 			skropFilters.NewCropByHeight(),
 			skropFilters.NewCropByFocalPoint(),
+			skropFilters.NewCropByFocalArea(),
 			skropFilters.NewResizeByWidth(),
 			skropFilters.NewResizeByHeight(),
 			skropFilters.NewQuality(),
