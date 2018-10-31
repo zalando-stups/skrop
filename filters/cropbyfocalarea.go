@@ -74,8 +74,8 @@ func (f *cropByFocalArea) CreateOptions(imageContext *ImageFilterContext) (*bimg
 	return &bimg.Options{
 		AreaWidth:  desired_width,
 		AreaHeight: desired_height,
-		Top:    1,
-		Left:    0,
+		Top:    focalPointY - desired_height/2,
+		Left:    focalPointX - desired_width/2,
 		}, nil
 }
 
