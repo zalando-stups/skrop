@@ -15,7 +15,6 @@ smallCached: Path("/cached/images/S/:image")
 
 dynamic: Path("/images/dynamic/:image")
      -> modPath("^/images/dynamic", "/images")
-     -> finalizeResponse()
      -> transformFromQueryParams()
      -> "http://localhost:9090";
 
@@ -67,19 +66,16 @@ cropByHeight: Path("/images/cropbyheight/:image")
 
 cropByFocalPoint: Path("/images/cropbyfocalpoint/:focalPointX/:focalPointY/:image")
   -> modPath("^/images/cropbyfocalpoint/\\d+/\\d+", "/images")
-  -> finalizeResponse()
   -> cropByFocalPoint(0.5,0.5,0.5)
   -> "http://localhost:9090";
 
 cropByFocalPointBestEffort: Path("/images/cropbyfocalpointminwidth/:focalPointX/:focalPointY/:image")
   -> modPath("^/images/cropbyfocalpointminwidth/\\d+/\\d+", "/images")
-  -> finalizeResponse()
   -> cropByFocalPoint(0.5,0.5,0.5,400)
   -> "http://localhost:9090";
 
 cropByFocalArea: Path("/images/cropbyfocalarea/:focalPointX/:focalPointY/:desired_width/:desired_height/:image")
   -> modPath("^/images/cropbyfocalarea/\\d+/\\d+/\\d+/\\d+", "/images")
-  -> finalizeResponse()
   -> cropByFocalArea()
   -> "http://localhost:9090";
   

@@ -18,80 +18,58 @@ func TestCropByFocalArea_Name(t *testing.T) {
 }
 
 func TestCropByFocalArea_CreateOptions(t *testing.T) {
-	c := cropByFocalArea{targetX: 0.5, targetY: 0.5, aspectRatio: 1.5}
+	// Landscape image is 1000x668
+	c := cropByFocalArea{}
 	image := imagefiltertest.LandscapeImage()
 	fc := createDefaultContext(t, "doesnotmatter.com")
 	fc.FParams = make(map[string]string)
-	fc.FParams["focalPointX"] = "500";
-	fc.FParams["focalPointY"] = "334";
+	fc.FParams["focalPointX"] = "50";
+	fc.FParams["focalPointY"] = "50";
+	fc.FParams["cropExpectedWidth"] = "200";
+	fc.FParams["cropExpectedHeight"] = "100";
 
 	options, _ := c.CreateOptions(buildParameters(fc, image))
 
-	assert.Equal(t, 445, options.AreaWidth)
-	assert.Equal(t, 668, options.AreaHeight)
+	assert.Equal(t, 200, options.AreaWidth)
+	assert.Equal(t, 100, options.AreaHeight)
 	assert.Equal(t, 0, options.Top)
-	assert.Equal(t, 278, options.Left)
+	assert.Equal(t, 0, options.Left)
 
-	c = cropByFocalArea{targetX: 0.5, targetY: 0.25, aspectRatio: 1.5}
+	c = cropByFocalArea{}
 	image = imagefiltertest.LandscapeImage()
 	fc = createDefaultContext(t, "doesnotmatter.com")
 	fc.FParams = make(map[string]string)
-	fc.FParams["focalPointX"] = "500";
-	fc.FParams["focalPointY"] = "334";
+	fc.FParams["focalPointX"] = "300";
+	fc.FParams["focalPointY"] = "300";
+	fc.FParams["cropExpectedWidth"] = "200";
+	fc.FParams["cropExpectedHeight"] = "100";
 
 	options, _ = c.CreateOptions(buildParameters(fc, image))
 
-	assert.Equal(t, 296, options.AreaWidth)
-	assert.Equal(t, 445, options.AreaHeight)
-	assert.Equal(t, 223, options.Top)
-	assert.Equal(t, 352, options.Left)
-}
+	assert.Equal(t, 200, options.AreaWidth)
+	assert.Equal(t, 100, options.AreaHeight)
+	assert.Equal(t, 250, options.Top)
+	assert.Equal(t, 200, options.Left)
 
-func TestCropByFocalArea_CreateOptions_MinWidth(t *testing.T) {
-	c := cropByFocalArea{targetX: 0.5, targetY: 0.5, aspectRatio: 0.5}
-	image := imagefiltertest.LandscapeImage()
-	fc := createDefaultContext(t, "doesnotmatter.com")
+	c = cropByFocalArea{}
+	image = imagefiltertest.LandscapeImage()
+	fc = createDefaultContext(t, "doesnotmatter.com")
 	fc.FParams = make(map[string]string)
-	fc.FParams["focalPointX"] = "125";
-	fc.FParams["focalPointY"] = "334";
-
-	options, _ := c.CreateOptions(buildParameters(fc, image))
-
-	assert.Equal(t, 250, options.AreaWidth)
-	assert.Equal(t, 125, options.AreaHeight)
-	assert.Equal(t, 272, options.Top)
-	assert.Equal(t, 0, options.Left)
-
-	c = cropByFocalArea{targetX: 0.5, targetY: 0.5, aspectRatio: 0.5, minWidth: 500.0}
+	fc.FParams["focalPointX"] = "1000";
+	fc.FParams["focalPointY"] = "1000";
+	fc.FParams["cropExpectedWidth"] = "200";
+	fc.FParams["cropExpectedHeight"] = "100";
 
 	options, _ = c.CreateOptions(buildParameters(fc, image))
 
-	assert.Equal(t, 500, options.AreaWidth)
-	assert.Equal(t, 250, options.AreaHeight)
-	assert.Equal(t, 209, options.Top)
-	assert.Equal(t, 0, options.Left)
-
-	c = cropByFocalArea{targetX: 0.5, targetY: 0.5, aspectRatio: 0.5, minWidth: 1500.0}
-
-	options, _ = c.CreateOptions(buildParameters(fc, image))
-
-	assert.Equal(t, 1000, options.AreaWidth)
-	assert.Equal(t, 500, options.AreaHeight)
-	assert.Equal(t, 84, options.Top)
-	assert.Equal(t, 0, options.Left)
-
-	c = cropByFocalArea{targetX: 0.5, targetY: 0.5, aspectRatio: 1.0, minWidth: 1500.0}
-
-	options, _ = c.CreateOptions(buildParameters(fc, image))
-
-	assert.Equal(t, 668, options.AreaWidth)
-	assert.Equal(t, 668, options.AreaHeight)
-	assert.Equal(t, 0, options.Top)
-	assert.Equal(t, 166, options.Left)
+	assert.Equal(t, 200, options.AreaWidth)
+	assert.Equal(t, 100, options.AreaHeight)
+	assert.Equal(t, 568, options.Top)
+	assert.Equal(t, 900, options.Left)
 }
 
 func TestCropByFocalArea_CreateOptions_MissingPathParam(t *testing.T) {
-	c := cropByFocalArea{targetX: 0.5, targetY: 0.5, aspectRatio: 1.5}
+	c := cropByFocalArea{}
 	image := imagefiltertest.LandscapeImage()
 	fc := createDefaultContext(t, "doesnotmatter.com")
 	fc.FParams = make(map[string]string)
@@ -104,7 +82,7 @@ func TestCropByFocalArea_CreateOptions_MissingPathParam(t *testing.T) {
 
 	fc = createDefaultContext(t, "doesnotmatter.com")
 	fc.FParams = make(map[string]string)
-	fc.FParams["focalPointX"] = "334";
+	fc.FParams["cropExpectedWidth"] = "334";
 
 	options, err = c.CreateOptions(buildParameters(fc, image))
 
@@ -119,6 +97,8 @@ func TestCropByFocalArea_CreateOptions_InvalidPathParam(t *testing.T) {
 	fc.FParams = make(map[string]string)
 	fc.FParams["focalPointX"] = "xyz";
 	fc.FParams["focalPointY"] = "abc";
+	fc.FParams["cropExpectedWidth"] = "200";
+	fc.FParams["cropExpectedHeight"] = "100";
 
 	options, err := c.CreateOptions(buildParameters(fc, image))
 
@@ -127,6 +107,8 @@ func TestCropByFocalArea_CreateOptions_InvalidPathParam(t *testing.T) {
 
 	fc.FParams["focalPointX"] = "100";
 	fc.FParams["focalPointY"] = "abc";
+	fc.FParams["cropExpectedWidth"] = "200";
+	fc.FParams["cropExpectedHeight"] = "100";
 
 	options, err = c.CreateOptions(buildParameters(fc, image))
 
@@ -137,36 +119,4 @@ func TestCropByFocalArea_CreateOptions_InvalidPathParam(t *testing.T) {
 func TestCropByFocalArea_CanBeMerged(t *testing.T) {
 	ea := transformFromQueryParams{}
 	assert.Equal(t, false, ea.CanBeMerged(nil, nil))
-}
-
-func TestCropByFocalArea_CreateFilter(t *testing.T) {
-	imagefiltertest.TestCreate(t, NewCropByFocalArea, []imagefiltertest.CreateTestItem{{
-		Msg:  "less than 3 args",
-		Args: nil,
-		Err:  true,
-	}, {
-		Msg:  "invalid targetX",
-		Args: []interface{}{"xyz", 0.5, 1.5},
-		Err:  true,
-	}, {
-		Msg:  "invalid targetY",
-		Args: []interface{}{0.5, "abc", 1.5},
-		Err:  true,
-	}, {
-		Msg:  "invalid aspectRatio",
-		Args: []interface{}{0.5, 0.5, "qwerty"},
-		Err:  true,
-	}, {
-		Msg:  "3 args",
-		Args: []interface{}{0.5, 0.5, 1.5},
-		Err:  false,
-	}, {
-		Msg:  "4 args",
-		Args: []interface{}{0.5, 0.5, 1.5, 200.0},
-		Err:  false,
-	}, {
-		Msg:  "more than 4 args",
-		Args: []interface{}{0.5, 0.5, 1.5, 200.0, 1.0},
-		Err:  true,
-	}})
 }

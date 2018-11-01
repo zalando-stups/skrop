@@ -64,11 +64,15 @@ func (f *cropByFocalArea) CreateOptions(imageContext *ImageFilterContext) (*bimg
 	}
 
 	if float64(focalPointX) + 0.5*float64(desired_width) > float64(imageSize.Width) {
-		focalPointX = focalPointX - (imageSize.Width - (focalPointX + int(0.5*float64(desired_width))))
+		focalPointX = imageSize.Width - int(0.5*float64(desired_width))
+	} else if float64(focalPointX) - 0.5*float64(desired_width) < 0 {
+		focalPointX = desired_width/2
 	}
 
 	if float64(focalPointY) + 0.5*float64(desired_height) > float64(imageSize.Height) {
-		focalPointY = focalPointY - (imageSize.Height - (focalPointY + int(0.5*float64(desired_height))))
+		focalPointY = imageSize.Height - int(0.5*float64(desired_height))
+	} else if float64(focalPointY) - 0.5*float64(desired_height) < 0 {
+		focalPointY = desired_height/2
 	}
 
 	return &bimg.Options{
