@@ -65,7 +65,7 @@ func TestCropByFocalArea_CreateOptions(t *testing.T) {
 	assert.Equal(t, 200, options.AreaWidth)
 	assert.Equal(t, 100, options.AreaHeight)
 	assert.Equal(t, 568, options.Top)
-	assert.Equal(t, 900, options.Left)
+	assert.Equal(t, 800, options.Left)
 }
 
 func TestCropByFocalArea_CreateOptions_MissingPathParam(t *testing.T) {

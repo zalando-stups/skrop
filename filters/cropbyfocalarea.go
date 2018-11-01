@@ -31,25 +31,34 @@ func (f *cropByFocalArea) CreateOptions(imageContext *ImageFilterContext) (*bimg
 		return nil, err
 	}
 
-	desiredWidth, err := strconv.Atoi(imageContext.PathParam("desiredWidth"))
+	focalPointXString := imageContext.PathParam("focalPointX")
+	focalPointYString := imageContext.PathParam("focalPointY")
+	desiredWidthString := imageContext.PathParam("desiredWidth")
+	desiredHeightString := imageContext.PathParam("desiredHeight")
+
+	if focalPointXString == "" || focalPointYString == "" || desiredWidthString == "" || desiredHeightString == "" {
+		return nil, filters.ErrInvalidFilterParameters
+	}
+
+	focalPointX, err := strconv.Atoi(focalPointXString)
 
 	if err != nil {
 		return nil, err
 	}
 
-	desiredHeight, err := strconv.Atoi(imageContext.PathParam("desiredHeight"))
+	focalPointY, err  := strconv.Atoi(focalPointYString)
 
 	if err != nil {
 		return nil, err
 	}
 
-	focalPointX, err := strconv.Atoi(imageContext.PathParam("focalPointX"))
+	desiredWidth, err := strconv.Atoi(desiredWidthString)
 
 	if err != nil {
 		return nil, err
 	}
 
-	focalPointY, err  := strconv.Atoi(imageContext.PathParam("focalPointY"))
+	desiredHeight, err := strconv.Atoi(desiredHeightString)
 
 	if err != nil {
 		return nil, err
