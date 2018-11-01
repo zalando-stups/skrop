@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/danpersa/bimg"
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-stups/skrop/filters/imagefiltertest"
 	"github.com/zalando/skipper/filters/filtertest"
-	"github.com/danpersa/bimg"
 )
 
 const (
@@ -125,6 +125,7 @@ func createDefaultContext(t *testing.T, url string) *filtertest.Context {
 	bag[skropImage] = bimg.NewImage(buffer)
 	bag[skropOptions] = &bimg.Options{}
 	bag[skropInit] = true
+	bag[hasMergedFilters] = true
 	return createContext(t, "GET", url, imagefiltertest.PNGImageFile, bag)
 }
 

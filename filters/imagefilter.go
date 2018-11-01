@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/danpersa/bimg"
 	log "github.com/sirupsen/logrus"
 	"github.com/zalando-stups/skrop/messages"
 	"github.com/zalando/skipper/filters"
-	"github.com/danpersa/bimg"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -26,11 +26,12 @@ const (
 	// Center Gravity
 	Center = "center"
 	// Quality used by default if not specified
-	Quality      = 100
-	doNotEnlarge = "DO_NOT_ENLARGE"
-	skropImage   = "skImage"
-	skropOptions = "skOptions"
-	skropInit    = "skInit"
+	Quality          = 100
+	doNotEnlarge     = "DO_NOT_ENLARGE"
+	skropImage       = "skImage"
+	hasMergedFilters = "hasMergedFilters"
+	skropOptions     = "skOptions"
+	skropInit        = "skInit"
 )
 
 var (
@@ -54,7 +55,7 @@ func init() {
 		Center: bimg.GravityCentre}
 
 	val, exists := os.LookupEnv("STRIP_METADATA")
-	if (exists && strings.ToUpper(val) == "TRUE") {
+	if exists && strings.ToUpper(val) == "TRUE" {
 		stripMetadata = true
 	}
 }
@@ -97,6 +98,8 @@ func buildParameters(ctx filters.FilterContext, image *bimg.Image) *ImageFilterC
 // HandleImageResponse should be called by the Response of every filter. It transforms the image
 func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 
+	log.Debug("Handle Image Response")
+
 	//in case the response had an error from the backend or from a previous filter
 	if ctx.Response().StatusCode > 300 {
 		return fmt.Errorf("processing skipped, as the backend/filter reported %d status code", ctx.Response().StatusCode)
@@ -106,6 +109,7 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 	if _, ok := ctx.StateBag()[skropInit]; !ok {
 		initResponse(ctx)
 		ctx.StateBag()[skropInit] = true
+		ctx.StateBag()[hasMergedFilters] = false
 	}
 
 	image, ok := ctx.StateBag()[skropImage].(*bimg.Image)
@@ -116,37 +120,36 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 		return errors.New("processing failed, image not exists in the state bag")
 	}
 
-	opt, err := f.CreateOptions(buildParameters(ctx, image))
+	optionsFromRequest, err := f.CreateOptions(buildParameters(ctx, image))
 	if err != nil {
 		log.Error("Failed to create options ", err.Error())
 		ctx.Serve(errorResponse())
 		return err
 	}
 
-	opts, ok := ctx.StateBag()[skropOptions].(*bimg.Options)
+	optionsFromStateBag, ok := ctx.StateBag()[skropOptions].(*bimg.Options)
 	if !ok {
 		log.Error("context state bag does not contains the key ", skropImage)
 		ctx.Serve(errorResponse())
 		return errors.New("processing failed, initialization of options not successful")
 	}
 
-	if f.CanBeMerged(opts, opt) {
-		ctx.StateBag()[skropOptions] = f.Merge(opts, opt)
+	if f.CanBeMerged(optionsFromStateBag, optionsFromRequest) {
+		ctx.StateBag()[skropOptions] = f.Merge(optionsFromStateBag, optionsFromRequest)
+		ctx.StateBag()[hasMergedFilters] = true
 		log.Debug("Filter ", f, " merged in ", ctx.StateBag()[skropOptions])
 		return nil
 	}
 
-	//transform the image
-	buf, err := transformImage(image, opts)
+	log.Debugf("Transform the image based on the options from request: %+v", optionsFromRequest)
+	buf, err := transformImage(image, optionsFromRequest)
 	if err != nil {
 		log.Error("Failed to process image ", err.Error())
 		ctx.Serve(errorResponse())
 		return err
 	}
 
-	// set opt in the stateBag
 	newImage := bimg.NewImage(buf)
-	newOption, err := f.CreateOptions(buildParameters(ctx, newImage))
 	if err != nil {
 		log.Error("Failed to create new options ", err.Error())
 		ctx.Serve(errorResponse())
@@ -154,14 +157,15 @@ func HandleImageResponse(ctx filters.FilterContext, f ImageFilter) error {
 	}
 
 	ctx.StateBag()[skropImage] = newImage
-	ctx.StateBag()[skropOptions] = newOption
+	ctx.StateBag()[skropOptions] = &bimg.Options{}
 	return nil
 }
 
 // FinalizeResponse is called at the end of the transformations on an image to empty the queue of
 // operations to perform
 func FinalizeResponse(ctx filters.FilterContext) {
-	//in case the response had an error fromt he backend or from a previous filter
+	log.Debug("Finalize Response")
+	//in case the response had an error from he backend or from a previous filter
 	if ctx.Response().StatusCode > 300 {
 		return
 	}
@@ -173,7 +177,15 @@ func FinalizeResponse(ctx filters.FilterContext) {
 	image := ctx.StateBag()[skropImage].(*bimg.Image)
 	opts := ctx.StateBag()[skropOptions].(*bimg.Options)
 
-	buf, err := transformImage(image, opts)
+	buf := image.Image()
+
+	var err error
+
+	if ctx.StateBag()[hasMergedFilters] == true {
+		buf, err = transformImage(image, opts)
+		ctx.StateBag()[hasMergedFilters] = false
+	}
+
 	if err != nil {
 		log.Error("failed to process image ", err.Error())
 		ctx.Serve(&http.Response{
@@ -193,7 +205,7 @@ func FinalizeResponse(ctx filters.FilterContext) {
 func transformImage(image *bimg.Image, opts *bimg.Options) ([]byte, error) {
 	defOpt := applyDefaults(opts)
 
-	log.Debug("successfully applied the following options on the image: ", opts)
+	log.Debugf("successfully applied the following options on the image: %+v\n", opts)
 
 	transformedImageBytes, err := image.Process(*defOpt)
 

@@ -1,6 +1,9 @@
 package filters
 
-import "github.com/zalando/skipper/filters"
+import (
+	log "github.com/sirupsen/logrus"
+	"github.com/zalando/skipper/filters"
+)
 
 // This filter is the default filter for every configuration of skrop
 type finalizeResponse struct{}
@@ -29,5 +32,6 @@ func (s *finalizeResponse) Request(ctx filters.FilterContext) {}
 
 //finalize the response calling the transformer for the image one last time before returning the image to the client
 func (s *finalizeResponse) Response(ctx filters.FilterContext) {
+	log.Debugf("Response %s", FinalizeResponseName)
 	FinalizeResponse(ctx)
 }

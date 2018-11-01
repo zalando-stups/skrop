@@ -10,19 +10,6 @@ func TestNewSkropDataClient(t *testing.T) {
 	assert.NotNil(t, s)
 }
 
-func TestSkropDataClient_LoadAll(t *testing.T) {
-	//given
-	s := NewSkropDataClient("eskip_test.eskip")
-
-	//when
-	routes, _ := s.LoadAll()
-
-	//then
-	for _, route := range routes {
-		assert.Equal(t, "finalizeResponse", route.Filters[0].Name)
-	}
-}
-
 func TestSkropDataClient_LoadAll_FileErr(t *testing.T) {
 	//given
 	s := NewSkropDataClient("nonexistent.eskip")

@@ -1,16 +1,16 @@
 package filters
 
 import (
-	"github.com/zalando/skipper/filters"
 	"github.com/danpersa/bimg"
+	log "github.com/sirupsen/logrus"
+	"github.com/zalando/skipper/filters"
 	"strconv"
 	"strings"
 )
 
 const (
-	ExtractArea    = "transformFromQueryParams"
-	cropParameters = "crop"
-	focalPointCropParameters = "focal_point_crop"
+	TransformByQueryParamsName = "transformByQueryParams"
+	cropParameters             = "crop"
 )
 
 type transformFromQueryParams struct{}
@@ -20,7 +20,7 @@ func NewTransformFromQueryParams() filters.Spec {
 }
 
 func (t *transformFromQueryParams) Name() string {
-	return ExtractArea
+	return TransformByQueryParamsName
 }
 
 func (t *transformFromQueryParams) CreateFilter(config []interface{}) (filters.Filter, error) {
@@ -30,20 +30,8 @@ func (t *transformFromQueryParams) CreateFilter(config []interface{}) (filters.F
 func (t *transformFromQueryParams) CreateOptions(ctx *ImageFilterContext) (*bimg.Options, error) {
 	// Get crop prams from the request
 	params, ok := ctx.Parameters[cropParameters]
+
 	if !ok {
-
-		params, ok = ctx.Parameters[focalPointCropParameters]
-
-		if !ok {
-			return &bimg.Options{}, nil
-		}
-
-		params = strings.Split(params[0], ",")
-		if len(params) != 5 {
-			return &bimg.Options{}, nil
-		}
-
-		// TODO do focal point crop
 		return &bimg.Options{}, nil
 	}
 
@@ -89,6 +77,8 @@ func (t *transformFromQueryParams) CreateOptions(ctx *ImageFilterContext) (*bimg
 		width = imgSize.Width - x
 	}
 
+	log.Debugf("Crop options x=%d y=%d width=%d height=%d\n", x, y, width, height)
+
 	return &bimg.Options{
 		Top:        y,
 		Left:       x,
@@ -97,29 +87,19 @@ func (t *transformFromQueryParams) CreateOptions(ctx *ImageFilterContext) (*bimg
 	}, nil
 }
 
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
 func (t *transformFromQueryParams) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
 	return false
 }
 
 func (t *transformFromQueryParams) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
-	other.AreaWidth = self.AreaWidth
-	other.AreaHeight = self.AreaHeight
-	other.Top = self.Top
-	other.Left = self.Left
-	return other
+	return nil
 }
 
 func (t *transformFromQueryParams) Request(ctx filters.FilterContext) {
-
 }
 
 func (e *transformFromQueryParams) Response(ctx filters.FilterContext) {
+	log.Debugf("Response %s\n", TransformByQueryParamsName)
 	HandleImageResponse(ctx, e)
+	FinalizeResponse(ctx)
 }
