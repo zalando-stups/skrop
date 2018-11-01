@@ -8,7 +8,7 @@ import (
 
 func TestNewtransformFromQueryParams(t *testing.T) {
 	name := NewTransformFromQueryParams().Name()
-	assert.Equal(t, ExtractArea, name)
+	assert.Equal(t, TransformByQueryParamsName, name)
 }
 
 func TestTransformFromQueryParams_CanBeMerged(t *testing.T) {

@@ -2,7 +2,6 @@ package dataclient
 
 import (
 	log "github.com/sirupsen/logrus"
-	"github.com/zalando-stups/skrop/filters"
 	"github.com/zalando/skipper/eskip"
 	"github.com/zalando/skipper/eskipfile"
 	"github.com/zalando/skipper/routing"
@@ -16,15 +15,8 @@ type skropDataClient struct {
 // NewSkropDataClient creates a new dataclient specific for skrop
 func NewSkropDataClient(eskipFile string) routing.DataClient {
 
-	emptyArgs := make([]interface{}, 0)
-
-	pre := &eskip.Filter{
-		Name: filters.FinalizeResponseName,
-		Args: emptyArgs,
-	}
 	return skropDataClient{
 		fileName: eskipFile,
-		prepend:  pre,
 	}
 }
 
@@ -39,6 +31,10 @@ func (s skropDataClient) LoadAll() ([]*eskip.Route, error) {
 	if err != nil {
 		log.Error("error while loading eskip routes", err)
 		return nil, err
+	}
+
+	if s.prepend == nil {
+		return routes, nil
 	}
 
 	for _, route := range routes {
