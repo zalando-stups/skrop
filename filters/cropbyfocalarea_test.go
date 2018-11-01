@@ -91,7 +91,7 @@ func TestCropByFocalArea_CreateOptions_MissingPathParam(t *testing.T) {
 }
 
 func TestCropByFocalArea_CreateOptions_InvalidPathParam(t *testing.T) {
-	c := cropByFocalArea{targetX: 0.5, targetY: 0.5, aspectRatio: 1.5}
+	c := cropByFocalArea{}
 	image := imagefiltertest.LandscapeImage()
 	fc := createDefaultContext(t, "doesnotmatter.com")
 	fc.FParams = make(map[string]string)
