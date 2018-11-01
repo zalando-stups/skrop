@@ -31,13 +31,13 @@ func (f *cropByFocalArea) CreateOptions(imageContext *ImageFilterContext) (*bimg
 		return nil, err
 	}
 
-	desired_width, err := strconv.Atoi(imageContext.PathParam("desired_width"))
+	desiredWidth, err := strconv.Atoi(imageContext.PathParam("desiredWidth"))
 
 	if err != nil {
 		return nil, err
 	}
 
-	desired_height, err := strconv.Atoi(imageContext.PathParam("desired_height"))
+	desiredHeight, err := strconv.Atoi(imageContext.PathParam("desiredHeight"))
 
 	if err != nil {
 		return nil, err
@@ -55,31 +55,31 @@ func (f *cropByFocalArea) CreateOptions(imageContext *ImageFilterContext) (*bimg
 		return nil, err
 	}
 
-	if desired_width > imageSize.Width {
+	if desiredWidth > imageSize.Width {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	if desired_height > imageSize.Height {
+	if desiredHeight > imageSize.Height {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	if float64(focalPointX) + 0.5*float64(desired_width) > float64(imageSize.Width) {
-		focalPointX = imageSize.Width - int(0.5*float64(desired_width))
-	} else if float64(focalPointX) - 0.5*float64(desired_width) < 0 {
-		focalPointX = desired_width/2
+	if float64(focalPointX) + 0.5*float64(desiredWidth) > float64(imageSize.Width) {
+		focalPointX = imageSize.Width - int(0.5*float64(desiredWidth))
+	} else if float64(focalPointX) - 0.5*float64(desiredWidth) < 0 {
+		focalPointX = desiredWidth/2
 	}
 
-	if float64(focalPointY) + 0.5*float64(desired_height) > float64(imageSize.Height) {
-		focalPointY = imageSize.Height - int(0.5*float64(desired_height))
-	} else if float64(focalPointY) - 0.5*float64(desired_height) < 0 {
-		focalPointY = desired_height/2
+	if float64(focalPointY) + 0.5*float64(desiredHeight) > float64(imageSize.Height) {
+		focalPointY = imageSize.Height - int(0.5*float64(desiredHeight))
+	} else if float64(focalPointY) - 0.5*float64(desiredHeight) < 0 {
+		focalPointY = desiredHeight/2
 	}
 
 	return &bimg.Options{
-		AreaWidth:  desired_width,
-		AreaHeight: desired_height,
-		Top:    focalPointY - desired_height/2,
-		Left:    focalPointX - desired_width/2,
+		AreaWidth:  desiredWidth,
+		AreaHeight: desiredHeight,
+		Top:    focalPointY - desiredHeight/2,
+		Left:    focalPointX - desiredWidth/2,
 		}, nil
 }
 

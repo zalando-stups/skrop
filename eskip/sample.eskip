@@ -74,7 +74,7 @@ cropByFocalPointBestEffort: Path("/images/cropbyfocalpointminwidth/:focalPointX/
   -> cropByFocalPoint(0.5,0.5,0.5,400)
   -> "http://localhost:9090";
 
-cropByFocalArea: Path("/images/cropbyfocalarea/:focalPointX/:focalPointY/:desired_width/:desired_height/:image")
+cropByFocalArea: Path("/images/cropbyfocalarea/:focalPointX/:focalPointY/:desiredWidth/:desiredHeight/:image")
   -> modPath("^/images/cropbyfocalarea/\\d+/\\d+/\\d+/\\d+", "/images")
   -> cropByFocalArea()
   -> "http://localhost:9090";

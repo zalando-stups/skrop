@@ -25,8 +25,8 @@ func TestCropByFocalArea_CreateOptions(t *testing.T) {
 	fc.FParams = make(map[string]string)
 	fc.FParams["focalPointX"] = "50";
 	fc.FParams["focalPointY"] = "50";
-	fc.FParams["cropExpectedWidth"] = "200";
-	fc.FParams["cropExpectedHeight"] = "100";
+	fc.FParams["desiredWidth"] = "200";
+	fc.FParams["desiredHeight"] = "100";
 
 	options, _ := c.CreateOptions(buildParameters(fc, image))
 
@@ -41,8 +41,8 @@ func TestCropByFocalArea_CreateOptions(t *testing.T) {
 	fc.FParams = make(map[string]string)
 	fc.FParams["focalPointX"] = "300";
 	fc.FParams["focalPointY"] = "300";
-	fc.FParams["cropExpectedWidth"] = "200";
-	fc.FParams["cropExpectedHeight"] = "100";
+	fc.FParams["desiredWidth"] = "200";
+	fc.FParams["desiredHeight"] = "100";
 
 	options, _ = c.CreateOptions(buildParameters(fc, image))
 
@@ -57,8 +57,8 @@ func TestCropByFocalArea_CreateOptions(t *testing.T) {
 	fc.FParams = make(map[string]string)
 	fc.FParams["focalPointX"] = "1000";
 	fc.FParams["focalPointY"] = "1000";
-	fc.FParams["cropExpectedWidth"] = "200";
-	fc.FParams["cropExpectedHeight"] = "100";
+	fc.FParams["desiredWidth"] = "200";
+	fc.FParams["desiredHeight"] = "100";
 
 	options, _ = c.CreateOptions(buildParameters(fc, image))
 
@@ -82,7 +82,7 @@ func TestCropByFocalArea_CreateOptions_MissingPathParam(t *testing.T) {
 
 	fc = createDefaultContext(t, "doesnotmatter.com")
 	fc.FParams = make(map[string]string)
-	fc.FParams["cropExpectedWidth"] = "334";
+	fc.FParams["desiredWidth"] = "334";
 
 	options, err = c.CreateOptions(buildParameters(fc, image))
 
@@ -97,8 +97,8 @@ func TestCropByFocalArea_CreateOptions_InvalidPathParam(t *testing.T) {
 	fc.FParams = make(map[string]string)
 	fc.FParams["focalPointX"] = "xyz";
 	fc.FParams["focalPointY"] = "abc";
-	fc.FParams["cropExpectedWidth"] = "200";
-	fc.FParams["cropExpectedHeight"] = "100";
+	fc.FParams["desiredWidth"] = "200";
+	fc.FParams["desiredHeight"] = "100";
 
 	options, err := c.CreateOptions(buildParameters(fc, image))
 
@@ -107,13 +107,29 @@ func TestCropByFocalArea_CreateOptions_InvalidPathParam(t *testing.T) {
 
 	fc.FParams["focalPointX"] = "100";
 	fc.FParams["focalPointY"] = "abc";
-	fc.FParams["cropExpectedWidth"] = "200";
-	fc.FParams["cropExpectedHeight"] = "100";
+	fc.FParams["desiredWidth"] = "200";
+	fc.FParams["desiredHeight"] = "100";
 
 	options, err = c.CreateOptions(buildParameters(fc, image))
 
 	assert.Nil(t, options)
 	assert.NotNil(t, err)
+}
+
+func TestCropByFocalArea_CreateOptions_InvalidExpectedSize(t *testing.T) {
+	c := cropByFocalArea{}
+	image := imagefiltertest.LandscapeImage()
+	fc := createDefaultContext(t, "doesnotmatter.com")
+	fc.FParams = make(map[string]string)
+	fc.FParams["focalPointX"] = "0";
+	fc.FParams["focalPointY"] = "0";
+	fc.FParams["desiredWidth"] = "1300";
+	fc.FParams["desiredHeight"] = "500";
+
+	options, err := c.CreateOptions(buildParameters(fc, image))
+
+	assert.Nil(t, options)
+	assert.Equal(t, filters.ErrInvalidFilterParameters, err)
 }
 
 func TestCropByFocalArea_CanBeMerged(t *testing.T) {
