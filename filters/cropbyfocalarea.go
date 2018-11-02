@@ -93,20 +93,11 @@ func (f *cropByFocalArea) CreateOptions(imageContext *ImageFilterContext) (*bimg
 }
 
 func (f *cropByFocalArea) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
-	return (other.AreaWidth == 0 || other.AreaWidth == self.AreaWidth) &&
-			(other.AreaHeight == 0 || other.AreaHeight == self.AreaHeight) &&
-			(other.Top == 0 || other.Top == self.Top) &&
-			(other.Left == 0 || other.Left == self.Left) &&
-			(other.Width == 0) &&
-			(other.Height == 0)
+	return false
 }
 
 func (f *cropByFocalArea) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
-	other.AreaWidth = self.AreaWidth
-	other.AreaHeight = self.AreaHeight
-	other.Top = self.Top
-	other.Left = self.Left
-	return other
+	return nil
 }
 
 func (f *cropByFocalArea) CreateFilter(args []interface{}) (filters.Filter, error) {
