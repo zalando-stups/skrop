@@ -63,6 +63,13 @@ go get ./cmd/skrop/
 ```
 go run cmd/skrop/main.go -routes-file eskip/sample.eskip -verbose
 ```
+
+### Demo
+
+Press here to deploy your own demo on Heroku
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/zalando-stups/skrop)
+
 ### Test
 
 ```
