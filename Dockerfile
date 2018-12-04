@@ -14,6 +14,8 @@ WORKDIR /go/src/github.com/zalando-stups/skrop
 
 RUN go get github.com/Masterminds/glide
 
+RUN glide install
+
 RUN go build ./cmd/skrop
 
 # final stage
