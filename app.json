@@ -4,5 +4,5 @@
   "keywords": ["image", "image-processing"],
   "repository": "https://github.com/zalando-stups/skrop",
   "stack": "container",
-  "image": "danpersa/skrop"
+  "image": "skrop/skrop"
 }

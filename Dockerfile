@@ -19,9 +19,22 @@ RUN glide install
 RUN go build ./cmd/skrop
 
 # final stage
-FROM danpersa/alpine-mozjpeg-vips:3.3.1-8.7.0
+FROM skrop/alpine-mozjpeg-vips:3.3.1-8.7.0
 
 ARG ROUTES_FILE
+
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="Skrop" \
+      org.label-schema.description="Image transformation service using libvips, based on Skipper." \
+      org.label-schema.url="https://github.com/zalando-stups/skrop" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/zalando-stups/skrop" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.schema-version="1.0"
 
 COPY --from=0 /go/src/github.com/zalando-stups/skrop/skrop /usr/local/bin/
 ADD $ROUTES_FILE skrop.eskip
