@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := all
 
 routes_file ?= ./eskip/sample.eskip
-docker_tag ?= zalando-stups/skrop
+docker_tag ?= skrop/skrop
 
 CURRENT_VERSION    = $(shell git describe --tags --always --dirty)
 VERSION           ?= $(CURRENT_VERSION)
@@ -20,7 +20,7 @@ docker:
 docker-run:
 	rm -rf "$$(pwd)"/mylocalfilecache
 	mkdir "$$(pwd)"/mylocalfilecache
-	docker run --rm -v "$$(pwd)"/images:/images -v "$$(pwd)"/mylocalfilecache:/mylocalfilecache -e STRIP_METADATA='TRUE' -p 9090:9090 zalando-stups/skrop -verbose
+	docker run --rm -v "$$(pwd)"/images:/images -v "$$(pwd)"/mylocalfilecache:/mylocalfilecache -e STRIP_METADATA='TRUE' -p 9090:9090 skrop/skrop -verbose
 
 test: build test-only
 
@@ -63,5 +63,5 @@ else
 endif
 
 build-docker-vips:
-	docker build -f Dockerfile-Vips -t danpersa/alpine-mozjpeg-vips:3.3.1-8.7.0 .
-	docker push danpersa/alpine-mozjpeg-vips:3.3.1-8.7.0
+	docker build -f Dockerfile-Vips --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` --build-arg VCS_REF=`git rev-parse --short HEAD` -t skrop/alpine-mozjpeg-vips:3.3.1-8.7.0 .
+	docker push skrop/alpine-mozjpeg-vips:3.3.1-8.7.0
