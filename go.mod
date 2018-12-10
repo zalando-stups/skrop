@@ -25,6 +25,7 @@ require (
 	github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a
 	github.com/sirupsen/logrus v1.0.4
 	github.com/sony/gobreaker v0.0.0-20180905101324-b2a34562d02c
+	github.com/stretchr/testify v1.2.2
 	github.com/szuecs/rate-limit-buffer v0.7.0
 	github.com/uber/jaeger-client-go v2.14.0+incompatible
 	github.com/uber/jaeger-lib v1.5.0
