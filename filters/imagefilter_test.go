@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/danpersa/bimg"
+	"github.com/h2non/bimg"
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-stups/skrop/filters/imagefiltertest"
 	"github.com/zalando/skipper/filters/filtertest"

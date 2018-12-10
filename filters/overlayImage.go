@@ -3,7 +3,7 @@ package filters
 import (
 	"github.com/zalando-stups/skrop/parse"
 	"github.com/zalando/skipper/filters"
-	"github.com/danpersa/bimg"
+	"github.com/h2non/bimg"
 	"io/ioutil"
 	"os"
 )

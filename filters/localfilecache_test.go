@@ -1,10 +1,6 @@
 package filters
 
 import (
-	"github.com/zalando-stups/skrop/cache"
-	"github.com/zalando-stups/skrop/filters/imagefiltertest"
-	"github.com/zalando/skipper/filters"
-	"github.com/zalando/skipper/filters/filtertest"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -14,16 +10,22 @@ import (
 	"testing"
 	"time"
 
+	"github.com/zalando-stups/skrop/cache"
+	"github.com/zalando-stups/skrop/filters/imagefiltertest"
+	"github.com/zalando/skipper/filters"
+	"github.com/zalando/skipper/filters/filtertest"
+
 	"github.com/stretchr/testify/assert"
 )
 
-type metricsHandler struct{}
+type noopMetricHandler struct{}
 
-var emptyMeta map[string]*string = make(map[string]*string)
+var emptyMeta = make(map[string]*string)
 
-func (f *metricsHandler) MeasureSince(key string, start time.Time) {}
-
-func (f *metricsHandler) IncCounter(key string) {}
+func (f *noopMetricHandler) MeasureSince(key string, start time.Time)    {}
+func (f *noopMetricHandler) IncCounter(key string)                       {}
+func (f *noopMetricHandler) IncCounterBy(key string, value int64)        {}
+func (f *noopMetricHandler) IncFloatCounterBy(key string, value float64) {}
 
 func TestLocalFileCache_NewLocalFileCache(t *testing.T) {
 	cache := cache.NewFileSystemCache()
@@ -43,17 +45,17 @@ func TestLocalFileCache_CreateFilter(t *testing.T) {
 	cache := cache.NewFileSystemCache()
 	imagefiltertest.TestCreate(t, func() filters.Spec { return NewLocalFileCache(cache) },
 		[]imagefiltertest.CreateTestItem{{
-			"no args",
-			nil,
-			true,
+			Msg:  "no args",
+			Args: nil,
+			Err:  true,
 		}, {
-			"one arg",
-			[]interface{}{"/tmp"},
-			false,
+			Msg:  "one arg",
+			Args: []interface{}{"/tmp"},
+			Err:  false,
 		}, {
-			"two args",
-			[]interface{}{"/tmp", "hello"},
-			true,
+			Msg:  "two args",
+			Args: []interface{}{"/tmp", "hello"},
+			Err:  true,
 		}})
 }
 
@@ -86,7 +88,7 @@ func TestLocalFileCache_Request_NoCache(t *testing.T) {
 	f, _ := cacheFilter.CreateFilter([]interface{}{"/images"})
 	req, _ := http.NewRequest("GET", "http://www.example.org"+reqPath+"?refresh=true", nil)
 
-	ctx := &filtertest.Context{FRequest: req, FMetrics: &metricsHandler{}}
+	ctx := &filtertest.Context{FRequest: req, FMetrics: &noopMetricHandler{}}
 	f.Request(ctx)
 
 	assert.False(t, ctx.Served())
@@ -100,7 +102,7 @@ func TestLocalFileCache_Request_NotInCache(t *testing.T) {
 	f, _ := cacheFilter.CreateFilter([]interface{}{"/images"})
 	req, _ := http.NewRequest("GET", "http://www.example.org"+reqPath, nil)
 
-	ctx := &filtertest.Context{FRequest: req, FMetrics: &metricsHandler{}}
+	ctx := &filtertest.Context{FRequest: req, FMetrics: &noopMetricHandler{}}
 	f.Request(ctx)
 
 	assert.False(t, ctx.Served())
@@ -115,7 +117,7 @@ func TestLocalFileCache_Request_InCache(t *testing.T) {
 	f, _ := cacheFilter.CreateFilter([]interface{}{"../images"})
 	req, _ := http.NewRequest("GET", "http://www.example.org"+reqPath, nil)
 
-	ctx := &filtertest.Context{FRequest: req, FMetrics: &metricsHandler{}}
+	ctx := &filtertest.Context{FRequest: req, FMetrics: &noopMetricHandler{}}
 	f.Request(ctx)
 
 	assert.True(t, ctx.Served())
@@ -150,7 +152,7 @@ func TestLocalFileCache_Response(t *testing.T) {
 	req, _ := http.NewRequest("GET", "http://www.example.org"+reqPath, nil)
 	recorder := httptest.NewRecorder()
 
-	ctx := &filtertest.Context{FRequest: req, FMetrics: &metricsHandler{}, FResponse: recorder.Result()}
+	ctx := &filtertest.Context{FRequest: req, FMetrics: &noopMetricHandler{}, FResponse: recorder.Result()}
 	f.Response(ctx)
 
 	assert.Equal(t, "200 OK", ctx.Response().Status)
