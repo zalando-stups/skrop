@@ -29,6 +29,8 @@ github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5y
 github.com/google/go-cmp v0.0.0-20170901214248-d5735f74713c/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/h2non/bimg v1.0.18 h1:ep0hRtJGeLOMYIuFfgIb0r+19UNAwfXEuR8InuWdZ8c=
 github.com/h2non/bimg v1.0.18/go.mod h1:R3+UiYwkK4rQl6KVFTOFJHitgLbZXBZNFh2cv3AEbp8=
+github.com/h2non/bimg v1.0.19-0.20181209223754-4b9abdb94589 h1:LgZYL+RFPB1WTH1J6EIueU3ow04sf529w8YWftDtGLA=
+github.com/h2non/bimg v1.0.19-0.20181209223754-4b9abdb94589/go.mod h1:R3+UiYwkK4rQl6KVFTOFJHitgLbZXBZNFh2cv3AEbp8=
 github.com/hpcloud/tail v1.0.0/go.mod h1:ab1qPbhIpdTxEkNHXyeSf5vhxWSCs/tWer42PpOxQnU=
 github.com/instana/golang-sensor v0.0.0-20180725091122-493edb422283 h1:T5w+TmupdCG6aKHgYCIMiIbuM7Tz70H68A32Xdig7BA=
 github.com/instana/golang-sensor v0.0.0-20180725091122-493edb422283/go.mod h1:ZyC19HCVK0u4cTg7K2p1FE5Wwoj/rz5MtoEKw8Pf9LA=

@@ -9,7 +9,7 @@ require (
 	github.com/dimfeld/httppath v0.0.0-20170720192232-ee938bf73598
 	github.com/gogo/protobuf v1.1.1
 	github.com/golang/protobuf v1.2.0
-	github.com/h2non/bimg v1.0.18
+	github.com/h2non/bimg v1.0.19-0.20181209223754-4b9abdb94589
 	github.com/instana/golang-sensor v0.0.0-20180725091122-493edb422283
 	github.com/konsorten/go-windows-terminal-sequences v1.0.1
 	github.com/lightstep/lightstep-tracer-go v0.15.4
