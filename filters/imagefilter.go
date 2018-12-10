@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/danpersa/bimg"
+	"github.com/h2non/bimg"
 	log "github.com/sirupsen/logrus"
 	"github.com/zalando-stups/skrop/messages"
 	"github.com/zalando/skipper/filters"

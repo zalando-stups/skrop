@@ -3,7 +3,7 @@ package filters
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/zalando-stups/skrop/filters/imagefiltertest"
-	"github.com/danpersa/bimg"
+	"github.com/h2non/bimg"
 	"testing"
 )
 

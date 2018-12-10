@@ -4,7 +4,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/zalando-stups/skrop/parse"
 	"github.com/zalando/skipper/filters"
-	"github.com/danpersa/bimg"
+	"github.com/h2non/bimg"
 )
 
 // For infomations about the parameters meanings and default values have a look here:

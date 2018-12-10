@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/zalando/skipper/filters"
-	"github.com/danpersa/bimg"
+	"github.com/h2non/bimg"
 )
 
 const (

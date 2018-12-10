@@ -9,7 +9,7 @@ import:
   - filters
   - proxy
   - routing
-- package: github.com/danpersa/bimg
+- package: github.com/h2non/bimg
   version: ^1.0.19
 testImport:
 - package: github.com/stretchr/testify

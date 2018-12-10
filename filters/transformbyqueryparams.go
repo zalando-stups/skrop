@@ -1,7 +1,7 @@
 package filters
 
 import (
-	"github.com/danpersa/bimg"
+	"github.com/h2non/bimg"
 	log "github.com/sirupsen/logrus"
 	"github.com/zalando/skipper/filters"
 	"strconv"

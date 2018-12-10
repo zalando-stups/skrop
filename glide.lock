@@ -13,7 +13,7 @@ imports:
   version: 31cbb9bef199454415879f2e6d609d1136d60cad
 - name: github.com/codahale/hdrhistogram
   version: 3a0bb77429bd3a61596f5e8a3172445844342120
-- name: github.com/danpersa/bimg
+- name: github.com/h2non/bimg
   version: d85e76c1cb5fffa8decea763e00d4fccd88f098a
 - name: github.com/dimfeld/httppath
   version: ee938bf735983d53694d79138ad9820efff94c92

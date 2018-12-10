@@ -1,10 +1,10 @@
 package filters
 
 import (
+	"github.com/h2non/bimg"
 	log "github.com/sirupsen/logrus"
 	"github.com/zalando-stups/skrop/parse"
 	"github.com/zalando/skipper/filters"
-	"github.com/danpersa/bimg"
 )
 
 const (
