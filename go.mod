@@ -1,0 +1,41 @@
+module github.com/zalando-stups/skrop
+
+require (
+	github.com/abbot/go-http-auth v0.0.0-20181006234207-98f2d47741b6
+	github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973
+	github.com/cjoudrey/gluahttp v0.0.0-20180401075744-7065ce73b887
+	github.com/cjoudrey/gluaurl v0.0.0-20161028222611-31cbb9bef199
+	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd
+	github.com/dimfeld/httppath v0.0.0-20170720192232-ee938bf73598
+	github.com/gogo/protobuf v1.1.1
+	github.com/golang/protobuf v1.2.0
+	github.com/h2non/bimg v1.0.18
+	github.com/instana/golang-sensor v0.0.0-20180725091122-493edb422283
+	github.com/konsorten/go-windows-terminal-sequences v1.0.1
+	github.com/lightstep/lightstep-tracer-go v0.15.4
+	github.com/looplab/fsm v0.0.0-20180515091235-f980bdb68a89
+	github.com/matttproud/golang_protobuf_extensions v1.0.1
+	github.com/oklog/ulid v0.3.0
+	github.com/opentracing/basictracer-go v1.0.0
+	github.com/opentracing/opentracing-go v1.0.3-0.20180908211932-6aa6febac7b9
+	github.com/pkg/errors v0.8.0
+	github.com/prometheus/client_golang v0.9.0
+	github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910
+	github.com/prometheus/common v0.0.0-20181019103554-16b4535ad14a
+	github.com/prometheus/procfs v0.0.0-20181005140218-185b4288413d
+	github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a
+	github.com/sirupsen/logrus v1.0.4
+	github.com/sony/gobreaker v0.0.0-20180905101324-b2a34562d02c
+	github.com/szuecs/rate-limit-buffer v0.7.0
+	github.com/uber/jaeger-client-go v2.14.0+incompatible
+	github.com/uber/jaeger-lib v1.5.0
+	github.com/yuin/gopher-lua v0.0.0-20181008131706-f6fcaab0c612
+	github.com/zalando/skipper v0.10.100
+	golang.org/x/crypto v0.0.0-20181015023909-0c41d7ab0a0e
+	golang.org/x/net v0.0.0-20181017193950-04a2e542c03f
+	golang.org/x/sys v0.0.0-20181019084534-8f1d3d21f81b
+	golang.org/x/text v0.3.0
+	google.golang.org/genproto v0.0.0-20181016170114-94acd270e44e
+	google.golang.org/grpc v1.14.0
+	layeh.com/gopher-json v0.0.0-20180720235322-d0a7d8b4c69a
+)
