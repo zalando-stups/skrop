@@ -12,9 +12,7 @@ RUN ./install-vips.sh
 ADD . /go/src/github.com/zalando-stups/skrop
 WORKDIR /go/src/github.com/zalando-stups/skrop
 
-RUN go get github.com/Masterminds/glide
-
-RUN glide install
+ENV GO111MODULE on
 
 RUN go build ./cmd/skrop
 

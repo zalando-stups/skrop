@@ -47,15 +47,10 @@ run packaging/install-vips.sh
 
 #### GO dependencies
 
-Only on macOS, you have to manually install _Glide_ using _Brew_.
-```bash
-brew install glide
+Skrop uses [modules](https://github.com/golang/go/wiki/Modules), so make sure to have go 1.11+ and just run
 ```
-
-Then, for all.
-```
+export GO111MODULE=on
 ./packaging/build.sh
-go get github.com/Masterminds/glide
 go get ./cmd/skrop/
 ```
 

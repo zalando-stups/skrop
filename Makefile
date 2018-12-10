@@ -8,10 +8,8 @@ VERSION           ?= $(CURRENT_VERSION)
 NEXT_PATCH         = $(shell go run packaging/version/version.go patch $(CURRENT_VERSION))
 COMMIT_HASH        = $(shell git rev-parse --short HEAD)
 
-glide:
-	glide install
 
-build: glide
+build:
 	go build ./cmd/skrop
 
 docker:
@@ -29,7 +27,6 @@ test-only:
 
 init-deps:
 	./packaging/build.sh
-	go get github.com/Masterminds/glide
 	go get ./cmd/skrop/
 
 all: init-deps build test
