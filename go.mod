@@ -7,7 +7,6 @@ require (
 	github.com/cjoudrey/gluaurl v0.0.0-20161028222611-31cbb9bef199
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd
 	github.com/dimfeld/httppath v0.0.0-20170720192232-ee938bf73598
-	github.com/gogo/protobuf v1.1.1
 	github.com/golang/protobuf v1.2.0
 	github.com/h2non/bimg v1.0.19-0.20181209223754-4b9abdb94589
 	github.com/instana/golang-sensor v0.0.0-20180725091122-493edb422283
@@ -30,7 +29,7 @@ require (
 	github.com/uber/jaeger-client-go v2.14.0+incompatible
 	github.com/uber/jaeger-lib v1.5.0
 	github.com/yuin/gopher-lua v0.0.0-20181008131706-f6fcaab0c612
-	github.com/zalando/skipper v0.10.100
+	github.com/zalando/skipper v0.10.126
 	golang.org/x/crypto v0.0.0-20181015023909-0c41d7ab0a0e
 	golang.org/x/net v0.0.0-20181017193950-04a2e542c03f
 	golang.org/x/sys v0.0.0-20181019084534-8f1d3d21f81b
