@@ -36,16 +36,12 @@ env:
 jobs:
   include:
     - stage: Running Tests
-      before_install:
-      - "./packaging/install-vips.sh"
-      install:
-      - go get github.com/wadey/gocovmerge
       script:
+      - "./packaging/install-vips.sh"
+      - go get github.com/wadey/gocovmerge
       - make ci-trigger
-      after_success:
       - bash <(curl -s https://codecov.io/bash)
     - stage: GitHub Release
-      if: branch = master
       script: echo "Deploying to GitHub releases ..."
       deploy:
         provider: releases
