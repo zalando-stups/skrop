@@ -5,42 +5,13 @@ branches:
   only:
   - master
 
-language: go
-go:
-- 1.11.1
-
-addons:
-  apt:
-    packages:
-    - ca-certificates
-    - wget
-    - build-essential
-    - glib2.0-dev
-    - libxml2-dev
-    - libjpeg-turbo8-dev
-    - libexif-dev
-    - libtiff5-dev
-    - libgsf-1-dev
-    - libpng-dev
-    - libexpat-dev
-
-cache:
-  apt: true
-
 env:
   global:
-  - VIPS_VERSION=8.7.0
-  - GO111MODULE=on
+  - PROJECT_DIR=/go/src/github.com/zalando-stups/skrop
   - secure: iOfz4tQ/0pV+BTnnzzh0cxVHJfw6cgO+O5Gc/48rZIt0LjjIZByvMnatUv2wWlWCM01RhFy0blMAeY7twDSNzqu39voJCZzt4HL1YW8JH9/o4veEMo6MdEpJRQczlJnHpLDRXyW+EcrSunHSE1BQwbEDCBqlISlWBnVuLrvI9en+kQIQjGylazADYkwt0Dljaz73OqEhqqW6obnz7tO4OnTtRZr+lAyQxOCRsEy7Drnc19HWIfORvsAsRnjDboof2WtDoNYYiDEnD89bpiu012OZYI+wik4p2g9fyCLUOpizTI+rLYU0a3M0D6JDmL3fehF+I/s27Hh2uh9QtU8YD2FZ4LthfqkeF1uUyuikMTWI6r1N2EZiKLhFcYezB9R8H+XcsLRwZoxWHHM6OVmkeX7v7LaJYzsNWzPU7YL3Ja1Upn+f9EsK4/mi7uupOLyNUxmOBLa6Anll+IMYor5qmo8S2ahzenREURPuBdZ1OgpheFYK9+9QkkjSCzXm1NjWp1B39a3VtQ1ZVldu7NE7PVRJSWPrfi3YBlcs8qxz54GoAo2yCyPTka12iissVULWQF+fr2NuE2YEPBBZdmi+wHTCZ18V7ts3W8ww7o9ZkAPT9vDKsWVzqe1RmR6Dv+0ocYNVIpyOyL0exHFqujRtbMg4STY6zPaaibcs3bafIq8=
 
-before_install:
-- "./packaging/install-vips.sh"
-
-install:
-- go get github.com/wadey/gocovmerge
-
 script:
-- make ci-trigger
+- docker run -t -v $(pwd):$PROJECT_DIR skrop/skrop-build sh -c "cd $PROJECT_DIR && ./.travis/test.sh"
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
