@@ -11,7 +11,7 @@ function make_production_image() {
   --build-arg ROUTES_FILE=${ROUTES_FILE} \
   --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
   --build-arg VCS_REF=`git rev-parse --short HEAD` \
-  --build-arg VERSION=${DOCKER_IMAGE_VERSION} .
+  --build-arg VERSION=${DOCKER_IMAGE_VERSION} \
   -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} . \
   && return 0
 }
