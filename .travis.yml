@@ -44,8 +44,8 @@ jobs:
       - make ci-trigger
       after_success:
       - bash <(curl -s https://codecov.io/bash)
-    if: branch = master
     - stage: GitHub Release
+      if: branch = master
       script: echo "Deploying to GitHub releases ..."
       deploy:
         provider: releases
