@@ -21,9 +21,7 @@ after_success:
 
 deploy:
   - provider: script
-    script:
-      - ./docker/docker-release.sh
-      - ./.travis/git-tag.sh
+    script: ./.travis/release.sh
     on:
       repo: zalando-stups/skrop
       branch: master
