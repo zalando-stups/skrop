@@ -24,8 +24,6 @@ app.prepare().then(() => {
 
   server.listen(port, err => {
     if (err) throw err;
-    console.log(`
-    From Skrop with ❤️
-`);
+    console.log(`From Skrop with ❤️`);
   });
 });

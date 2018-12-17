@@ -10,9 +10,7 @@ COPY package*.json ./
 COPY . .
 
 RUN npm install
-RUN echo "npm install - SUCCESSED"
 RUN npm run build
-RUN echo "npm run build - SUCCESSED"
 
 
 ENV NODE_ENV production
