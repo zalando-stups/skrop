@@ -2,6 +2,8 @@ FROM node:10
 LABEL artifactId="skrop-sandbox"
 LABEL maintainer="Zalando SE"
 
+RUN echo "DOCKER FILE FOUND!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
 # Create app directory
 WORKDIR /home/skrop/app
 
