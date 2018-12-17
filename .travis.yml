@@ -15,7 +15,7 @@ env:
 
 script:
   - docker run -t -v $(pwd):$PROJECT_DIR skrop/skrop-build sh -c "cd $PROJECT_DIR && ./.travis/test-with-coverage.sh"
-  - ./.travis/git-tag.sh $NEXT_PATCH_VERSION
+  - ./.travis/git-tag.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
