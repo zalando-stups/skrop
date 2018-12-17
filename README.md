@@ -11,59 +11,18 @@ Skrop is a media service based on [Skipper](https://github.com/zalando/skipper) 
 In order to be able to use Skrop, you have to be familiar with how
 [Skipper](https://github.com/zalando/skipper) works.
 
+* [Install](./docs/INSTALL.md)
+   * [Build from sources](./docs/INSTALL.md#build-from-sources)
+     * [Install dependencies](./docs/INSTALL.md#install-dependencies)
+   * [Using Docker](./docs/INSTALL.md#using-docker)
+   * [Using Heroku](./docs/INSTALL.md#using-heroku)
+
 ### Getting started
-
-Skrop is 'go get' compatible. If needed, create a Go workspace first:
-
-    mkdir ~/go-workspace
-    cd ~/go-workspace
-    export GOPATH=$(pwd)
-
-This can be set up in the BASH profile (`~/.bash_profile` or `~/.bashrc`)
-
-    export GOPATH=~/go-workspace
-
-Get the Skrop sources:
-
-    go get github.com/zalando-stups/skrop
-
-### Install dependencies:
-
-#### System dependencies
-
-The [vips](https://github.com/jcupitt/libvips) library needs to be installed for Skrop to build.
-
-On macOS, that can be easily done using `brew`.
-
-```bash
-brew install vips
-```
-
-On a Linux machine, use the provided script.
-
-```bash
-run packaging/install-vips.sh
-```
-
-#### GO dependencies
-
-Skrop uses [modules](https://github.com/golang/go/wiki/Modules), so make sure to have go 1.11+ and just run
-```
-export GO111MODULE=on
-./packaging/build.sh
-go get ./cmd/skrop/
-```
 
 ### Run Skrop
 ```
 go run cmd/skrop/main.go -routes-file eskip/sample.eskip -verbose
 ```
-
-### Demo
-
-Press here to deploy your own demo on Heroku
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/zalando-stups/skrop)
 
 ### Test
 
@@ -130,20 +89,6 @@ environment variable to the running system:
 ```
 STRIP_METADATA=TRUE
 ``` 
-
-## Packaging
-In order to package skrop for production, you're going to need [Docker](https://docs.docker.com).
-To build a Docker image, just run the build script (the arguments are optional):
-
-```
-make docker version=1.0.0 routes_file=eskip/sample.eskip docker_tag=zalando-stups/skrop
-```
-
-Now you can start Skrop in a Docker container:
-
-```
-make docker-run
-```
 
 ## Continuous Integration
 
