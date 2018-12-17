@@ -1,0 +1,24 @@
+html {
+  height: 100%;
+}
+
+body > div:first-child {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.page {
+  flex: 1 0 auto;
+}
+
+.footer {
+  flex-shrink: 0;
+}
+
+@media only screen and (max-width: @largestMobileScreen) {
+  .ui[class*="mobile vertically reversed"].grid > .row,
+  .ui[class*="tablet vertically reversed"].grid > .row {
+    flex-direction: column-reverse;
+  }
+}
