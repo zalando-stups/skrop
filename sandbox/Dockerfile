@@ -9,9 +9,7 @@ WORKDIR /home/skrop/app
 COPY package*.json ./
 COPY . .
 RUN npm install
-
 RUN npm run build
-RUN ls -la
 
 ENV NODE_ENV production
 EXPOSE 8080
