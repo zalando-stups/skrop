@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. ../docker/version.sh
+. docker/version.sh
 
 echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
 echo "TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST}"
