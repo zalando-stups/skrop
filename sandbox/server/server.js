@@ -11,7 +11,6 @@ const app = next({ dev, conf });
 const handle = app.getRequestHandler();
 
 global.fetch = require("isomorphic-fetch");
-console.log('fuck');
 
 app.prepare().then(() => {
   const server = express();
