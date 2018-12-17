@@ -6,7 +6,8 @@ const helmet = require("helmet");
 const proxy = require("http-proxy-middleware");
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
+const conf = require("../next.base.config");
+const app = next({ dev, conf });
 const handle = app.getRequestHandler();
 
 global.fetch = require("isomorphic-fetch");
