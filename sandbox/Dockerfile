@@ -8,10 +8,11 @@ WORKDIR /home/skrop/app
 # Install app dependencies
 COPY package*.json ./
 COPY . .
-
 RUN npm install
+
 RUN npm run build
+RUN ls -la
 
 ENV NODE_ENV production
-EXPOSE 3000
+EXPOSE 8080
 CMD ["npm", "start"]
