@@ -1,6 +1,15 @@
 sudo: required
 dist: trusty
 
+language: go
+
+cache:
+  directories:
+    - $HOME/docker
+
+services:
+  - docker
+
 branches:
   only:
     - master
