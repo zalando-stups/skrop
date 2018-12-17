@@ -19,4 +19,4 @@ RUN echo "npm run build - SUCCESS"
 
 ENV NODE_ENV production
 EXPOSE 8080
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
