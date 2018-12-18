@@ -1,4 +1,0 @@
-.persona-cards .header {
-  font-family: @pageFont !important;
-  font-weight: @bold !important;
-}
