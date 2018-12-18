@@ -58,3 +58,11 @@ npm run build
 ```
 
 Now you should see application running at `http://localhost:3000`.
+
+## Deploy website
+
+Deploy to heroku
+
+```bash
+git subtree push --prefix sandbox heroku master
+```
