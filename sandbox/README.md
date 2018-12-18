@@ -57,10 +57,12 @@ npm run build
 ./scripts/docker-run.sh
 ```
 
-4. Deploy to heroku
+Now you should see application running at `http://localhost:3000`.
+
+## Deploy website
+
+Deploy to heroku
 
 ```bash
 git subtree push --prefix sandbox heroku master
 ```
-
-Now you should see application running at `http://localhost:3000`.
