@@ -8,7 +8,7 @@ interface IMenu {
 const PageMenu: React.SFC<IMenu> = ({ logoSrc }) => (
   <Menu fixed="top" inverted>
     <Container>
-      <Menu.Item as="a" header>
+      <Menu.Item as="a" href="/" header>
         <Image size="mini" src={logoSrc} alt="Skrop Logo" />
       </Menu.Item>
       <Menu.Item as="a" href="/">
