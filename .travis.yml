@@ -1,6 +1,15 @@
 sudo: required
 dist: trusty
 
+language: go
+
+cache:
+  directories:
+    - $HOME/docker
+
+services:
+  - docker
+
 branches:
   only:
     - master
@@ -15,14 +24,13 @@ env:
 
 script:
   - docker run -t -v $(pwd):$PROJECT_DIR skrop/skrop-build sh -c "cd $PROJECT_DIR && ./.travis/test-with-coverage.sh"
-  - ./.travis/git-tag.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 deploy:
   - provider: script
-    script: ./docker/docker-release.sh
+    script: ./.travis/release.sh
     on:
       repo: zalando-stups/skrop
       branch: master
