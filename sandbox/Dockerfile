@@ -11,6 +11,7 @@ COPY . .
 
 RUN npm install
 RUN npm run build
+RUN echo "installed and builed."
 
 ENV NODE_ENV production
 EXPOSE 3000
