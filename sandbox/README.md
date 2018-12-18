@@ -31,7 +31,7 @@ npm start
 ## Run local development environment
 
 ```bash
-UNSPLASH_APP_ID=[ID] UNSPLASH_APP_SECRET=[SECRET] npm run dev npm run dev
+npm run dev
 ```
 
 ## Run production environment
