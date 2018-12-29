@@ -12,7 +12,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.version="3.3.1-8.7.0" \
       org.label-schema.schema-version="1.0"
 
-ADD packaging/install-vips.sh install-vips.sh
+ADD docker/install-vips.sh install-vips.sh
+
 RUN apk add --update \
     bash \
   && ./install-vips.sh \
