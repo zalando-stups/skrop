@@ -1,8 +1,8 @@
-## Install
+## Installing
 
-### Build from sources
+### Building from sources
 
-#### Install dependencies
+#### Installing dependencies
 
 The [vips](https://github.com/libvips/libvips) library needs to be installed for Skrop to build.
 
@@ -12,9 +12,13 @@ On macOS, that can be easily done using `brew`.
 brew install vips
 ```
 
-On a Linux machine, use the provided [here](https://github.com/danpersa/skrop-build-docker/blob/master/install-vips.sh)
+On a Linux machine, use the script provided [here](../docker/install-vips.sh)
 
-#### Build Skrop
+```bash
+./docker/install-vips.sh
+```
+
+#### Building Skrop
 
 Skrop is 'go get' compatible. If needed, create a Go workspace first:
 
@@ -38,6 +42,21 @@ export GO111MODULE=on
 go build ./cmd/skrop/
 ```
 
+#### Running Skrop
+
+```
+go run cmd/skrop/main.go -routes-file eskip/sample.eskip -verbose
+```
+
+To test if everything is configured correctly you should open in your browser
+```
+http://localhost:9090/images/big-ben.jpg
+```
+and the resized version
+```
+http://localhost:9090/images/S/big-ben.jpg
+```
+
 ### Using Docker
 
 In order to package skrop for production, you're going to need [Docker](https://docs.docker.com).
@@ -57,4 +76,4 @@ docker/docker-run.sh
 
 Press here to deploy your own demo on Heroku
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/zalando-stups/skrop/docker)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/zalando-stups/skrop)
