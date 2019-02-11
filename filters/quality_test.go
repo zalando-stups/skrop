@@ -2,7 +2,8 @@ package filters
 
 import (
 	"github.com/stretchr/testify/assert"
-	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"github.com/zalando-stups/skrop/filters/imagefiltertest"
+	"github.com/h2non/bimg"
 	"testing"
 )
 
@@ -19,9 +20,34 @@ func TestNewQuality_Name(t *testing.T) {
 func TestNewQuality_CreateOptions(t *testing.T) {
 	quality := quality{percentage: 75}
 	image := imagefiltertest.LandscapeImage()
-	options, _ := quality.CreateOptions(image)
+	options, _ := quality.CreateOptions(buildParameters(nil, image))
 
 	assert.Equal(t, 75, options.Quality)
+}
+
+func TestNewQuality_CanBeMerged_True(t *testing.T) {
+	s := quality{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{Quality: 85}
+
+	assert.True(t, s.CanBeMerged(opt, self))
+}
+
+func TestNewQuality_CanBeMerged_False(t *testing.T) {
+	s := quality{}
+	opt := &bimg.Options{Quality: 27}
+	self := &bimg.Options{Quality: 85}
+
+	assert.False(t, s.CanBeMerged(opt, self))
+}
+
+func TestNewQuality_Merge(t *testing.T) {
+	s := quality{}
+	self := &bimg.Options{Quality: 85}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.Equal(t, self.Quality, opt.Quality)
 }
 
 func TestNewQuality_CreateFilter(t *testing.T) {

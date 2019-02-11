@@ -1,22 +1,20 @@
 .DEFAULT_GOAL := all
 
-version ?= latest
 routes_file ?= ./eskip/sample.eskip
-docker_tag ?= zalando-incubator/skrop
+docker_tag ?= skrop/skrop
 
-godep:
-	godep restore
-
-build: godep
-	go build ./cmd/skrop
+build:
+	./docker/skrop-build.sh
 
 docker:
-	./packaging/build.sh $(version) $(routes_file) $(docker_tag)
+	./docker/docker-build.sh
 
 docker-run:
-	docker run --rm -p 9090:9090 zalando-incubator/skrop -verbose
+	./docker/docker-run.sh
 
 test:
 	go test ./...
 
-all: build test
+build-docker-vips:
+	docker build -f Dockerfile-Vips --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` --build-arg VCS_REF=`git rev-parse --short HEAD` -t skrop/alpine-mozjpeg-vips:3.3.1-8.7.0 .
+	docker push skrop/alpine-mozjpeg-vips:3.3.1-8.7.0

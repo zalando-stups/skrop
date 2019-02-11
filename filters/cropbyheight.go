@@ -1,11 +1,13 @@
 package filters
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	"github.com/zalando-stups/skrop/parse"
 	"github.com/zalando/skipper/filters"
-	"gopkg.in/h2non/bimg.v1"
+	"github.com/h2non/bimg"
 )
 
+// CropByHeightName is the name of the filter
 const CropByHeightName = "cropByHeight"
 
 type cropByHeight struct {
@@ -13,18 +15,19 @@ type cropByHeight struct {
 	cropType string
 }
 
+// NewCropByHeight creates a new filter of this type
 func NewCropByHeight() filters.Spec {
 	return &cropByHeight{}
 }
 
-func (c *cropByHeight) Name() string {
+func (f *cropByHeight) Name() string {
 	return CropByHeightName
 }
 
-func (c *cropByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for crop by height ", c)
+func (f *cropByHeight) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
+	log.Debug("Create options for crop by height ", f)
 
-	imageSize, err := image.Size()
+	imageSize, err := imageContext.Image.Size()
 
 	if err != nil {
 		return nil, err
@@ -32,21 +35,34 @@ func (c *cropByHeight) CreateOptions(image *bimg.Image) (*bimg.Options, error) {
 
 	return &bimg.Options{
 		Width:   imageSize.Width,
-		Height:  c.height,
-		Gravity: cropTypeToGravity[c.cropType],
+		Height:  f.height,
+		Gravity: cropTypeToGravity[f.cropType],
 		Crop:    true}, nil
 }
 
-func (c *cropByHeight) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *cropByHeight) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	return (other.Width == 0 && other.Height == 0 && !other.Crop) ||
+		(other.Width == self.Width && other.Height == self.Height && other.Crop == self.Crop)
+}
+
+func (f *cropByHeight) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Width = self.Width
+	other.Height = self.Height
+	other.Gravity = self.Gravity
+	other.Crop = self.Crop
+	return other
+}
+
+func (f *cropByHeight) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
 	if len(args) < 1 || len(args) > 2 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &cropByHeight{cropType: Center}
+	c := &cropByHeight{cropType: Center}
 
-	f.height, err = parseEskipIntArg(args[0])
+	c.height, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
@@ -54,17 +70,17 @@ func (c *cropByHeight) CreateFilter(args []interface{}) (filters.Filter, error) 
 
 	if len(args) == 2 {
 		if cropType, ok := args[1].(string); ok && cropTypes[cropType] {
-			f.cropType = cropType
+			c.cropType = cropType
 		} else {
 			return nil, filters.ErrInvalidFilterParameters
 		}
 	}
 
-	return f, nil
+	return c, nil
 }
 
-func (c *cropByHeight) Request(ctx filters.FilterContext) {}
+func (f *cropByHeight) Request(ctx filters.FilterContext) {}
 
-func (c *cropByHeight) Response(ctx filters.FilterContext) {
-	handleResponse(ctx, c)
+func (f *cropByHeight) Response(ctx filters.FilterContext) {
+	HandleImageResponse(ctx, f)
 }

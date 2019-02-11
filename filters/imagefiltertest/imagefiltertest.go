@@ -4,28 +4,26 @@ import (
 	"testing"
 
 	"github.com/zalando/skipper/filters"
-	"gopkg.in/h2non/bimg.v1"
+	"github.com/h2non/bimg"
 )
 
 const (
+	// LandscapeImageFile  is the path to the sample image landscape
 	LandscapeImageFile = "../images/lisbon-tram.jpg"
-	PortraitImageFile  = "../images/big-ben.jpg"
-	PNGImageFile       = "../images/bag.png"
+	// PortraitImageFile   is the path to the sample image portrait
+	PortraitImageFile = "../images/big-ben.jpg"
+	// PNGImageFile        is the path to the sample PNG image
+	PNGImageFile = "../images/bag.png"
 )
 
-type FakeImageFilter bimg.Options
-
+// CreateTestItem is a utility to test arguments in eskip files
 type CreateTestItem struct {
 	Msg  string
 	Args []interface{}
 	Err  bool
 }
 
-func (h *FakeImageFilter) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
-	options := bimg.Options(*h)
-	return &options, nil
-}
-
+// TestCreate autonmatically creates a test for the CreateTestItem
 func TestCreate(t *testing.T, spec func() filters.Spec, items []CreateTestItem) {
 	for _, ti := range items {
 		func() {
@@ -42,16 +40,19 @@ func TestCreate(t *testing.T, spec func() filters.Spec, items []CreateTestItem) 
 	}
 }
 
+// LandscapeImage returns a landscape test image
 func LandscapeImage() *bimg.Image {
 	buffer, _ := bimg.Read(LandscapeImageFile)
 	return bimg.NewImage(buffer)
 }
 
+// PortraitImage returns a portrait test image
 func PortraitImage() *bimg.Image {
 	buffer, _ := bimg.Read(PortraitImageFile)
 	return bimg.NewImage(buffer)
 }
 
+// PNGImage returns a PNG test image
 func PNGImage() *bimg.Image {
 	buffer, _ := bimg.Read(PNGImageFile)
 	return bimg.NewImage(buffer)

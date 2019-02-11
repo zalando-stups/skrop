@@ -7,16 +7,18 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/h2non/bimg"
 	"github.com/stretchr/testify/assert"
-	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
+	"github.com/zalando-stups/skrop/filters/imagefiltertest"
 	"github.com/zalando/skipper/filters/filtertest"
-	"gopkg.in/h2non/bimg.v1"
 )
 
 const (
 	widthTarget  = 400
 	heightTarget = 200
 )
+
+type FakeImageFilter bimg.Options
 
 var optionsTarget = bimg.Options{
 	Width:  widthTarget,
@@ -44,45 +46,120 @@ func assertCorrectImageSize(r io.Reader, t *testing.T) {
 
 }
 
-func TestTransformImage(t *testing.T) {
-	image := imagefiltertest.LandscapeImage()
+func TestFinalizeResponse(t *testing.T) {
+	fc := createDefaultContext(t, "doesNotMatter.com")
+	fc.FStateBag[skropOptions] = &optionsTarget
+	fc.FStateBag[skropInit] = true
 
-	r, w := io.Pipe()
-
-	go transformImage(w, image, &optionsTarget)
-
-	assertCorrectImageSize(r, t)
-}
-
-func TestHandleResponse(t *testing.T) {
-	imageReader := createSampleImageReader(t)
-	response := &http.Response{Body: imageReader}
-	response.Header = make(http.Header)
-	response.Header.Add("Content-Length", "100")
-	fc := &filtertest.Context{FResponse: response}
-	imageFilter := imagefiltertest.FakeImageFilter(optionsTarget)
-
-	handleResponse(fc, &imageFilter)
+	FinalizeResponse(fc)
 
 	assertCorrectImageSize(fc.Response().Body, t)
 }
 
-func TestParseEskipIntArgSuccess(t *testing.T) {
-	result, _ := parseEskipIntArg(1.0)
-	assert.Equal(t, 1, result)
+func TestHandleResponse_InvalidImage(t *testing.T) {
+	fc := createDefaultContext(t, "doesNotMatter.com")
+	fc.FStateBag[skropOptions] = &optionsTarget
+	fc.FStateBag[skropImage] = bimg.NewImage([]byte("invalid image"))
+	fc.FStateBag[skropInit] = true
+
+	FinalizeResponse(fc)
+
+	assert.Equal(t, http.StatusInternalServerError, fc.FResponse.StatusCode)
 }
 
-func TestParseEskipIntArgFailure(t *testing.T) {
-	_, err := parseEskipIntArg(1.2)
-	assert.NotNil(t, err, "There should be an error")
+func TestHandleImageResponse(t *testing.T) {
+	fc := createDefaultContext(t, "doesNotMatter.com")
+	imageFilter := FakeImageFilter(optionsTarget)
+
+	err := HandleImageResponse(fc, &imageFilter)
+
+	assert.Nil(t, err, "there should not be any error")
+	assert.Equal(t, fc.FStateBag[skropOptions], &optionsTarget)
 }
 
-func TestParseEskipUint8ArgSuccess(t *testing.T) {
-	result, _ := parseEskipIntArg(1.0)
-	assert.Equal(t, 1, result)
+func TestHandleImageResponse_WithResponse304(t *testing.T) {
+	fc := createDefaultContext(t, "doesNotMatter.com")
+	imageFilter := FakeImageFilter(optionsTarget)
+
+	fc.FResponse.StatusCode = 304
+
+	err := HandleImageResponse(fc, &imageFilter)
+
+	assert.NotNil(t, err, "should not able to process when the backend response is 304")
 }
 
-func TestParseEskipUint8ArgFailure(t *testing.T) {
-	_, err := parseEskipIntArg(1.2)
-	assert.NotNil(t, err, "There should be an error")
+func TestInitResponse_ok(t *testing.T) {
+	//given
+	emptyBag := make(map[string]interface{})
+	ctx := createContext(t, "GET", "zalando.de/image.jpg", imagefiltertest.PortraitImageFile, emptyBag)
+	buffer, _ := bimg.Read(imagefiltertest.PortraitImageFile)
+	original := bimg.NewImage(buffer)
+
+	//when
+	initResponse(ctx)
+
+	//then
+	image, ok := ctx.StateBag()[skropImage].(*bimg.Image)
+	assert.True(t, ok)
+	oriSiz, _ := original.Size()
+	imgSiz, _ := image.Size()
+	assert.Equal(t, oriSiz, imgSiz)
+	_, ok = ctx.StateBag()[skropOptions].(*bimg.Options)
+	assert.True(t, ok)
+}
+
+func TestInitResponse_ErrorReadingImg(t *testing.T) {
+	//given
+	emptyBag := make(map[string]interface{})
+	ctx := createContext(t, "GET", "zalando.de/image.jpg", "nonExisting.jpg", emptyBag)
+
+	//when
+	initResponse(ctx)
+
+	assert.Equal(t, http.StatusInternalServerError, ctx.Response().StatusCode)
+}
+
+func createDefaultContext(t *testing.T, url string) *filtertest.Context {
+	buffer, _ := bimg.Read(imagefiltertest.PNGImageFile)
+	bag := make(map[string]interface{})
+	bag[skropImage] = bimg.NewImage(buffer)
+	bag[skropOptions] = &bimg.Options{}
+	bag[skropInit] = true
+	bag[hasMergedFilters] = true
+	return createContext(t, "GET", url, imagefiltertest.PNGImageFile, bag)
+}
+
+func createContext(t *testing.T, method string, url string, image string, stateBag map[string]interface{}) *filtertest.Context {
+	buffer, _ := bimg.Read(image)
+
+	imageReader := ioutil.NopCloser(bytes.NewReader(buffer))
+	response := &http.Response{Body: imageReader}
+	response.Header = make(http.Header)
+	response.Header.Add("Content-Length", "100")
+
+	req, err := http.NewRequest(method, url, nil)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	return &filtertest.Context{FResponse: response, FRequest: req, FStateBag: stateBag}
+}
+
+func (f *FakeImageFilter) CreateOptions(_ *ImageFilterContext) (*bimg.Options, error) {
+	options := bimg.Options(*f)
+	return &options, nil
+}
+
+func (f *FakeImageFilter) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	return (other.Width == 0 && other.Height == 0) ||
+		(other.Width == self.Width && other.Height == self.Height)
+}
+
+func (f *FakeImageFilter) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Width = self.Width
+	other.Height = self.Height
+	other.Quality = self.Quality
+	other.Background = self.Background
+	return other
 }

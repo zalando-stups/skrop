@@ -112,4 +112,6 @@ modules.xml
 
 ### Project ###
 /skrop
+docker/skrop
+docker/sample.eskip
 *coverage.txt

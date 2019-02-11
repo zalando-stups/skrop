@@ -1,62 +1,112 @@
 package filters
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	"github.com/zalando-stups/skrop/parse"
 	"github.com/zalando/skipper/filters"
-	"gopkg.in/h2non/bimg.v1"
+	"github.com/h2non/bimg"
+	"math"
 )
 
 const (
-	ResizeName = "resize"
+	// ResizeName is the name of the filter
+	ResizeName           = "resize"
+	ignoreAspectRatioStr = "ignoreAspectRatio"
 )
 
 type resize struct {
-	width  int
-	height int
+	width           int
+	height          int
+	keepAspectRatio bool
 }
 
+// NewResize creates a new filter of this type
 func NewResize() filters.Spec {
 	return &resize{}
 }
 
-func (r *resize) Name() string {
+func (f *resize) Name() string {
 	return ResizeName
 }
 
-func (r *resize) CreateOptions(_ *bimg.Image) (*bimg.Options, error) {
-	log.Debug("Create options for resize ", r)
+func (f *resize) CreateOptions(imageContext *ImageFilterContext) (*bimg.Options, error) {
+	log.Debug("Create options for resize ", f)
 
+	if !f.keepAspectRatio {
+		return &bimg.Options{
+			Width:  f.width,
+			Height: f.height,
+			Force:  true}, nil
+	}
+
+	size, err := imageContext.Image.Size()
+	if err != nil {
+		return nil, err
+	}
+
+	// calculate height keeping width
+	ht := int(math.Floor(float64(size.Height*f.width) / float64(size.Width)))
+
+	// if height is less or equal than desired, return transform by width
+	if ht <= f.height {
+		return &bimg.Options{
+			Width: f.width}, nil
+	}
+	// otherwise transform by height
 	return &bimg.Options{
-		Width:  r.width,
-		Height: r.height}, nil
+		Height: f.height}, nil
+
 }
 
-func (r *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
+func (f *resize) CanBeMerged(other *bimg.Options, self *bimg.Options) bool {
+	return (other.AreaWidth == 0 && other.AreaHeight == 0 ) && ((other.Width == 0 && other.Height == 0) ||
+		(self.Width == other.Width && self.Height == other.Height))
+}
+
+func (f *resize) Merge(other *bimg.Options, self *bimg.Options) *bimg.Options {
+	other.Width = self.Width
+	other.Height = self.Height
+	return other
+}
+
+func (f *resize) CreateFilter(args []interface{}) (filters.Filter, error) {
 	var err error
 
-	if len(args) != 2 {
+	if len(args) != 2 && len(args) != 3 {
 		return nil, filters.ErrInvalidFilterParameters
 	}
 
-	f := &resize{}
+	c := &resize{}
 
-	f.width, err = parseEskipIntArg(args[0])
-
-	if err != nil {
-		return nil, err
-	}
-
-	f.height, err = parseEskipIntArg(args[1])
+	c.width, err = parse.EskipIntArg(args[0])
 
 	if err != nil {
 		return nil, err
 	}
 
-	return f, nil
+	c.height, err = parse.EskipIntArg(args[1])
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(args) == 3 {
+		ratio, err := parse.EskipStringArg(args[2])
+		if err != nil {
+			return nil, err
+		}
+
+		c.keepAspectRatio = !(ratio == ignoreAspectRatioStr)
+
+	} else {
+		c.keepAspectRatio = true
+	}
+
+	return c, nil
 }
 
-func (r *resize) Request(ctx filters.FilterContext) {}
+func (f *resize) Request(ctx filters.FilterContext) {}
 
-func (r *resize) Response(ctx filters.FilterContext) {
-	handleResponse(ctx, r)
+func (f *resize) Response(ctx filters.FilterContext) {
+	HandleImageResponse(ctx, f)
 }

@@ -1,25 +1,43 @@
 sudo: required
 dist: trusty
 
+language: go
+
+cache:
+  directories:
+    - $HOME/docker
+
+services:
+  - docker
+
 branches:
   only:
-  - master
-
-language: go
-go:
-  - 1.8.x
+    - master
 
 env:
-- VIPS_VERSION=8.5.5
+  global:
+    - IMAGE_NAME=skrop/skrop
+    - PROJECT_DIR=/go/src/github.com/zalando-stups/skrop
+    - secure: iOfz4tQ/0pV+BTnnzzh0cxVHJfw6cgO+O5Gc/48rZIt0LjjIZByvMnatUv2wWlWCM01RhFy0blMAeY7twDSNzqu39voJCZzt4HL1YW8JH9/o4veEMo6MdEpJRQczlJnHpLDRXyW+EcrSunHSE1BQwbEDCBqlISlWBnVuLrvI9en+kQIQjGylazADYkwt0Dljaz73OqEhqqW6obnz7tO4OnTtRZr+lAyQxOCRsEy7Drnc19HWIfORvsAsRnjDboof2WtDoNYYiDEnD89bpiu012OZYI+wik4p2g9fyCLUOpizTI+rLYU0a3M0D6JDmL3fehF+I/s27Hh2uh9QtU8YD2FZ4LthfqkeF1uUyuikMTWI6r1N2EZiKLhFcYezB9R8H+XcsLRwZoxWHHM6OVmkeX7v7LaJYzsNWzPU7YL3Ja1Upn+f9EsK4/mi7uupOLyNUxmOBLa6Anll+IMYor5qmo8S2ahzenREURPuBdZ1OgpheFYK9+9QkkjSCzXm1NjWp1B39a3VtQ1ZVldu7NE7PVRJSWPrfi3YBlcs8qxz54GoAo2yCyPTka12iissVULWQF+fr2NuE2YEPBBZdmi+wHTCZ18V7ts3W8ww7o9ZkAPT9vDKsWVzqe1RmR6Dv+0ocYNVIpyOyL0exHFqujRtbMg4STY6zPaaibcs3bafIq8=
+    - secure: Yl4Wj4v8mw5jTioaLCtg6V9lS/9kxNLXHqKldZkfzcYstvqKZddDzG++FUgZ7UUVI3oaozU6sx8VnQR7mrpJWstt4fliekNyr1mCxTXrp4VK3CmcRWk7li+hnRL5707t08L6z2mqJ8ZI9H9VvdyJPTKs3mF+BzE5jU5W6sOIFrWsT0TK9vpJJJZB25eEE8G140CB3vaXXOUinwadVkBnifBlxR4tEBfYNOK4YfM7g4oZuamljMtZ16uE0qibpk5L9D6Y2i6s4utFjybk+S0VqvQCrF5+re2SgX5wN3JgLNYfKaBbD4hnXmr/cJlb8QFdM9IyOjGUdPMeRdsx8cwKaSe/6bxFcYOryCqkm9GHoq1dI9hZPWJ0tB6b0xe0xEwvUUdMkvsLheiEflqopESkzur/8KVFc5kypkQBZN8RQTvH+0G3rMDkhEwaZlA2rNbXFVrYYnQu3LQBQ9d6FjtTLseGYP1nkBvsaI1XJzzElQNCs9DewhTrm3a/Um9fR3wGb/q19Z+MN/i8ZJLeFucoRPbuFLXHKwedBZYwWHvLoDtEwrQ74ou4FkuEI9NOxO8dR4tXy5PExx419NEItRQOo2Y/qiiMhSKOZzHyBdcjYkLS7pccXyEKoHqEyhDX3S4U99Re/l8I1+okdKw5izPn6c26WTBvEcYs3O9r0Ldvf1k=
+    - secure: vnO8Yd9WSp2heYsWUjk4eVEF0AkTWeISwCv/g7FGrh7kaDPgucWh17W74QoqGzO1iyqQRWsKtFtokwYAsZegH0TizGmNh3xhne0uzzp0VNYKDWT7D3p6/AkhmBnZp9kS7Y70PRkvaQJHgC7az8rwXFtAMTM/DGdZ44TFRR7JsuJ/t0RH7T1/RnYOSVaXiztAYJfuwUqBWvJLwNpPfRnBUAl7B7Dxd5/fHsH95XotV+Jk/QeO4+bYflwVyIvl2w8rL7Gg8RDuxytWGk/loS9k79lt8E62w3xq1HPkdgYvDMjQ+PKCPs5BScq397R4vRw+DEfODSMYB+ZKGhYmib3z8gYUoqudb+GG+ql7Jdh3e4hTTpSGfU5f2awIG0ij5/t5vGF6PNi3X9rPos7qhhvLe7AelU3/AsQr2LAva3w/usxJ7kJg4TKy4udPpwo7RhItFjECoY17seYR1/ZPougARJ9UG4D11qtZ0K5IzMXLNkFWjCnqjq0xp/17p1Ftddh+2ScrE8kSDC8d5uon3XG7D0lac5buVA9HYv4VwsgoVTLDC1XcHhzzNeCVp5lL4S0bVbeQ4mNgXYV/AMK9Eb2b3499rlHe+p3mdpIBRpEIvQbG0yos0ABSlURiDSqvZcDe6nzvKS6AO58NGPxYPBMyGzhDR39d8HDNh3jHoXhKP7w=
 
-before_install:
-- ./packaging/install-vips.sh
-
-install:
-- go get github.com/tools/godep
-- go get github.com/wadey/gocovmerge
-- godep restore
 script:
-- ./.travis/test.sh
+  - docker run -t -v $(pwd):$PROJECT_DIR skrop/skrop-build sh -c "cd $PROJECT_DIR && ./.travis/test-with-coverage.sh"
+
 after_success:
-- bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
+
+deploy:
+  - provider: script
+    script: ./.travis/release.sh
+    on:
+      repo: zalando-stups/skrop
+      branch: master
+  - provider: releases
+    skip_cleanup: true
+    api_key:
+      secure: BmWHMRbpd3gpOOkn85bRtNzRMCIE4hRO6I/AbhHo/sCv4pay1cXCkWdYMRTkxeLyUg6Ilyx9YVuUFG+tO84el41aaEqhShUGueBTLS8eLALoWcxU6LWE6+VNLFD5kjWd/UllithQ0uPRX1bbcIcmadAMZjhdxCC6pBCdbI7S7YGPby3vbzawPQBAkx17Rmo39/t67zN5gr8KWFltuvlVt6cK6TfC0C4r5jQaqZ49p4NrFJHY1/Rc9+z925zGM0WJ3E9CGH3xRvx5E/0u9l72b2b5iLrMnQzV91G7ZlsVrZqnoAvGgX8Cdw1yJRvC+3RxhCP+dqB3yZFrmDmGuyheNjyf1VOUl9jUnTyY6xAePS+7+Z++gnUv9VzSvW1JFR3iNrc25FsetHIsxaAYnbEsfG5wmSq1jrSHzl7kofaPHbhDvdh4m2xmp19c+8upFyugUnHPwXfIk78/0hqtWbo813MCyaC9Z/FEQPwA0e5lONGBcFemqCRaF9cZRrgBmi/HqB2S/Wcp33lorv4pxKA0frJ930o/RUoCC6kUnSrZQNRwCW2PqdV99E2GpRFJQ9Cq+0VSFX/jB1l8SFOrDIOuXPcPef7JWqCwksoFgIez6o9BO3MREp3QiZicqUS3Bkgsp8tWNdOTtmjDTh16Z6Elz83bvP1ba6gqrzLTDCJY06I=
+    on:
+      repo: zalando-stups/skrop
+      tags: true

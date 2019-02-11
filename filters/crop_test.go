@@ -2,8 +2,8 @@ package filters
 
 import (
 	"github.com/stretchr/testify/assert"
-	"github.com/zalando-incubator/skrop/filters/imagefiltertest"
-	"gopkg.in/h2non/bimg.v1"
+	"github.com/zalando-stups/skrop/filters/imagefiltertest"
+	"github.com/h2non/bimg"
 	"testing"
 )
 
@@ -28,6 +28,34 @@ func TestCrop_CreateOptions(t *testing.T) {
 	assert.Equal(t, 600, options.Height)
 	assert.Equal(t, true, options.Crop)
 	assert.Equal(t, bimg.GravityNorth, options.Gravity)
+}
+
+func TestCrop_CanBeMerged_True(t *testing.T) {
+	s := crop{}
+	opt := &bimg.Options{}
+	self := &bimg.Options{Width: 100, Height: 350, Gravity: 2, Crop: true}
+
+	assert.True(t, s.CanBeMerged(opt, self))
+}
+
+func TestCrop_CanBeMerged_False(t *testing.T) {
+	s := crop{}
+	opt := &bimg.Options{Width: 100, Height: 350, Gravity: 2, Crop: true}
+	self := &bimg.Options{Width: 225, Height: 365, Gravity: 2, Crop: true}
+
+	assert.False(t, s.CanBeMerged(opt, self))
+}
+
+func TestCrop_Merge(t *testing.T) {
+	s := crop{}
+	self := &bimg.Options{Width: 100, Height: 350, Gravity: 2, Crop: true}
+
+	opt := s.Merge(&bimg.Options{}, self)
+
+	assert.Equal(t, self.Width, opt.Width)
+	assert.Equal(t, self.Height, opt.Height)
+	assert.Equal(t, self.Gravity, opt.Gravity)
+	assert.Equal(t, self.Crop, opt.Crop)
 }
 
 func TestCrop_CreateFilter(t *testing.T) {

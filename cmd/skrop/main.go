@@ -3,13 +3,16 @@ package main
 import (
 	"flag"
 	"fmt"
-	skropFilters "github.com/zalando-incubator/skrop/filters"
+	"github.com/zalando-stups/skrop/cache"
+	skropFilters "github.com/zalando-stups/skrop/filters"
 	"github.com/zalando/skipper"
 	"github.com/zalando/skipper/filters"
 	"os"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	"github.com/zalando-stups/skrop/dataclient"
 	"github.com/zalando/skipper/proxy"
+	"github.com/zalando/skipper/routing"
 )
 
 const (
@@ -27,9 +30,9 @@ const (
 	usageHeader = `
   skrop – Skipper based media service using the vips library.
 
-  https://github.com/zalando-incubator/skrop`
+  https://github.com/zalando-stups/skrop`
 
-	addressUsage    = "network address that skoap should listen on"
+	addressUsage    = "network address that skrop should listen on"
 	verboseUsage    = "enable verbose logging"
 	routesFileUsage = `alternatively to the target address, it is possible to use a full
 	eskip route configuration, and specify the auth() and authTeam()
@@ -99,17 +102,29 @@ func main() {
 	log.Debug(fmt.Sprintf("Using routes-file %s", routesFile))
 
 	o := skipper.Options{
-		Address:    address,
-		RoutesFile: routesFile,
+		Address: address,
+		CustomDataClients: []routing.DataClient{
+			dataclient.NewSkropDataClient(routesFile),
+		},
 		CustomFilters: []filters.Spec{
 			skropFilters.NewResize(),
 			skropFilters.NewCrop(),
 			skropFilters.NewCropByWidth(),
 			skropFilters.NewCropByHeight(),
+			skropFilters.NewCropByFocalPoint(),
 			skropFilters.NewResizeByWidth(),
+			skropFilters.NewResizeByHeight(),
 			skropFilters.NewQuality(),
 			skropFilters.NewAddBackground(),
-			skropFilters.NewLongerEdgeResize()},
+			skropFilters.NewLongerEdgeResize(),
+			skropFilters.NewConvertImageType(),
+			skropFilters.NewBlur(),
+			skropFilters.NewOverlayImage(),
+			skropFilters.NewSharpen(),
+			skropFilters.NewFinalizeResponse(),
+			skropFilters.NewTransformFromQueryParams(),
+			skropFilters.NewLocalFileCache(cache.NewFileSystemCache()),
+		},
 		AccessLogDisabled:   true,
 		ProxyOptions:        proxy.OptionsPreserveOriginal,
 		CertPathTLS:         certPathTLS,
