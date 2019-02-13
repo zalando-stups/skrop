@@ -21,7 +21,7 @@ require (
 	github.com/prometheus/client_golang v0.9.0
 	github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910
 	github.com/prometheus/common v0.0.0-20181019103554-16b4535ad14a
-	github.com/prometheus/procfs v0.0.0-20181005140218-185b4288413d
+	github.com/prometheus/procfs v0.0.0-20181204211112-1dc9a6cbc91a
 	github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a
 	github.com/sirupsen/logrus v1.0.4
 	github.com/sony/gobreaker v0.0.0-20180905101324-b2a34562d02c
@@ -30,9 +30,9 @@ require (
 	github.com/uber/jaeger-client-go v2.14.0+incompatible
 	github.com/uber/jaeger-lib v1.5.0
 	github.com/yuin/gopher-lua v0.0.0-20181008131706-f6fcaab0c612
-	github.com/zalando/skipper v0.10.126
+	github.com/zalando/skipper v0.10.168
 	golang.org/x/crypto v0.0.0-20181015023909-0c41d7ab0a0e
-	golang.org/x/net v0.0.0-20181017193950-04a2e542c03f
+	golang.org/x/net v0.0.0-20181213202711-891ebc4b82d6
 	golang.org/x/sys v0.0.0-20181019084534-8f1d3d21f81b
 	golang.org/x/text v0.3.0
 	google.golang.org/genproto v0.0.0-20181016170114-94acd270e44e
